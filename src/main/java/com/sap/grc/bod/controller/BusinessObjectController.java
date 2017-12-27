@@ -4,6 +4,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -23,6 +24,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sap.grc.bod.model.BusinessObject;
 import com.sap.grc.bod.repository.BusinessObjectRepository;
+import com.sap.grc.bod.util.ConflictException;
 
 
 @RestController
@@ -43,8 +45,9 @@ public class BusinessObjectController {
             UriComponentsBuilder uriComponentsBuilder) throws URISyntaxException {
         
     	//TODO:Validiton
-    	//throwIfIdNotNull(businessObject.getId()); 
-      
+    	//throwIfBusinessObjectexisting(businessObject.getBusinessObjectId()); 
+    	boRepository.findBybusinessObjectId(businessObject.getBusinessObjectId()).getId();
+    	
     	BusinessObject insertBusinessObject = boRepository.save(businessObject);
         
         //TODO:Log
@@ -64,4 +67,11 @@ public class BusinessObjectController {
     	return boRepository.findAll();
     }
 
+    private void throwIfConflict(UUID id, String businessObject ) {
+        if ( boRepository.exists(id)) {
+            ConflictException notFoundException = new ConflictException(businessObject + " ex");
+            //logger.warn("request failed", notFoundException);
+            throw notFoundException;
+        }
+    }
 }

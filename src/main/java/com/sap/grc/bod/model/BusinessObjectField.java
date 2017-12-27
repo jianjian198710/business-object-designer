@@ -22,6 +22,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
@@ -56,6 +57,7 @@ public class BusinessObjectField {
 	
     @Column( name = "CREA_DATE_TIME", nullable = false )
 	@CreatedDate
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")	
 	private Date createdAt;
 
     @Column( name = "CREA_UNAME", nullable = false )
@@ -64,6 +66,7 @@ public class BusinessObjectField {
   
     @Column( name = "LCHG_DATE_TIME", nullable = false)
     @LastModifiedDate
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")    
     private Date changedAt;
     
     @Column( name = "LCHG_UNAME", nullable = false)
