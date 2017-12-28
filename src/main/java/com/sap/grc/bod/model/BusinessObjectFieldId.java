@@ -2,41 +2,18 @@ package com.sap.grc.bod.model;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
-@Embeddable
+import lombok.Data;
 
-public class BusinessObjectFieldId implements Serializable{
+@Embeddable
+public @Data class BusinessObjectFieldId implements Serializable{
 
 	private static final long serialVersionUID = -8651313825475676433L;
 	
-	//@Column( name = "BO_ID", nullable = false)
 	private String businessObjectId;
-	
-	//@Column( name = "FIELD_ID",nullable = false )	
 	private String fieldId;
-    
-	public BusinessObjectFieldId() {
-		
-	}
 	
-	public String getBusinessObjectId() {
-		return businessObjectId;
-	}
-
-	public void setBusinessObjectId(String businessObjectId) {
-		this.businessObjectId = businessObjectId;
-	}
-
-	public String getFieldId() {
-		return fieldId;
-	}
-
-	public void setFieldId(String fieldId) {
-		this.fieldId = fieldId;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;

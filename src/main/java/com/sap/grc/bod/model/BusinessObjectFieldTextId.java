@@ -2,46 +2,15 @@ package com.sap.grc.bod.model;
 
 import java.io.Serializable;
 
-public class BusinessObjectFieldTextId implements Serializable{
+import lombok.Data;
+
+public @Data class BusinessObjectFieldTextId implements Serializable{
 
 	private static final long serialVersionUID = 6643452097963231103L;
 
 	private String businessObjectId;
-	
 	private String fieldId;
-
 	private String languageId;
-	
-	public BusinessObjectFieldTextId() {
-		
-	}
-
-    
-	public String getBusinessObjectId() {
-		return businessObjectId;
-	}
-
-	public void setBusinessObjectId(String businessObjectId) {
-		this.businessObjectId = businessObjectId;
-	}
-
-
-
-	public String getFieldId() {
-		return fieldId;
-	}
-
-	public void setFieldId(String fieldId) {
-		this.fieldId = fieldId;
-	}
-
-	public String getLanguageId() {
-		return languageId;
-	}
-
-	public void setLanguageId(String languageId) {
-		this.languageId = languageId;
-	}
 	
 	@Override
 	public int hashCode() {

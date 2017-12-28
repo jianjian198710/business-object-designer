@@ -14,85 +14,39 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import lombok.Data;
+
 @Entity
-@Table(name = "BUSINESS_OBJECT_FIELD_TEXT")
+@Table(name = "business_object_field_text")
 @IdClass(BusinessObjectFieldTextId.class)
-public class BusinessObjectFieldText implements Serializable{
+public @Data class BusinessObjectFieldText implements Serializable{
     
 	private static final long serialVersionUID = -6588685401064628459L;
 
 	@Id
-	@Column( name = "BO_ID", nullable = false)
+	@Column( name = "bo_id", nullable = false)
 	private String businessObjectId;
 	
 	@Id	
-	@Column( name = "FIELD_ID", nullable = false )	
+	@Column( name = "field_id", nullable = false )	
 	private String fieldId;
  
+	//TODO where come from?
 	@Id
-	@Column( name = "LANG_ID", nullable = false )	
+	@Column( name = "lang_id", nullable = false )	
 	private String languageId;
 	
-    @Column( name = "FIELD_NAME")
+    @Column( name = "field_name")
     private String fieldName;
     
-    @Column( name = "DESCRIPTION" )
+    @Column( name = "description" )
 	private String description;
     
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumns({ 
-    	@JoinColumn( name = "BO_ID",    referencedColumnName = "BO_ID", insertable = false, updatable = false ),
-    	@JoinColumn( name = "FIELD_ID", referencedColumnName = "FIELD_ID", insertable = false, updatable = false )
+    	@JoinColumn( name = "bo_id",    referencedColumnName = "bo_id", insertable = false, updatable = false ),
+    	@JoinColumn( name = "field_id", referencedColumnName = "field_id", insertable = false, updatable = false )
     })
     @JsonBackReference
     private BusinessObjectField bussinessObjectField;
-    
-	public String getBusinessObjectId() {
-		return businessObjectId;
-	}
-
-	public void setBusinessObjectId(String businessObjectId) {
-		this.businessObjectId = businessObjectId;
-	}
-
-	public String getFieldId() {
-		return fieldId;
-	}
-
-	public void setFieldId(String fieldId) {
-		this.fieldId = fieldId;
-	}
-
-	public String getLanguageId() {
-		return languageId;
-	}
-
-	public void setLanguageId(String languageId) {
-		this.languageId = languageId;
-	}
-
-	public String getFieldName() {
-		return fieldName;
-	}
-
-	public void setFieldName(String fieldName) {
-		this.fieldName = fieldName;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public BusinessObjectField getBussinessObjectField() {
-		return bussinessObjectField;
-	}
-
-	public void setBussinessObjectField(BusinessObjectField bussinessObjectField) {
-		this.bussinessObjectField = bussinessObjectField;
-	}
-    
 }
