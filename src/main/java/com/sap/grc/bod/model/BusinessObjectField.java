@@ -1,6 +1,5 @@
 package com.sap.grc.bod.model;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,34 +10,35 @@ import javax.persistence.EntityListeners;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.springframework.data.annotation.CreatedBy;
+import org.eclipse.persistence.annotations.Multitenant;
+import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 @Entity
 @Table( name = "business_object_field" )
 @EntityListeners( AuditingEntityListener.class )
 @IdClass( BusinessObjectFieldId.class )
+@Multitenant
+@TenantDiscriminatorColumn( name = "tenant_id", contextProperty = "eclipselink.tenant-id", length = 36 )
 public class BusinessObjectField
 {
 	@Id
-	@Column( name = "bo_id", nullable = false )
+	@Column( name = "bo_id" )
 	private String businessObjectId;
 
 	@Id
-	@Column( name = "field_id", nullable = false )
+	@Column( name = "field_id" )
 	private String fieldId;
 
-	@Column( name = "field_type", nullable = false )
+	@Column( name = "field_type" )
 	private String fieldType;
 
 	@Column( name = "is_cust_field" )
@@ -52,25 +52,39 @@ public class BusinessObjectField
 
 	@Column( name = "created_date", nullable = false )
 	@CreatedDate
-	@JsonFormat( shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" )
 	private Date createdAt;
 
-	@CreatedBy
-	private CreatedUser createdBy;
+    @Column( name = "creator_name" )
+    private String creatorName;
+
+    @Column( name = "creator_mail" )
+    private String creatorMail;
 
 	@Column( name = "last_modified_date", nullable = false )
 	@LastModifiedDate
-	@JsonFormat( shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ" )
 	private Date changedAt;
 
 	@LastModifiedBy
 	private LastModifiedUser changedBy;
 
-	@OneToMany( cascade = CascadeType.ALL, mappedBy = "bussinessObjectField" )
-	@JsonManagedReference
-	private List<BusinessObjectFieldText> businessObjectFieldText = new ArrayList<>();
+	@OneToMany( cascade = CascadeType.ALL )
+	@JoinColumns({ 
+		@JoinColumn( name = "bo_id", referencedColumnName = "bo_id" ),
+		@JoinColumn( name = "field_id", referencedColumnName = "field_id" )
+	})
+	private List<BusinessObjectFieldText> businessObjectFieldTextList;
 
 	@ManyToOne( optional = false )
 	@JoinColumn( name = "bo_id", referencedColumnName = "bo_id", insertable = false, updatable = false )
 	private BusinessObject businessObject;
+	
+	@OneToMany( cascade = CascadeType.ALL )
+	@JoinColumns({ 
+		@JoinColumn( name = "bo_id", referencedColumnName = "bo_id" ),
+		@JoinColumn( name = "field_id", referencedColumnName = "field_id" )
+	})
+	private List<BusinessObjectFieldValueSet> businessObjectFieldValueSetList;
+	
+    @Column( name = "tenant_id", insertable=false, updatable=false )
+    private String tenantId;
 }

@@ -7,16 +7,6 @@ import org.springframework.data.domain.AuditorAware;
 
 import com.sap.grc.bod.model.LastModifiedUser;
 
-
-/**
- * this class is used for entity listener which used for audit the table change, set the current user info to
- * LastModifiedUser
- * 
- * check PersistenceContext class.
- * 
- * @author I323235
- *
- */
 public class LastModifiedUserAuditorAware implements AuditorAware<LastModifiedUser>
 {
     private final Logger log = LoggerFactory.getLogger(getClass());
