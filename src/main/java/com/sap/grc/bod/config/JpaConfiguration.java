@@ -31,14 +31,14 @@ public class JpaConfiguration extends JpaBaseConfiguration
 	@Autowired
     protected final JpaProperties properties;
 
-    protected JpaConfiguration(
-        DataSource dataSource,
-        JpaProperties properties,
-        ObjectProvider<JtaTransactionManager> jtaTransactionManagerProvider,
-        ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers)
-    {
-        super(dataSource, properties, jtaTransactionManagerProvider,transactionManagerCustomizers);
-        this.properties = properties;
+	protected JpaConfiguration(
+		DataSource dataSource,
+		JpaProperties properties,
+		ObjectProvider<JtaTransactionManager> jtaTransactionManagerProvider,
+		ObjectProvider<TransactionManagerCustomizers> transactionManagerCustomizers)
+	{
+		super(dataSource, properties, jtaTransactionManagerProvider,transactionManagerCustomizers);
+		this.properties = properties;
     }
 
 	@Override
@@ -50,24 +50,24 @@ public class JpaConfiguration extends JpaBaseConfiguration
 	@Override
 	protected Map<String, Object> getVendorProperties()
 	{
-        Map<String, Object> vendorProperties = new HashMap<>();
-        vendorProperties.putAll(properties.getProperties());
-        vendorProperties.put(WEAVING, "static");
-        vendorProperties.put(CACHE_SHARED_DEFAULT, "false");
-        vendorProperties.put(ALLOW_NATIVE_SQL_QUERIES, "true");
-        
-        vendorProperties.put("eclipselink.logging.level.sql", "FINER");
-        vendorProperties.put("eclipselink.jdbc.cache-statements", "true");
-        vendorProperties.put("eclipselink.logging.parameters", "true");
+		Map<String, Object> vendorProperties = new HashMap<>();
+		vendorProperties.putAll(properties.getProperties());
+		vendorProperties.put(WEAVING, "static");
+		vendorProperties.put(CACHE_SHARED_DEFAULT, "false");
+		vendorProperties.put(ALLOW_NATIVE_SQL_QUERIES, "true");
 
-        vendorProperties.put(SESSION_CUSTOMIZER, "com.sap.grc.bod.config.DefaultSessionCustomizer");
+		vendorProperties.put("eclipselink.logging.level.sql", "FINER");
+		vendorProperties.put("eclipselink.jdbc.cache-statements", "true");
+		vendorProperties.put("eclipselink.logging.parameters", "true");
 
-        return vendorProperties;
+		vendorProperties.put(SESSION_CUSTOMIZER, "com.sap.grc.bod.config.DefaultSessionCustomizer");
+
+		return vendorProperties;
 	}
 	
-    @Bean
-    AuditorAware<LastModifiedUser> auditorProvider()
-    {
-        return new LastModifiedUserAuditorAware();
-    }
+	@Bean
+	AuditorAware<LastModifiedUser> auditorProvider()
+	{
+		return new LastModifiedUserAuditorAware();
+	}
 }

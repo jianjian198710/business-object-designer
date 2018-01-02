@@ -1,4 +1,4 @@
-package com.sap.grc.bod.model;
+package com.sap.grc.bod.model.id;
 
 import java.io.Serializable;
 

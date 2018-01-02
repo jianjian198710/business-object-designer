@@ -28,47 +28,47 @@ import com.sap.grc.bod.repository.BusinessObjectFieldRepository;
 import com.sap.grc.bod.repository.BusinessObjectRepository;
 
 
-@RestController
-@RequestMapping(path = BusinessObjectController.PATH)
-@RequestScope
+//@RestController
+//@RequestMapping(path = BusinessObjectController.PATH)
+//@RequestScope
 public class BusinessObjectFieldController {
 
-	 public static final String PATH = "/BusinessObject";
-	 private BusinessObjectRepository boRepository;
-	 private BusinessObjectFieldRepository boFieldRepository;
-	    
-	 @Autowired
-	 public BusinessObjectFieldController(BusinessObjectRepository boRepository, 
-			                         BusinessObjectFieldRepository boFieldRepository){
-		 this.boRepository = boRepository;
-	     this.boFieldRepository = boFieldRepository; 
-	 }
-	    
-    @RequestMapping(value = "/BusinessObjectFields", method = RequestMethod.POST)
-    public ResponseEntity<BusinessObjectField> add(@Valid @RequestBody BusinessObjectField businessObjectField,
-            UriComponentsBuilder uriComponentsBuilder) throws URISyntaxException {
-        
-    	//TODO:Validiton Key check/BO check
-    	//throwIfIdNotNull(businessObjectField.getId()); 
-       
-        BusinessObjectField insertBusinessObjectField = boFieldRepository.save(businessObjectField);
-        
-        //TODO:Log
-        UriComponents uriComponents = uriComponentsBuilder.path(PATH + "/{id}")
-                .buildAndExpand(insertBusinessObjectField.getFieldId());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(new URI(uriComponents.getPath()));   
-        return new ResponseEntity<>(insertBusinessObjectField, headers, HttpStatus.CREATED);
-        
-    }
-    
-    @RequestMapping( value = "/BusinessObjectFields", method = RequestMethod.GET ) 
-    @ResponseBody
-    public List<BusinessObjectField> businessObjectFieldfindAll(){
-    	
-    	return boFieldRepository.findAll();
-
-    }
+//	 public static final String PATH = "/BusinessObject";
+//	 private BusinessObjectRepository boRepository;
+//	 private BusinessObjectFieldRepository boFieldRepository;
+//	    
+//	 @Autowired
+//	 public BusinessObjectFieldController(BusinessObjectRepository boRepository, 
+//			                         BusinessObjectFieldRepository boFieldRepository){
+//		 this.boRepository = boRepository;
+//	     this.boFieldRepository = boFieldRepository; 
+//	 }
+//	    
+//    @RequestMapping(value = "/BusinessObjectFields", method = RequestMethod.POST)
+//    public ResponseEntity<BusinessObjectField> add(@Valid @RequestBody BusinessObjectField businessObjectField,
+//            UriComponentsBuilder uriComponentsBuilder) throws URISyntaxException {
+//        
+//    	//TODO:Validiton Key check/BO check
+//    	//throwIfIdNotNull(businessObjectField.getId()); 
+//       
+//        BusinessObjectField insertBusinessObjectField = boFieldRepository.save(businessObjectField);
+//        
+//        //TODO:Log
+//        UriComponents uriComponents = uriComponentsBuilder.path(PATH + "/{id}")
+//                .buildAndExpand(insertBusinessObjectField.getFieldId());
+//        HttpHeaders headers = new HttpHeaders();
+//        headers.setLocation(new URI(uriComponents.getPath()));   
+//        return new ResponseEntity<>(insertBusinessObjectField, headers, HttpStatus.CREATED);
+//        
+//    }
+//    
+//    @RequestMapping( value = "/BusinessObjectFields", method = RequestMethod.GET ) 
+//    @ResponseBody
+//    public List<BusinessObjectField> businessObjectFieldfindAll(){
+//    	
+//    	return boFieldRepository.findAll();
+//
+//    }
 
 
 }

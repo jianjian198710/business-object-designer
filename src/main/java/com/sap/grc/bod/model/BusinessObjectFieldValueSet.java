@@ -13,6 +13,8 @@ import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.sap.grc.bod.model.id.BusinessObjectFieldValueSetId;
+
 import lombok.Data;
 
 @Entity

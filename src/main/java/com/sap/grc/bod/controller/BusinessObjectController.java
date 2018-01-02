@@ -1,77 +1,62 @@
 package com.sap.grc.bod.controller;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.annotation.RequestScope;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sap.grc.bod.constant.ControllerPathConstant;
+import com.sap.grc.bod.controller.dto.BusinessObjectDTO;
 import com.sap.grc.bod.model.BusinessObject;
-import com.sap.grc.bod.repository.BusinessObjectRepository;
-import com.sap.grc.bod.util.ConflictException;
-
+import com.sap.grc.bod.security.AuthEngine;
+import com.sap.grc.bod.service.BusinessObjectService;
 
 @RestController
-@RequestMapping(path = BusinessObjectFieldController.PATH)
-@RequestScope
-public class BusinessObjectController {
+@RequestMapping( value = ControllerPathConstant.BUSINESS_OBJECT_DEFAULT )
+public class BusinessObjectController
+{
+	
+	@Autowired
+	private BusinessObjectService boService;
+	
+	@Autowired
+	private AuthEngine authEngine;
 
-	 public static final String PATH = "/BusinessObject";
-	 private BusinessObjectRepository boRepository;
-	    
-	 @Autowired
-	 public BusinessObjectController(BusinessObjectRepository boRepository){
-		 this.boRepository = boRepository;
-	 }
+	@PostMapping( value = "/create" )
+	public ResponseEntity<BusinessObject> addBusinessObject (@Valid @RequestBody BusinessObjectDTO businessObjectDTO)
+	{
+		BusinessObject businessObject = boService.createBusinessObject(businessObjectDTO, authEngine.getCurrentUserBean());
+		return new ResponseEntity<>(businessObject,HttpStatus.CREATED);
+	}
+	
+	@PutMapping( value = "/update")
+	public ResponseEntity<BusinessObject> updateBusinessObject(@Valid @RequestBody BusinessObjectDTO businessObjectDTO){
+		BusinessObject businessObject = boService.updateBusinessObject(businessObjectDTO);
+		return new ResponseEntity<>(businessObject,HttpStatus.OK);
+	}
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<BusinessObject> addBusinessObject(@Valid @RequestBody BusinessObject businessObject,
-            UriComponentsBuilder uriComponentsBuilder) throws URISyntaxException {
-        
-    	//TODO:Validiton
-    	//throwIfBusinessObjectexisting(businessObject.getBusinessObjectId()); 
-    	boRepository.findBybusinessObjectId(businessObject.getBusinessObjectId()).getId();
-    	
-    	BusinessObject insertBusinessObject = boRepository.save(businessObject);
-        
-        //TODO:Log
-    	//TODO:Exception Handle
-        UriComponents uriComponents = uriComponentsBuilder.path(PATH + "/{id}")
-                .buildAndExpand(insertBusinessObject.getId());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(new URI(uriComponents.getPath()));   
-        return new ResponseEntity<>(insertBusinessObject, headers, HttpStatus.CREATED);
-        
-    }
-    	    
-    @RequestMapping( value = "", method = RequestMethod.GET ) 
-    @ResponseBody
-    public List<BusinessObject> businessObjectfindAll(){
-    	
-    	return boRepository.findAll();
-    }
+	@GetMapping( value= "/get/all")
+	public  ResponseEntity<List<BusinessObject>> findAllbusinessObject()
+	{
+		List<BusinessObject> businessObjectList = boService.getAllBusinessObject();
+		return new ResponseEntity<>(businessObjectList,HttpStatus.CREATED);
+	}
 
-    private void throwIfConflict(UUID id, String businessObject ) {
-        if ( boRepository.exists(id)) {
-            ConflictException notFoundException = new ConflictException(businessObject + " ex");
-            //logger.warn("request failed", notFoundException);
-            throw notFoundException;
-        }
-    }
+//	private void throwIfConflict( UUID id, String businessObject )
+//	{
+//		if( boRepository.exists(id) ) {
+//			ConflictException notFoundException = new ConflictException(businessObject + " ex");
+//			// logger.warn("request failed", notFoundException);
+//			throw notFoundException;
+//		}
+//	}
 }

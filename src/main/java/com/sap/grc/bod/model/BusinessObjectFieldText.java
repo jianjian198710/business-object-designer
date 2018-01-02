@@ -16,6 +16,7 @@ import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sap.grc.bod.model.id.BusinessObjectFieldTextId;
 
 import lombok.Data;
 

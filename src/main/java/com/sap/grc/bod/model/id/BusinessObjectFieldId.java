@@ -1,16 +1,18 @@
-package com.sap.grc.bod.model;
+package com.sap.grc.bod.model.id;
 
 import java.io.Serializable;
 
+import javax.persistence.Embeddable;
+
 import lombok.Data;
 
-public @Data class BusinessObjectFieldTextId implements Serializable{
+@Embeddable
+public @Data class BusinessObjectFieldId implements Serializable{
 
-	private static final long serialVersionUID = 6643452097963231103L;
-
+	private static final long serialVersionUID = -8651313825475676433L;
+	
 	private String businessObjectId;
 	private String fieldId;
-	private String languageId;
 	
 	@Override
 	public int hashCode() {
@@ -19,7 +21,6 @@ public @Data class BusinessObjectFieldTextId implements Serializable{
 		result = prime * result
 				+ ((businessObjectId == null) ? 0 : businessObjectId.hashCode());
 		result = prime * result + ((fieldId == null) ? 0 : fieldId.hashCode());
-		result = prime * result + ((languageId == null) ? 0 : languageId.hashCode());
 		return result;
 	}
  
@@ -31,7 +32,7 @@ public @Data class BusinessObjectFieldTextId implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BusinessObjectFieldTextId other = (BusinessObjectFieldTextId) obj;
+		BusinessObjectFieldId other = (BusinessObjectFieldId) obj;
 		if (businessObjectId == null) {
 			if (other.businessObjectId != null)
 				return false;
@@ -42,12 +43,6 @@ public @Data class BusinessObjectFieldTextId implements Serializable{
 				return false;
 		} else if (!fieldId.equals(other.fieldId))
 			return false;
-		if (languageId == null) {
-			if (other.languageId != null)
-				return false;
-		} else if (!languageId.equals(other.languageId))
-			return false;		
-		
 		return true;
 	}
 	

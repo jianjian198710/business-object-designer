@@ -22,13 +22,17 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.sap.grc.bod.model.id.BusinessObjectFieldId;
+
+import lombok.Data;
+
 @Entity
 @Table( name = "business_object_field" )
 @EntityListeners( AuditingEntityListener.class )
 @IdClass( BusinessObjectFieldId.class )
 @Multitenant
 @TenantDiscriminatorColumn( name = "tenant_id", contextProperty = "eclipselink.tenant-id", length = 36 )
-public class BusinessObjectField
+public @Data class BusinessObjectField
 {
 	@Id
 	@Column( name = "bo_id" )
@@ -84,7 +88,4 @@ public class BusinessObjectField
 		@JoinColumn( name = "field_id", referencedColumnName = "field_id" )
 	})
 	private List<BusinessObjectFieldValueSet> businessObjectFieldValueSetList;
-	
-    @Column( name = "tenant_id", insertable=false, updatable=false )
-    private String tenantId;
 }

@@ -37,6 +37,9 @@ public @Data class BusinessObject implements Serializable{
 	
 	@Column( name = "bo_name", nullable = false )
 	private String businessObjectName;
+	
+	@Column( name = "description" )
+	private String description;
     
     @Column( name = "created_date", nullable = false )
 	@CreatedDate
