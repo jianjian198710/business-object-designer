@@ -4,7 +4,7 @@ import lombok.Data;
 
 public @Data class BusinessObjectDTO
 {
-	private String businessObjectId;
+	//private String businessObjectId;
 	private String businessObjectName;
 	private String description; 
 }

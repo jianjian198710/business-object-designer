@@ -57,7 +57,8 @@ public class BusinessObjectCustomException extends RuntimeException
 	public enum ExceptionEnum
 	{
 		BusinessObject_isExisted(1001, "Business Object has been created"),
-		BusinessObject_isNotExisted(1002, "Business Object is not existed");
+		BusinessObject_isNotExisted(1002, "Business Object is not existed"),
+		BusinessObject_isNull(1003, "Business Object is null");
 
 		private final String message;
 		private final Integer code;

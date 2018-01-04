@@ -15,6 +15,7 @@ import com.sap.grc.bod.model.UserBean;
 import com.sap.grc.bod.repository.BusinessObjectRepository;
 import com.sap.grc.bod.service.BusinessObjectService;
 
+
 @Service
 public class BusinessObjectServiceImpl implements BusinessObjectService
 {
@@ -22,35 +23,102 @@ public class BusinessObjectServiceImpl implements BusinessObjectService
 	private BusinessObjectRepository boRepo;
 	
 	public BusinessObject createBusinessObject(BusinessObjectDTO businessObjectDTO, UserBean user){
-		this.createBusinessObjectValidation(businessObjectDTO);
+		
+		//Definition
 		BusinessObject businessObject = new BusinessObject();
+		
+		//Validation
+		this.createBusinessObjectValidation(businessObjectDTO);
+		
+		//Prepare Data
 		BeanUtils.copyProperties(businessObjectDTO, businessObject);
 		businessObject.setCreatorName(user.getName());
 		businessObject.setCreatorMail(user.getMail());
-		return boRepo.save(businessObject);
+		
+		//Save Transaction
+	   	try {
+		  businessObject = boRepo.save(businessObject);
+	    } catch (RuntimeException ex) {
+
+         //TODO Logger, Message Translation
+         //TODO logger.warn("request failed", notFoundException);
+	    	throw ex;
+	     } 
+   	 
+		return businessObject;
+		
 	}
 	
-	public BusinessObject updateBusinessObject(BusinessObjectDTO businessObjectDTO){
-		BusinessObject businessObject = this.udpateBusinessObjectValidation(businessObjectDTO);
+	public BusinessObject updateBusinessObject(String businessObjectId, BusinessObjectDTO businessObjectDTO){
+
+		BusinessObject businessObject = new BusinessObject();
+		
+		this.udpateBusinessObjectValidation(businessObjectId, businessObjectDTO);
+		
+		businessObject = boRepo.findBybusinessObjectId(businessObjectId);
 		BeanUtils.copyProperties(businessObjectDTO, businessObject);
-		return boRepo.save(businessObject);
+		
+	   	try {
+		  businessObject = boRepo.save(businessObject);
+	    } catch (RuntimeException ex) {
+         //TODO Logger, Message Translation
+         //TODO logger.warn("request failed", notFoundException);
+	    	throw ex;
+	     } 
+   	 
+		return businessObject;
 	}
 	
 	public List<BusinessObject> getAllBusinessObject(){
 		return boRepo.findAll();
 	}
 	
+	public BusinessObject findBybusinessObjectId(String businessObjectId) {
+		return boRepo.findBybusinessObjectId(businessObjectId);
+	};
+
+	public BusinessObject findBybusinessObjectName(String businessObjectName) {
+		return boRepo.findBybusinessObjectName(businessObjectName);
+	}
+	
+	public void deleteBybusinessObjectId(String businessObjectId) {
+	   	try {
+		  boRepo.delete(businessObjectId); 
+	   	} catch (RuntimeException ex){
+	    	throw ex;	   		
+	   	}
+	}
+	
 	private void createBusinessObjectValidation(BusinessObjectDTO businessObjectDTO){
-		if(Objects.nonNull(businessObjectDTO.getBusinessObjectId())){
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isExisted);
+		
+		BusinessObject businessObject = new BusinessObject();
+		
+		if(businessObjectDTO.getBusinessObjectName().isEmpty()){
+			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNull);
+		}
+		
+        businessObject = this.findBybusinessObjectName(businessObjectDTO.getBusinessObjectName());
+		if(Objects.nonNull(businessObject)) {
+		    throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isExisted);
 		}
 	}
 	
-	private BusinessObject udpateBusinessObjectValidation(BusinessObjectDTO businessObjectDTO){
-		BusinessObject businessObject = boRepo.getOne(businessObjectDTO.getBusinessObjectId());
-		if(Objects.isNull(businessObject)){
+	private void udpateBusinessObjectValidation(String businessObjectId, BusinessObjectDTO businessObjectDTO){
+
+		BusinessObject businessObject = new BusinessObject();
+		
+		if(businessObjectDTO.getBusinessObjectName().isEmpty()){
+			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNull);
+		}
+		
+		if(!boRepo.exists(businessObjectId)){
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNotExisted); 
 		}
-		return businessObject;
+		
+        businessObject = this.findBybusinessObjectName(businessObjectDTO.getBusinessObjectName());
+		if(Objects.isNull(businessObject)) {
+		    throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNotExisted);
+		}		
 	}
+
 }

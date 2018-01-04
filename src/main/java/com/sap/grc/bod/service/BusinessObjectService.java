@@ -9,6 +9,9 @@ import com.sap.grc.bod.model.UserBean;
 public interface BusinessObjectService
 {
 	public BusinessObject createBusinessObject(BusinessObjectDTO businessObjectDTO, UserBean user);
-	public BusinessObject updateBusinessObject(BusinessObjectDTO businessObjectDTO);
+	public BusinessObject updateBusinessObject(String businessObjectId, BusinessObjectDTO businessObjectDTO);
 	public List<BusinessObject> getAllBusinessObject();
+	public BusinessObject findBybusinessObjectId(String businessObjectId);
+	public BusinessObject findBybusinessObjectName(String businessObjectName);
+	public void deleteBybusinessObjectId(String businessObjectId);
 }
