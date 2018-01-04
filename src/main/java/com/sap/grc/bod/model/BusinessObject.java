@@ -9,6 +9,7 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
@@ -21,7 +22,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import lombok.Data;
 
 @Entity
-@Table(name = "business_object")
+@Table(name = "business_object", uniqueConstraints = @UniqueConstraint(columnNames = {"tenant_id", "bo_name"}))
 @EntityListeners(AuditingEntityListener.class)
 @Multitenant
 @TenantDiscriminatorColumn( name = "tenant_id", contextProperty = "eclipselink.tenant-id", length = 36 )
@@ -41,7 +42,7 @@ public @Data class BusinessObject implements Serializable{
 	@Column( name = "description" )
 	private String description;
     
-    @Column( name = "created_date", nullable = false )
+    @Column( name = "created_date" )
 	@CreatedDate
 	private Date createdAt;
 
@@ -51,7 +52,7 @@ public @Data class BusinessObject implements Serializable{
     @Column( name = "creator_mail" )
     private String creatorMail;
   
-    @Column( name = "last_modified_date", nullable = false)
+    @Column( name = "last_modified_date" )
     @LastModifiedDate
     private Date changedAt;
     

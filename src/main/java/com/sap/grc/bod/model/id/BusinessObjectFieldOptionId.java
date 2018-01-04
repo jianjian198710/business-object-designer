@@ -2,9 +2,13 @@ package com.sap.grc.bod.model.id;
 
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-public @Data class BusinessObjectFieldValueSetId implements Serializable
+@NoArgsConstructor
+@AllArgsConstructor
+public @Data class BusinessObjectFieldOptionId implements Serializable
 {
 	private static final long serialVersionUID = -2160258477608071817L;
 	
@@ -33,7 +37,7 @@ public @Data class BusinessObjectFieldValueSetId implements Serializable
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BusinessObjectFieldValueSetId other = (BusinessObjectFieldValueSetId) obj;
+		BusinessObjectFieldOptionId other = (BusinessObjectFieldOptionId) obj;
 		if (businessObjectId == null) {
 			if (other.businessObjectId != null)
 				return false;

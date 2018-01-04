@@ -1,74 +1,84 @@
 package com.sap.grc.bod.controller;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.annotation.RequestScope;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.sap.grc.bod.model.BusinessObject;
+import com.sap.grc.bod.constant.ControllerPathConstant;
+import com.sap.grc.bod.controller.dto.BusinessObjectFieldDTO;
 import com.sap.grc.bod.model.BusinessObjectField;
-import com.sap.grc.bod.model.BusinessObjectFieldText;
-import com.sap.grc.bod.repository.BusinessObjectFieldRepository;
-import com.sap.grc.bod.repository.BusinessObjectRepository;
+import com.sap.grc.bod.security.AuthEngine;
+import com.sap.grc.bod.service.BusinessObjectFieldService;
 
-
-//@RestController
-//@RequestMapping(path = BusinessObjectController.PATH)
-//@RequestScope
+@RestController
+@RequestMapping( value = ControllerPathConstant.BUSINESS_OBJECT_DEFAULT )
 public class BusinessObjectFieldController {
+	
+	@Autowired
+	private BusinessObjectFieldService bofService;
+	
+	@Autowired
+	private AuthEngine authEngine;
 
-//	 public static final String PATH = "/BusinessObject";
-//	 private BusinessObjectRepository boRepository;
-//	 private BusinessObjectFieldRepository boFieldRepository;
-//	    
-//	 @Autowired
-//	 public BusinessObjectFieldController(BusinessObjectRepository boRepository, 
-//			                         BusinessObjectFieldRepository boFieldRepository){
-//		 this.boRepository = boRepository;
-//	     this.boFieldRepository = boFieldRepository; 
-//	 }
-//	    
-//    @RequestMapping(value = "/BusinessObjectFields", method = RequestMethod.POST)
-//    public ResponseEntity<BusinessObjectField> add(@Valid @RequestBody BusinessObjectField businessObjectField,
-//            UriComponentsBuilder uriComponentsBuilder) throws URISyntaxException {
-//        
-//    	//TODO:Validiton Key check/BO check
-//    	//throwIfIdNotNull(businessObjectField.getId()); 
-//       
-//        BusinessObjectField insertBusinessObjectField = boFieldRepository.save(businessObjectField);
-//        
-//        //TODO:Log
-//        UriComponents uriComponents = uriComponentsBuilder.path(PATH + "/{id}")
-//                .buildAndExpand(insertBusinessObjectField.getFieldId());
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setLocation(new URI(uriComponents.getPath()));   
-//        return new ResponseEntity<>(insertBusinessObjectField, headers, HttpStatus.CREATED);
-//        
-//    }
-//    
-//    @RequestMapping( value = "/BusinessObjectFields", method = RequestMethod.GET ) 
-//    @ResponseBody
-//    public List<BusinessObjectField> businessObjectFieldfindAll(){
-//    	
-//    	return boFieldRepository.findAll();
-//
-//    }
-
-
+	/*
+	 * scenario description:
+	 * create one business object field, not including field text and field
+	 */
+	@PostMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD )
+	public ResponseEntity<BusinessObjectField> addBusinessObjecField(@PathVariable String businessObjectId, @RequestBody BusinessObjectFieldDTO businessObjectFieldDTO){
+		BusinessObjectField businessObjectField = bofService.createBusinessObjecField(businessObjectId, businessObjectFieldDTO, authEngine.getCurrentUserBean());
+		return new ResponseEntity<>(businessObjectField, HttpStatus.CREATED);
+	}
+	
+	/*
+	 * scenario description:
+	 * update one business object field, not including field text and field
+	 */
+//	@PutMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}")
+//	public ResponseEntity<BusinessObjectField> updateOneBusinessObjectField(@PathVariable String businessObjectId, @PathVariable String fieldId, 
+//		@RequestBody BusinessObjectFieldDTO businessObjectFieldDTO){
+//		BusinessObjectField businessObjectField = bofService.updateOneBusinessObjectField(businessObjectId, fieldId, businessObjectFieldDTO);
+//		return new ResponseEntity<>(businessObjectField, HttpStatus.OK);
+//	}
+	
+	/*
+	 * scenario description:
+	 * update multiple business object field, not including field text and field
+	 */
+	@PutMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldIdList}")
+	public ResponseEntity<List<BusinessObjectField>> updateMultiBusinessObjectField(@PathVariable String businessObjectId, @PathVariable List<String> fieldIdList,
+		@RequestBody List<BusinessObjectFieldDTO> businessObjectFieldDTOList){
+		List<BusinessObjectField> businessObjectFieldList = bofService.updateMultiBusinessObjectField(businessObjectId, fieldIdList, businessObjectFieldDTOList);
+		return new ResponseEntity<>(businessObjectFieldList, HttpStatus.OK);
+	}
+	
+	/*
+	 * scenario description:
+	 * get one business object field 
+	 */
+	@GetMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}")
+	public ResponseEntity<BusinessObjectField> findOneBusinessObjectField(@PathVariable String businessObjectId, @PathVariable String fieldId){
+		BusinessObjectField businessObjectField = bofService.findOneBusinessObjectField(businessObjectId, fieldId);
+		return new ResponseEntity<>(businessObjectField, HttpStatus.OK);
+	}
+	
+	/*
+	 * scenario description
+	 * get all business object fields of a specific business object
+	 */
+	@GetMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD)
+	public ResponseEntity<List<BusinessObjectField>> findAllBusinessObjectField(@PathVariable String businessObjectId){
+		List<BusinessObjectField> businessObjectFieldList = bofService.findAllBusinessObjectField(businessObjectId);
+		return new ResponseEntity<>(businessObjectFieldList, HttpStatus.OK);
+	}
+	
 }

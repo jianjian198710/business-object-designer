@@ -2,8 +2,12 @@ package com.sap.grc.bod.model.id;
 
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@AllArgsConstructor
 public @Data class BusinessObjectFieldTextId implements Serializable{
 
 	private static final long serialVersionUID = 6643452097963231103L;

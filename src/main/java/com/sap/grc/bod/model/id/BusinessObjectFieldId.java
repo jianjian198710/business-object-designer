@@ -2,11 +2,12 @@ package com.sap.grc.bod.model.id;
 
 import java.io.Serializable;
 
-import javax.persistence.Embeddable;
-
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Embeddable
+@NoArgsConstructor
+@AllArgsConstructor
 public @Data class BusinessObjectFieldId implements Serializable{
 
 	private static final long serialVersionUID = -8651313825475676433L;

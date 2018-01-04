@@ -1,13 +1,18 @@
 package com.sap.grc.bod.service;
 
-import org.springframework.stereotype.Service;
+import java.util.List;
 
 import com.sap.grc.bod.controller.dto.BusinessObjectFieldDTO;
 import com.sap.grc.bod.model.BusinessObjectField;
 import com.sap.grc.bod.model.UserBean;
 
-@Service
 public interface BusinessObjectFieldService
 {
-	public BusinessObjectField createBusinessObjecField(BusinessObjectFieldDTO businessObjectFieldDTO, UserBean user);
+	public BusinessObjectField createBusinessObjecField(String businessObjectId, BusinessObjectFieldDTO businessObjectFieldDTO, UserBean user);
+	
+	public BusinessObjectField updateOneBusinessObjectField(String businessObjectId, String fieldId, BusinessObjectFieldDTO businessObjectFieldDTO);
+	public List<BusinessObjectField> updateMultiBusinessObjectField(String businessObjectId, List<String> fieldIdList, List<BusinessObjectFieldDTO> businessObjectFieldDTOList);
+	
+	public BusinessObjectField findOneBusinessObjectField(String businessObjectId, String fieldId);
+	public List<BusinessObjectField> findAllBusinessObjectField(String businessObjectId);
 }
