@@ -40,7 +40,7 @@ public class BusinessObjectFieldTextServiceImpl implements BusinessObjectFieldTe
 	@Override
 	public List<BusinessObjectFieldText> updateMultiBusinessObjectFieldText(List<String> fieldTextIdList, List<BusinessObjectFieldTextDTO> businessObjectFieldTextDTOList){
 		//TODO validation businessObjectFieldTextDTOList
-		List<BusinessObjectFieldText> businessObjectFieldTextList = boftRepo.findAll(fieldTextIdList);
+		List<BusinessObjectFieldText> businessObjectFieldTextList = boftRepo.findByFieldTextIdIn(fieldTextIdList);
 		for(BusinessObjectFieldText businessObjectFieldText: businessObjectFieldTextList){
 			for(BusinessObjectFieldTextDTO businessObjectFieldTextDTO: businessObjectFieldTextDTOList){
 				if(businessObjectFieldText.getFieldTextId().equals(businessObjectFieldTextDTO.getFieldTextId())){

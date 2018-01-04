@@ -58,7 +58,7 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 	
 	@Override
 	public List<BusinessObjectFieldOption> updateMultiBusinessObjectFieldOption(List<String> fieldOptionIdList, List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
-		List<BusinessObjectFieldOption> businessObjectFieldOptionList = bofoRepo.findAll(fieldOptionIdList);
+		List<BusinessObjectFieldOption> businessObjectFieldOptionList = bofoRepo.findByFieldOptionIdIn(fieldOptionIdList);
 		for(BusinessObjectFieldOption businessObjectFieldOption: businessObjectFieldOptionList){
 			for(BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO: businessObjectFieldOptionDTOList){
 				if(businessObjectFieldOptionDTO.getFieldOpitonId().equals(businessObjectFieldOption.getFieldOptionId())){
