@@ -3,6 +3,7 @@ package com.sap.grc.bod.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -26,6 +28,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sap.grc.bod.model.enumtype.BusinessObjectFieldType;
 
 import lombok.Data;
@@ -33,7 +36,6 @@ import lombok.Data;
 @Entity
 @Table( name = "business_object_field",uniqueConstraints = @UniqueConstraint(columnNames = {"field_name", "bo_id"}))
 @EntityListeners( AuditingEntityListener.class )
-//@IdClass( BusinessObjectFieldId.class )
 @Multitenant
 @TenantDiscriminatorColumn( name = "tenant_id", contextProperty = "eclipselink.tenant-id", length = 36 )
 public @Data class BusinessObjectField implements Serializable
@@ -43,18 +45,15 @@ public @Data class BusinessObjectField implements Serializable
 	@Id
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-	@Column( name = "field_id" )
-	private String fieldId;
-	
-	@Column( name = "bo_id", nullable=false )
-	private String businessObjectId;
-	
-	@Column( name ="field_name")
-	private String fieldName;
+	@Column( name = "field_id")
+	private String uuid;
+		
+	@Column( name ="field_name",nullable=false)
+	private String name;
 
 	@Column( name = "field_type" )
 	@Enumerated(EnumType.STRING)
-	private BusinessObjectFieldType fieldType;
+	private BusinessObjectFieldType type;
 
 	@Column( name = "is_cust_field" )
 	private Boolean isCustField;
@@ -82,11 +81,11 @@ public @Data class BusinessObjectField implements Serializable
 	@LastModifiedBy
 	private LastModifiedUser changedBy;
 
-	@OneToMany( cascade = CascadeType.ALL , mappedBy="bussinessObjectField")
+	@OneToMany( cascade = CascadeType.ALL , mappedBy="businessObjectField")
 	private List<BusinessObjectFieldText> businessObjectFieldTextList;
 
 	@ManyToOne( optional = false )
-	@JoinColumn( name = "bo_id", referencedColumnName = "bo_id", insertable = false, updatable = false )
+	@JoinColumn( name = "bo_id", referencedColumnName = "bo_id", insertable = true, updatable = false )
 	private BusinessObject businessObject;
 	
 	@OneToMany( cascade = CascadeType.ALL, mappedBy="bussinessObjectField" )

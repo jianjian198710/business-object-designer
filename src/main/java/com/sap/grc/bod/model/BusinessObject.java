@@ -2,6 +2,7 @@ package com.sap.grc.bod.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,10 +35,10 @@ public @Data class BusinessObject implements Serializable{
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @Column( name="bo_id")
-	private String businessObjectId;
-	
+	private String uuid;
+    	
 	@Column( name = "bo_name", nullable = false )
-	private String businessObjectName;
+	private String name;
 	
 	@Column( name = "description" )
 	private String description;

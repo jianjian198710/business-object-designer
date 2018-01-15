@@ -2,6 +2,7 @@ package com.sap.grc.bod.service.impl;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,19 +34,19 @@ public class BusinessObjectFieldTextServiceImpl implements BusinessObjectFieldTe
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_isNotExisted);
 		}
 		BusinessObjectFieldText businessObjectFieldText = businessObjectFieldTextDTO.convertToModel();
-		businessObjectFieldText.setBussinessObjectField(businessObjectField);
+		businessObjectFieldText.setBusinessObjectField(businessObjectField);
 		return boftRepo.save(businessObjectFieldText);
 	}
 	
 	@Override
 	public List<BusinessObjectFieldText> updateMultiBusinessObjectFieldText(List<String> fieldTextIdList, List<BusinessObjectFieldTextDTO> businessObjectFieldTextDTOList){
 		//TODO validation businessObjectFieldTextDTOList
-		List<BusinessObjectFieldText> businessObjectFieldTextList = boftRepo.findByFieldTextIdIn(fieldTextIdList);
+		List<BusinessObjectFieldText> businessObjectFieldTextList = boftRepo.findByUuidIn(fieldTextIdList);
 		for(BusinessObjectFieldText businessObjectFieldText: businessObjectFieldTextList){
 			for(BusinessObjectFieldTextDTO businessObjectFieldTextDTO: businessObjectFieldTextDTOList){
-				if(businessObjectFieldText.getFieldTextId().equals(businessObjectFieldTextDTO.getFieldTextId())){
+/*				if(businessObjectFieldText.getUuid().equals(businessObjectFieldTextDTO.getUuid())){
 					BeanUtils.copyProperties(businessObjectFieldTextDTO, businessObjectFieldText);
-				}
+				}*/
 			}
 		}
 		return boftRepo.save(businessObjectFieldTextList);
@@ -53,7 +54,9 @@ public class BusinessObjectFieldTextServiceImpl implements BusinessObjectFieldTe
 	
 	@Override
 	public BusinessObjectFieldText findOneBusinessObjectFieldText(String fieldId, String languageId){
-		return boftRepo.findByFieldIdAndLanguageId(fieldId,languageId);
+		//return boftRepo.findByFieldIdAndLanguageId(fieldId,languageId);
+		//TODO
+		return null;
 	}
 	
 //	@Override

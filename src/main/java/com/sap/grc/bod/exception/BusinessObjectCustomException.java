@@ -61,8 +61,9 @@ public class BusinessObjectCustomException extends RuntimeException
 		BusinessObject_isNull(1003, "Business Object is null"),
 		BusinessObjectField_isExisted(2001,"Business Object Field has been created"),
 		BusinessObjectField_isNotExisted(2002,"Business Object Field is not existed"),
-		BusinessObjectField_errInput(2003,"Business Object Field id is null");
-
+		BusinessObjectField_errInput(2003,"Business Object Field id is null"),
+		BusinessObjectField_isEmpty(2004,"Business Object Field name is empty");
+		
 		private final String message;
 		private final Integer code;
 

@@ -1,5 +1,7 @@
 package com.sap.grc.bod.controller.dto;
 
+import java.util.UUID;
+
 import com.sap.grc.bod.model.BusinessObjectFieldOption;
 
 import lombok.Data;

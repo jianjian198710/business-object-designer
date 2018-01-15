@@ -1,6 +1,7 @@
 package com.sap.grc.bod.controller;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,8 +54,10 @@ public class BusinessObjectController
 	}
 
 	@GetMapping( value = "{id}")
-    public BusinessObject findByBusinessObjectId(@PathVariable("id") String businessObjectId){	
-    	return boService.findBybusinessObjectId(businessObjectId);
+    public ResponseEntity<BusinessObject> findByBusinessObjectId(@PathVariable("id") String businessObjectId){	
+		
+		BusinessObject businessObject = boService.findBybusinessObjectId(businessObjectId);
+    	return new ResponseEntity<>(businessObject, HttpStatus.OK);
     }
 
 	@DeleteMapping( value = "{id}")

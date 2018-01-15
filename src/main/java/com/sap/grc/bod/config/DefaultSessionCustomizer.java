@@ -26,5 +26,6 @@ public class DefaultSessionCustomizer implements SessionCustomizer
 		{
 			return "gdpr_tenant";
 		}
+
 	}
 }

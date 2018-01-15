@@ -3,6 +3,7 @@ package com.sap.grc.bod.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import org.assertj.core.util.Strings;
 import org.springframework.beans.BeanUtils;
@@ -42,7 +43,7 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 	
 	@Override
 	public List<BusinessObjectFieldOption> createMultiBusinessObjectFieldOption(
-		String fieldId, String languageId, List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
+			String fieldId, String languageId, List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
 		List<BusinessObjectFieldOption> businessObjectFieldOptionList = new ArrayList<>();
 		BusinessObjectField businessObjectField = bofRepo.findOne(fieldId);
 		if(Objects.isNull(businessObjectField)){
@@ -58,10 +59,10 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 	
 	@Override
 	public List<BusinessObjectFieldOption> updateMultiBusinessObjectFieldOption(List<String> fieldOptionIdList, List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
-		List<BusinessObjectFieldOption> businessObjectFieldOptionList = bofoRepo.findByFieldOptionIdIn(fieldOptionIdList);
+		List<BusinessObjectFieldOption> businessObjectFieldOptionList = bofoRepo.findByUuidIn(fieldOptionIdList);
 		for(BusinessObjectFieldOption businessObjectFieldOption: businessObjectFieldOptionList){
 			for(BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO: businessObjectFieldOptionDTOList){
-				if(businessObjectFieldOptionDTO.getFieldOpitonId().equals(businessObjectFieldOption.getFieldOptionId())){
+				if(businessObjectFieldOptionDTO.getFieldOpitonId().equals(businessObjectFieldOption.getUuid())){
 					BeanUtils.copyProperties(businessObjectFieldOptionDTO, businessObjectFieldOption);
 				}
 			}
@@ -71,14 +72,14 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 	
 	@Override
 	public List<BusinessObjectFieldOption> findAllBusinessObjectFieldOption(String fieldId, String languageId){
-		return bofoRepo.findByFieldIdAndLanguageId(fieldId, languageId);
+		return bofoRepo.findByUuidAndLanguageId(fieldId, languageId);
 	}
 	
 	private void createBusinessObjectServiceOptionValidation(BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO){
 		String fieldId = businessObjectFieldOptionDTO.getFieldId();
 		String languageId = businessObjectFieldOptionDTO.getLanguageId();
 		String value = businessObjectFieldOptionDTO.getValue();
-		if(Strings.isNullOrEmpty(fieldId)||Strings.isNullOrEmpty(languageId)||Strings.isNullOrEmpty(value)){
+		if(Objects.isNull(fieldId)||Strings.isNullOrEmpty(languageId)||Strings.isNullOrEmpty(value)){
 			return;
 		}
 		BusinessObjectField businessObjectField = bofRepo.findOne(fieldId);

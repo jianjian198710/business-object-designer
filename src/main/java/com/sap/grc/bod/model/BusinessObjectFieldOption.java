@@ -1,6 +1,7 @@
 package com.sap.grc.bod.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,8 +36,8 @@ public @Data class BusinessObjectFieldOption implements Serializable
 	@Id
 	@GeneratedValue(generator = "uuid2")
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-	@Column( name = "field_option_id")
-	private String fieldOptionId;
+	@Column( name = "field_option_id" )
+	private String uuid;
 	
 	@Column( name = "field_id", nullable = false )
 	private String fieldId;
@@ -50,7 +51,7 @@ public @Data class BusinessObjectFieldOption implements Serializable
 	@Column( name = "description" )
 	private String description;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
     @JoinColumn( name = "field_id", referencedColumnName = "field_id", insertable = false, updatable = false )
 	@JsonBackReference
 	private BusinessObjectField bussinessObjectField;

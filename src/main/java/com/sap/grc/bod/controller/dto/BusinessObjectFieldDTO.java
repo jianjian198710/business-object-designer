@@ -1,30 +1,32 @@
 package com.sap.grc.bod.controller.dto;
 
-import com.sap.grc.bod.model.BusinessObjectField;
+import java.util.List;
+
 import com.sap.grc.bod.model.enumtype.BusinessObjectFieldType;
 
 import lombok.Data;
 
 public @Data class BusinessObjectFieldDTO
 {
-	private String fieldId;
+	private String uuid;
 	private String businessObjectId;
-	private String fieldName;
-	private BusinessObjectFieldType fieldType;
+	private String name;
+	private BusinessObjectFieldType type;
 	private Boolean isCustField;
 	private Boolean isMultiInput;
 	private Boolean isValueSet;
+	private BusinessObjectFieldTextDTO businessObjectFieldText;
 //	private List<BusinessObjectFieldText> businessObjectFieldTextList;
 //	private List<BusinessObjectFieldOption> businessObjectFieldOptionList;
 	
-	public BusinessObjectField convertToModel(){
+	/*public BusinessObjectField convertToModel(){
 		BusinessObjectField businessObjectField = new BusinessObjectField();
 		businessObjectField.setBusinessObjectId(this.getBusinessObjectId());
-		businessObjectField.setFieldName(this.getFieldName());
-		businessObjectField.setFieldType(this.getFieldType());
+		businessObjectField.setName(this.getFieldName());
+		businessObjectField.setType(this.getFieldType());
 		businessObjectField.setIsCustField(this.getIsCustField());
 		businessObjectField.setIsMultiInput(this.getIsMultiInput());
 		businessObjectField.setIsValueSet(this.getIsValueSet());
 		return businessObjectField;
-	}
+	}*/
 }

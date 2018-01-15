@@ -55,7 +55,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService
 		
 		this.udpateBusinessObjectValidation(businessObjectId, businessObjectDTO);
 		
-		businessObject = boRepo.findBybusinessObjectId(businessObjectId);
+		businessObject = boRepo.findByUuid(businessObjectId);
 		BeanUtils.copyProperties(businessObjectDTO, businessObject);
 		
 	   	try {
@@ -74,11 +74,11 @@ public class BusinessObjectServiceImpl implements BusinessObjectService
 	}
 	
 	public BusinessObject findBybusinessObjectId(String businessObjectId) {
-		return boRepo.findBybusinessObjectId(businessObjectId);
+		return boRepo.findByUuid(businessObjectId);
 	};
 
 	public BusinessObject findBybusinessObjectName(String businessObjectName) {
-		return boRepo.findBybusinessObjectName(businessObjectName);
+		return boRepo.findByName(businessObjectName);
 	}
 	
 	public void deleteBybusinessObjectId(String businessObjectId) {
@@ -93,21 +93,22 @@ public class BusinessObjectServiceImpl implements BusinessObjectService
 		
 		BusinessObject businessObject = new BusinessObject();
 		
-		if(businessObjectDTO.getBusinessObjectName().isEmpty()){
+		if(businessObjectDTO.getName().isEmpty()){
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNull);
 		}
 		
-        businessObject = this.findBybusinessObjectName(businessObjectDTO.getBusinessObjectName());
+        businessObject = this.findBybusinessObjectName(businessObjectDTO.getName());
 		if(Objects.nonNull(businessObject)) {
 		    throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isExisted);
-		}
+		}		
+
 	}
 	
 	private void udpateBusinessObjectValidation(String businessObjectId, BusinessObjectDTO businessObjectDTO){
 
 		BusinessObject businessObject = new BusinessObject();
 		
-		if(businessObjectDTO.getBusinessObjectName().isEmpty()){
+		if(businessObjectDTO.getName().isEmpty()){
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNull);
 		}
 		
@@ -115,10 +116,11 @@ public class BusinessObjectServiceImpl implements BusinessObjectService
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNotExisted); 
 		}
 		
-        businessObject = this.findBybusinessObjectName(businessObjectDTO.getBusinessObjectName());
+        businessObject = this.findBybusinessObjectName(businessObjectDTO.getName());
 		if(Objects.isNull(businessObject)) {
 		    throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNotExisted);
 		}		
 	}
+
 
 }
