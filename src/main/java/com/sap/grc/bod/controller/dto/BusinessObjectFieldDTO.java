@@ -1,7 +1,5 @@
 package com.sap.grc.bod.controller.dto;
 
-import java.util.List;
-
 import com.sap.grc.bod.model.enumtype.BusinessObjectFieldType;
 
 import lombok.Data;

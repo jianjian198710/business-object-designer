@@ -1,12 +1,10 @@
 package com.sap.grc.bod.model;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -26,7 +24,6 @@ import lombok.Data;
 @Entity
 @Table( name = "business_object_field_option",uniqueConstraints = @UniqueConstraint(columnNames = {"field_id","value","lang_id"}))
 @EntityListeners( AuditingEntityListener.class )
-//@IdClass( BusinessObjectFieldOptionId.class )
 @Multitenant
 @TenantDiscriminatorColumn( name = "tenant_id", contextProperty = "eclipselink.tenant-id", length = 36 )
 public @Data class BusinessObjectFieldOption implements Serializable

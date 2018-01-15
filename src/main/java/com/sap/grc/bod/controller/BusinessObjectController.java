@@ -1,7 +1,6 @@
 package com.sap.grc.bod.controller;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,17 +31,16 @@ public class BusinessObjectController
 	@Autowired
 	private AuthEngine authEngine;
 
-	@PostMapping( value = "" )
+	@PostMapping
 	public ResponseEntity<BusinessObject> addBusinessObject (@RequestBody BusinessObjectDTO businessObjectDTO){
 		
 		BusinessObject businessObject = boService.createBusinessObject(businessObjectDTO, authEngine.getCurrentUserBean());
 		return new ResponseEntity<>(businessObject,HttpStatus.CREATED);
 	}
 	
-	@PutMapping( value = "{id}")
+	@PutMapping( value = "/{id}")
 	public ResponseEntity<BusinessObject> updateBusinessObject(@PathVariable("id") String businessObjectId, 
-			                                                   @RequestBody BusinessObjectDTO businessObjectDTO){
-		
+		@RequestBody BusinessObjectDTO businessObjectDTO){
 		BusinessObject businessObject = boService.updateBusinessObject(businessObjectId, businessObjectDTO);
 		return new ResponseEntity<>(businessObject,HttpStatus.OK);
 	}
@@ -53,7 +51,7 @@ public class BusinessObjectController
 		return new ResponseEntity<>(businessObjectList,HttpStatus.OK);
 	}
 
-	@GetMapping( value = "{id}")
+	@GetMapping( value = "/{id}")
     public ResponseEntity<BusinessObject> findByBusinessObjectId(@PathVariable("id") String businessObjectId){	
 		
 		BusinessObject businessObject = boService.findBybusinessObjectId(businessObjectId);
