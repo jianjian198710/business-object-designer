@@ -15,6 +15,7 @@ import javax.persistence.UniqueConstraint;
 
 import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
+import org.eclipse.persistence.annotations.UuidGenerator;
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -23,6 +24,7 @@ import lombok.Data;
 
 @Entity
 @Table(name = "business_object_field_text",uniqueConstraints = @UniqueConstraint(columnNames = {"field_id","lang_id"}))
+@UuidGenerator( name = "uuid2" )
 @Multitenant
 @TenantDiscriminatorColumn( name = "tenant_id", contextProperty = "eclipselink.tenant-id", length = 36 )
 public @Data class BusinessObjectFieldText implements Serializable{

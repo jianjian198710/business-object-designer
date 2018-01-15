@@ -13,6 +13,7 @@ import javax.persistence.UniqueConstraint;
 
 import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
+import org.eclipse.persistence.annotations.UuidGenerator;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -24,6 +25,7 @@ import lombok.Data;
 @Entity
 @Table(name = "business_object", uniqueConstraints = @UniqueConstraint(columnNames = {"tenant_id", "bo_name"}))
 @EntityListeners(AuditingEntityListener.class)
+@UuidGenerator( name = "uuid2" )
 @Multitenant
 @TenantDiscriminatorColumn( name = "tenant_id", contextProperty = "eclipselink.tenant-id", length = 36 )
 public @Data class BusinessObject implements Serializable{

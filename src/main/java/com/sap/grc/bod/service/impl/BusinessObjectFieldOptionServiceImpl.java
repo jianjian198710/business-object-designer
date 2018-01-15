@@ -7,6 +7,7 @@ import java.util.Objects;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sap.grc.bod.controller.dto.BusinessObjectFieldOptionDTO;
 import com.sap.grc.bod.exception.BusinessObjectCustomException;
@@ -76,16 +77,18 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 	
 	@Override
 	public List<BusinessObjectFieldOption> findAllBusinessObjectFieldOption(String fieldId, String languageId){
-		return bofoRepo.findByUuidAndLanguageId(fieldId, languageId);
+		return bofoRepo.findByFieldIdAndLanguageId(fieldId, languageId);
 	}
 	
 	@Override
+	@Transactional
 	public void deleteBusinessObjectFieldOption(String fieldOptionId){
 		bofoValidator.deleteBusinessObjectFieldOptionValidation(fieldOptionId);
 		bofoRepo.delete(fieldOptionId);
 	}
 	
 	@Override
+	@Transactional
 	public void deleteAllBusinessObjectFieldOption(String fieldId, String languageId){
 		bofoRepo.deleteByFieldIdAndLanguageId(fieldId, languageId);
 	}
