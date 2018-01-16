@@ -45,6 +45,7 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 //	}
 	
 	@Override
+	@Transactional
 	public List<BusinessObjectFieldOption> createMultiBusinessObjectFieldOption(
 			String fieldId, String languageId, List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
 		List<BusinessObjectFieldOption> businessObjectFieldOptionList = new ArrayList<>();
@@ -63,6 +64,7 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 	}
 	
 	@Override
+	@Transactional
 	public List<BusinessObjectFieldOption> updateMultiBusinessObjectFieldOption(List<String> fieldOptionIdList, List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
 		List<BusinessObjectFieldOption> businessObjectFieldOptionList = bofoValidator.updateMultiBusinessObjectFieldOptionValidation(fieldOptionIdList, businessObjectFieldOptionDTOList);
 		for(BusinessObjectFieldOption businessObjectFieldOption: businessObjectFieldOptionList){

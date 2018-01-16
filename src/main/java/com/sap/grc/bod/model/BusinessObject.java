@@ -48,16 +48,14 @@ public @Data class BusinessObject implements Serializable{
 	@CreatedDate
 	private Date createdAt;
 
-    @Column( name = "creator_name" )
-    private String creatorName;
-
-    @Column( name = "creator_mail" )
-    private String creatorMail;
+    @Column( name = "creator_uid" )
+    private String creatorBy;
   
     @Column( name = "last_modified_date" )
     @LastModifiedDate
     private Date changedAt;
     
+    @Column( name = "last_modified_uid", nullable = false )
     @LastModifiedBy
-    private LastModifiedUser changedBy;
+    private String changedBy;
 }

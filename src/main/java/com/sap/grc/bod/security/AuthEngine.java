@@ -15,12 +15,16 @@ public class AuthEngine
 	public String getCurrentUserName(){
 		return "gdpr_admin";
 	}
+	
+	public String getCurrentUid(){
+		return "gdpr_uid";
+	}
 
 	public String getTenantId(){
 		return "gdpr_tenant";
 	}
 
 	public UserBean getCurrentUserBean(){
-		return new UserBean(this.getCurrentUserName(), this.getCurrentUserMail(), this.getTenantId());
+		return new UserBean(this.getCurrentUserName(), this.getCurrentUserMail(), this.getCurrentUid(), this.getTenantId());
 	}
 }

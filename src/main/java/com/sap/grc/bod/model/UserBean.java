@@ -16,6 +16,9 @@ public class UserBean{
     
 	@Getter
 	protected String mail;
+	
+	@Getter
+	protected String uid;
     
 	@Getter
 	@JsonIgnore

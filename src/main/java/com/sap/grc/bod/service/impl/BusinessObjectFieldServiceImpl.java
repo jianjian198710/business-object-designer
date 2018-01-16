@@ -94,8 +94,7 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 			this.createBusinessObjectFieldValidation(businessObjectFieldDTO);			
 			//Copy to business object field model
 			BeanUtils.copyProperties(businessObjectFieldDTO, businessObjectField);
-			businessObjectField.setCreatorName(user.getName());
-			businessObjectField.setCreatorMail(user.getMail());
+			businessObjectField.setCreatorBy(user.getUid());
 			businessObjectField.setBusinessObject(businessObject);
 
 			//Copy to business object field text model			

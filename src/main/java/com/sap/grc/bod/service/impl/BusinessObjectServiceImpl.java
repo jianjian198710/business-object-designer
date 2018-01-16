@@ -32,8 +32,7 @@ public class BusinessObjectServiceImpl implements BusinessObjectService
 		
 		//Prepare Data
 		BeanUtils.copyProperties(businessObjectDTO, businessObject);
-		businessObject.setCreatorName(user.getName());
-		businessObject.setCreatorMail(user.getMail());
+		businessObject.setCreatorBy(user.getUid());
 		
 		//Save Transaction
 	   	try {
