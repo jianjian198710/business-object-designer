@@ -37,37 +37,6 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 	
 	private String languageId = LocaleContextHolder.getLocale().getLanguage();
 	
-	/*@Override
-	public BusinessObjectField createBusinessObjecField(String businessObjectId, BusinessObjectFieldDTO businessObjectFieldDTO, UserBean user){
-		
-		//Find BusinessObject Id
-		BusinessObject businessObject = boRepo.findOne(businessObjectId);
-		if(Objects.isNull(businessObject)){
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNotExisted);
-		}
-		
-		//Validation
-		this.createBusinessObjectFieldValidation(businessObjectFieldDTO);
-		
-		//BusinessObjectField businessObjectField = businessObjectFieldDTO.convertToModel();
-		//Move Corresponding to
-		BusinessObjectField businessObjectField = new BusinessObjectField();
-		BeanUtils.copyProperties(businessObjectFieldDTO, businessObjectField);
-		businessObjectField.setCreatorName(user.getName());
-		businessObjectField.setCreatorMail(user.getMail());
-		businessObjectField.setBusinessObject(businessObject);
-        
-		List<BusinessObjectFieldText> businessObjectFieldTextList = new ArrayList<>();
-		BusinessObjectFieldText businessObjectFieldText = new BusinessObjectFieldText();
-		BeanUtils.copyProperties(businessObjectFieldDTO.getBusinessObjectFieldText(), businessObjectFieldText);
-		businessObjectFieldText.setBusinessObjectField(businessObjectField);
-		businessObjectFieldTextList.add(businessObjectFieldText);
-		
-		businessObjectField.setBusinessObjectFieldTextList(businessObjectFieldTextList);
-		
-		return bofRepo.save(businessObjectField);
-	}*/
-	
 	@Override
 	public List<BusinessObjectField> createBusinessObjecFields(String businessObjectId, 
            List<BusinessObjectFieldDTO> businessObjectFieldDTOList, UserBean user){
@@ -91,7 +60,8 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 			businessObjectFieldDTO = bofDTOit.next();
 			
 			//Validation
-			this.createBusinessObjectFieldValidation(businessObjectFieldDTO);			
+			//this.createBusinessObjectFieldValidation(businessObjectFieldDTO);		
+			
 			//Copy to business object field model
 			BeanUtils.copyProperties(businessObjectFieldDTO, businessObjectField);
 			businessObjectField.setCreatorBy(user.getUid());
@@ -155,7 +125,7 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 		BusinessObjectFieldText businessObjectFieldText = new BusinessObjectFieldText();
 		
 		//Validation
-		this.updateBusinessObjectFieldValidation(businessObjectId, fieldId, businessObjectFieldDTO);
+		//this.updateBusinessObjectFieldValidation(businessObjectId, fieldId, businessObjectFieldDTO);
 		
 		//Fetch field by fieldId(uuid)
 		BusinessObjectField businessObjectField = bofRepo.findOne(fieldId);

@@ -35,7 +35,7 @@ public class BusinessObjectFieldController {
 	 */
 	@PostMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD )
 	public ResponseEntity<List<BusinessObjectField>> addBusinessObjecFields(@PathVariable String businessObjectId, 
-		@RequestBody List<BusinessObjectFieldDTO> businessObjectFieldDTOList){
+		@RequestBody @Valid List<BusinessObjectFieldDTO> businessObjectFieldDTOList){
 		List<BusinessObjectField> businessObjectFieldList = bofService.createBusinessObjecFields(businessObjectId, businessObjectFieldDTOList, authEngine.getCurrentUserBean());
 		return new ResponseEntity<>(businessObjectFieldList, HttpStatus.CREATED);
 	}
@@ -47,7 +47,7 @@ public class BusinessObjectFieldController {
 	 */
 	@PutMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}")
 	public ResponseEntity<BusinessObjectField> updateOneBusinessObjectField(@PathVariable String businessObjectId, @PathVariable String fieldId, 
-		@RequestBody BusinessObjectFieldDTO businessObjectFieldDTO){
+		@RequestBody @Valid BusinessObjectFieldDTO businessObjectFieldDTO){
 		BusinessObjectField businessObjectField = bofService.updateOneBusinessObjectField(businessObjectId, fieldId, businessObjectFieldDTO);
 		return new ResponseEntity<>(businessObjectField, HttpStatus.OK);
 	}

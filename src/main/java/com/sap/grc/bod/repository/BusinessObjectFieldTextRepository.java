@@ -11,6 +11,6 @@ public interface BusinessObjectFieldTextRepository extends JpaRepository<Busines
 {
 	public BusinessObjectFieldText findByBusinessObjectField_UuidAndLanguageId(String fieldId, String languageId);
 		
-	@Query("select boft from BusinessObjectFieldText as boft where boft.uuid in ?1")
-	public List<BusinessObjectFieldText> findByUuidIn(List<String> fieldTextIdList);
+	//@Query("select boft from BusinessObjectFieldText as boft where boft.uuid in ?1")
+	//public List<BusinessObjectFieldText> findByUuidIn(List<String> fieldTextIdList);
 }

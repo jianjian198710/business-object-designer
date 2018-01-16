@@ -9,7 +9,6 @@ import com.sap.grc.bod.model.UserBean;
 
 public interface BusinessObjectFieldService
 {
-	//public BusinessObjectField createBusinessObjecField(String businessObjectId, BusinessObjectFieldDTO businessObjectFieldDTO, UserBean user);
 	public List<BusinessObjectField> createBusinessObjecFields(String businessObjectId, List<BusinessObjectFieldDTO> businessObjectFieldDTOList, UserBean user);
 	
 	public BusinessObjectField updateOneBusinessObjectField(String businessObjectId, String fieldId, BusinessObjectFieldDTO businessObjectFieldDTO);

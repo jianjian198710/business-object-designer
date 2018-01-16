@@ -16,12 +16,4 @@ public @Data class BusinessObjectFieldTextDTO implements Serializable
 	private String fieldShortDescription;
 	private String description;
 	
-	public BusinessObjectFieldText convertToModel(){
-		BusinessObjectFieldText businessObjectFieldText = new BusinessObjectFieldText();
-		//businessObjectFieldText.setFieldId(this.getFieldId());
-		businessObjectFieldText.setLanguageId(this.getLanguageId());
-		businessObjectFieldText.setFieldShortDescription(this.getFieldShortDescription());
-		businessObjectFieldText.setDescription(this.getDescription());
-		return businessObjectFieldText;
-	}
 }
