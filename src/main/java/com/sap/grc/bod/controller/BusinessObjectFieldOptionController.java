@@ -65,7 +65,7 @@ public class BusinessObjectFieldOptionController
 	
 	@DeleteMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
 		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION )
-	public ResponseEntity<Void> deleteOneBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId){
+	public ResponseEntity<Void> deleteAllBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId){
 		bofoService.deleteAllBusinessObjectFieldOption(fieldId, languageId);
 		return ResponseEntity.noContent().build();
 	}
