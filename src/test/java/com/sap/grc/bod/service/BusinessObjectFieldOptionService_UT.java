@@ -21,7 +21,6 @@ import com.sap.grc.bod.model.BusinessObjectFieldOption;
 import com.sap.grc.bod.model.enumtype.BusinessObjectFieldType;
 import com.sap.grc.bod.repository.BusinessObjectFieldOptionRepository;
 import com.sap.grc.bod.repository.BusinessObjectFieldRepository;
-import com.sap.grc.bod.service.impl.BaseServiceUT;
 import com.sap.grc.bod.service.impl.BusinessObjectFieldOptionServiceImpl;
 import com.sap.grc.bod.validator.BusinessObjectFieldOptionValidator;
 
