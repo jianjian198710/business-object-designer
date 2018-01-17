@@ -1,7 +1,6 @@
 package com.sap.grc.bod.controller.dto;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 import com.sap.grc.bod.model.BusinessObjectFieldText;
 

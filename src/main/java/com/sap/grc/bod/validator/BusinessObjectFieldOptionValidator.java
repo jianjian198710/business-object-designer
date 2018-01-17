@@ -1,6 +1,5 @@
 package com.sap.grc.bod.validator;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -22,7 +21,7 @@ public class BusinessObjectFieldOptionValidator
 	private BusinessObjectFieldOptionRepository bofoRepo;
 	
 	public void createMultiBusinessObjectFieldOptionValidation(String fieldId, List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
-		this.dtoListValidation(businessObjectFieldOptionDTOList);
+		this.dtoListValidation(businessObjectFieldOptionDTOList,false);
 		//no non-null uuid
 		if(!businessObjectFieldOptionDTOList.stream().allMatch(t->Objects.isNull(t.getFieldOpitonId()))){
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldOption_IdAssigned);
@@ -35,29 +34,18 @@ public class BusinessObjectFieldOptionValidator
 		}
 	}
 	
-	public List<BusinessObjectFieldOption> updateMultiBusinessObjectFieldOptionValidation(List<String> fieldOptionIdList, List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
-		this.dtoListValidation(businessObjectFieldOptionDTOList);
-		//no null uuid
-		if(fieldOptionIdList.stream().anyMatch(t->this.isNullOrEmpty(t))||businessObjectFieldOptionDTOList.stream().anyMatch(t->this.isNullOrEmpty(t.getFieldOpitonId()))){
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldOption_IdNotExisted);
-		}
+	public List<BusinessObjectFieldOption> updateMultiBusinessObjectFieldOptionValidation(List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
+		this.dtoListValidation(businessObjectFieldOptionDTOList,true);
 		
-		Set<String> optionSet = new HashSet<>();
-		Set<String> optionDTOSet = businessObjectFieldOptionDTOList.stream().map(t->t.getFieldOpitonId()).collect(Collectors.toSet());
-		for(String fieldOptionId: fieldOptionIdList){
-			optionSet.add(fieldOptionId);
-		}
+		Set<String> optionDTOIdSet = businessObjectFieldOptionDTOList.stream().map(t->t.getFieldOpitonId()).collect(Collectors.toSet());
 		//no duplicated optionId
-		if(optionSet.size()!=fieldOptionIdList.size() || optionDTOSet.size()!=businessObjectFieldOptionDTOList.size()){
+		if(optionDTOIdSet.size()!=businessObjectFieldOptionDTOList.size()){
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldOption_DuplicatedId);
 		}
 		
-		//one to one optionIdList <--> optionDTOList
-		if(!optionSet.containsAll(optionDTOSet) || !optionDTOSet.containsAll(optionSet)){
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldOption_errInput);
-		}
+		List<String> optionDTOIdList = businessObjectFieldOptionDTOList.stream().map(t->t.getFieldOpitonId()).collect(Collectors.toList());
 		//each optionId is existed in db
-		List<BusinessObjectFieldOption> businessObjectFieldOptionList = bofoRepo.findByUuidIn(fieldOptionIdList);
+		List<BusinessObjectFieldOption> businessObjectFieldOptionList = bofoRepo.findByUuidIn(optionDTOIdList);
 		if(businessObjectFieldOptionList.size() != businessObjectFieldOptionDTOList.size()){
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldOption_IdNotExisted);
 		}
@@ -78,10 +66,16 @@ public class BusinessObjectFieldOptionValidator
 		}
 	}
 	
-	private void dtoListValidation(List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
+	private void dtoListValidation(List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList, boolean isUpdate){
 		for(BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO: businessObjectFieldOptionDTOList){
 			if(this.isNullOrEmpty(businessObjectFieldOptionDTO.getFieldId())||this.isNullOrEmpty(businessObjectFieldOptionDTO.getValue())){
 				throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldOption_errInput);
+			}
+			//check field option id not null when update
+			if(isUpdate){
+				if(this.isNullOrEmpty(businessObjectFieldOptionDTO.getFieldOpitonId())){
+					throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldOption_errInput);
+				}
 			}
 		}
 	}

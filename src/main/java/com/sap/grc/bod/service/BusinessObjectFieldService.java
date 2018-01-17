@@ -1,7 +1,6 @@
 package com.sap.grc.bod.service;
 
 import java.util.List;
-import java.util.UUID;
 
 import com.sap.grc.bod.controller.dto.BusinessObjectFieldDTO;
 import com.sap.grc.bod.model.BusinessObjectField;

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +20,10 @@ import com.sap.grc.bod.controller.dto.BusinessObjectFieldOptionDTO;
 import com.sap.grc.bod.model.BusinessObjectFieldOption;
 import com.sap.grc.bod.service.BusinessObjectFieldOptionService;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping( value = ControllerPathConstant.BUSINESS_OBJECT_DEFAULT )
 public class BusinessObjectFieldOptionController
@@ -30,21 +33,27 @@ public class BusinessObjectFieldOptionController
 	
 	String languageId = LocaleContextHolder.getLocale().getLanguage();
 	
+	@ApiOperation( value = "create business object option(s)")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "String"),
+		@ApiImplicitParam(name = "fieldId", value = "Business Object Field Id", required = true, paramType="path", dataType = "String"),
+		@ApiImplicitParam(name = "businessObjectFieldOptionDTOList", value = "Business Object Field Option DTO List", required = true, dataType = "List<BusinessObjectFieldOptionDTO>")
+	})
 	@PostMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
 		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION )
 	public ResponseEntity<List<BusinessObjectFieldOption>> createMultiBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId, 
-		@RequestBody @Validated List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
+		@RequestBody List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
 		List<BusinessObjectFieldOption> businessObjectFieldOptionList = 
 			bofoService.createMultiBusinessObjectFieldOption(fieldId, languageId, businessObjectFieldOptionDTOList); 
 		return new ResponseEntity<>(businessObjectFieldOptionList, HttpStatus.CREATED);
 	}
 	
 	@PutMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
-		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION + "/{fieldOptionIdList}")
+		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION )
 	public ResponseEntity<List<BusinessObjectFieldOption>> updateMultiBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId,
-		@PathVariable List<String> fieldOptionIdList, @RequestBody @Validated List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
+		@RequestBody List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
 		List<BusinessObjectFieldOption> businessObjectFieldOptionList = 
-			bofoService.updateMultiBusinessObjectFieldOption(fieldOptionIdList, businessObjectFieldOptionDTOList); 
+			bofoService.updateMultiBusinessObjectFieldOption(businessObjectFieldOptionDTOList); 
 		return new ResponseEntity<>(businessObjectFieldOptionList, HttpStatus.OK);
 	}
 	

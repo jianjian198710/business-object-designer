@@ -109,7 +109,7 @@ public class BusinessObjectFieldOptionController_IT
 		MvcResult content_result =
 			mockMvc
 				.perform(
-					put(url + "/08E365EE-ADD4-476B-ACC1-5A2LDS92LF21")
+					put(url)
 						.content(TestUtil.toJson(businessObjectFieldOptionDTOList))
 						.contentType(APPLICATION_JSON_UTF8))
 				.andExpect(status().is2xxSuccessful())
