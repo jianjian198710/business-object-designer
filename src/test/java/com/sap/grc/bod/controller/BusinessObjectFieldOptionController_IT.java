@@ -74,7 +74,6 @@ public class BusinessObjectFieldOptionController_IT
 		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
 		businessObjectFieldOptionDTO.setValue("value_3");
 		businessObjectFieldOptionDTO.setDescription("value description 3");
-		businessObjectFieldOptionDTO.setFieldId("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152");
 
 		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
 		MvcResult content_result =
@@ -103,7 +102,6 @@ public class BusinessObjectFieldOptionController_IT
 		businessObjectFieldOptionDTO.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF21");
 		businessObjectFieldOptionDTO.setValue("value_2_updated");
 		businessObjectFieldOptionDTO.setDescription("value description 2 updated");
-		businessObjectFieldOptionDTO.setFieldId("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152");
 
 		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
 		MvcResult content_result =
