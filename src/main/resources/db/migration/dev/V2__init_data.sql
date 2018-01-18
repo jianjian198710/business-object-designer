@@ -1,0 +1,2 @@
+INSERT INTO business_object (bo_id, last_modified_date, last_modified_uid, created_date, creator_uid, description, bo_name) VALUES
+('4A54DBDA-6BC1-45EF-A92C-EBD9EADF4B33', '2018-01-16 15:59:18.466', 'SAP', '2018-01-16 15:59:18.466', 'SAP', 'ropa descritpion', 'ROPA');

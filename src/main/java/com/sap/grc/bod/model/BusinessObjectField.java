@@ -32,7 +32,7 @@ import com.sap.grc.bod.model.enumtype.BusinessObjectFieldType;
 import lombok.Data;
 
 @Entity
-@Table( name = "business_object_field",uniqueConstraints = @UniqueConstraint(columnNames = {"field_name", "bo_id"}))
+@Table( name = "business_object_field",uniqueConstraints = @UniqueConstraint(columnNames = {"tenant_id", "field_name", "bo_id"}))
 @EntityListeners( AuditingEntityListener.class )
 @UuidGenerator( name = "uuid2" )
 @Multitenant
