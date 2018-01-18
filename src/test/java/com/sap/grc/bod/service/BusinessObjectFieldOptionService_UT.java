@@ -117,13 +117,12 @@ public class BusinessObjectFieldOptionService_UT extends BaseServiceUT
 
 		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
 		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
+		businessObjectFieldOptionDTO.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
 		businessObjectFieldOptionDTO.setFieldId(fieldId);
 		businessObjectFieldOptionDTO.setDescription("value description 1 updated");
 		businessObjectFieldOptionDTO.setValue("value_1 updated");
 		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
 
-		List<String> fieldOptionIdList = new ArrayList<>();
-		fieldOptionIdList.add(fieldId);
 
 		List<BusinessObjectFieldOption> updatedList = new ArrayList<>();
 		BusinessObjectFieldOption updatedBusinessObjectFieldOption = new BusinessObjectFieldOption();
@@ -134,11 +133,11 @@ public class BusinessObjectFieldOptionService_UT extends BaseServiceUT
 		updatedBusinessObjectFieldOption.setLanguageId(languageId);
 		updatedList.add(updatedBusinessObjectFieldOption);
 		
-		when(bofoRepo.findByUuidIn(Mockito.anyList())).thenReturn(businessObjectFieldOptionList);
+		when(bofoValidator.updateMultiBusinessObjectFieldOptionValidation(businessObjectFieldOptionDTOList)).thenReturn(businessObjectFieldOptionList);
 		when(bofoRepo.save(Mockito.anyList())).thenReturn(updatedList);
 		List<BusinessObjectFieldOption> resultList =
 			businessObjectFieldOptionService
-				.updateMultiBusinessObjectFieldOption(fieldOptionIdList, businessObjectFieldOptionDTOList);
+				.updateMultiBusinessObjectFieldOption(businessObjectFieldOptionDTOList);
 		assertEquals(resultList.size(),1);
 	}
 

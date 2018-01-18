@@ -3,7 +3,6 @@ package com.sap.grc.bod.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -29,13 +27,12 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sap.grc.bod.model.enumtype.BusinessObjectFieldType;
 
 import lombok.Data;
 
 @Entity
-@Table( name = "business_object_field",uniqueConstraints = @UniqueConstraint(columnNames = {"field_name", "bo_id"}))
+@Table( name = "business_object_field",uniqueConstraints = @UniqueConstraint(columnNames = {"tenant_id", "field_name", "bo_id"}))
 @EntityListeners( AuditingEntityListener.class )
 @UuidGenerator( name = "uuid2" )
 @Multitenant
