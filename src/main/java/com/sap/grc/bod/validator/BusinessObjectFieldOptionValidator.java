@@ -66,9 +66,17 @@ public class BusinessObjectFieldOptionValidator
 		}
 	}
 	
+	private boolean isContainEmpty(String str){
+		if(str.replaceAll("\\s+","").length()!=str.length()){
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
 	private void dtoListValidation(List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList, boolean isUpdate){
 		for(BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO: businessObjectFieldOptionDTOList){
-			if(this.isNullOrEmpty(businessObjectFieldOptionDTO.getValue())){
+			if(this.isNullOrEmpty(businessObjectFieldOptionDTO.getValue())||this.isContainEmpty(businessObjectFieldOptionDTO.getValue())){
 				throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldOption_errInput);
 			}
 			//check field option id not null when update
