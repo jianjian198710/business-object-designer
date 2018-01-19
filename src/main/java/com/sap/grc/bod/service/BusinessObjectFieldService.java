@@ -13,6 +13,6 @@ public interface BusinessObjectFieldService
 	public BusinessObjectField updateOneBusinessObjectField(String businessObjectId, String fieldId, BusinessObjectFieldDTO businessObjectFieldDTO);
 	public List<BusinessObjectField> updateMultiBusinessObjectField(String businessObjectId,List<BusinessObjectFieldDTO> businessObjectFieldDTOList);
 	
-	public BusinessObjectFieldDTO findOneBusinessObjectField(String businessObjectId, String fieldId);
-	public List<BusinessObjectFieldDTO> findAllBusinessObjectField(String businessObjectId);
+	public BusinessObjectField findOneBusinessObjectField(String businessObjectId, String fieldId);
+	public List<BusinessObjectField> findAllBusinessObjectField(String businessObjectId);
 }

@@ -15,6 +15,7 @@ import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 import org.eclipse.persistence.annotations.UuidGenerator;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.NotBlank;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -35,7 +36,7 @@ public @Data class BusinessObjectFieldText implements Serializable{
 	@Column( name = "field_text_id" )
 	private String uuid;
  
-	//TODO where come from?
+	@NotBlank
 	@Column( name = "lang_id")	
 	private String languageId;
 	

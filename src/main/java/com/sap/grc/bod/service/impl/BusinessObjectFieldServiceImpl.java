@@ -11,17 +11,16 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.sap.grc.bod.controller.dto.BusinessObjectFieldDTO;
-import com.sap.grc.bod.controller.dto.BusinessObjectFieldTextDTO;
-import com.sap.grc.bod.exception.BusinessObjectCustomException;
-import com.sap.grc.bod.exception.BusinessObjectCustomException.ExceptionEnum;
 import com.sap.grc.bod.model.BusinessObject;
 import com.sap.grc.bod.model.BusinessObjectField;
+import com.sap.grc.bod.model.BusinessObjectFieldOption;
 import com.sap.grc.bod.model.BusinessObjectFieldText;
 import com.sap.grc.bod.model.UserBean;
 import com.sap.grc.bod.repository.BusinessObjectFieldRepository;
 import com.sap.grc.bod.repository.BusinessObjectFieldTextRepository;
 import com.sap.grc.bod.repository.BusinessObjectRepository;
 import com.sap.grc.bod.service.BusinessObjectFieldService;
+import com.sap.grc.bod.validator.BusinessObjectFieldValidator;
 
 @Service
 public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldService 
@@ -35,18 +34,14 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 	@Autowired
 	private BusinessObjectFieldTextRepository boftextRepo;
 	
-	private String languageId = LocaleContextHolder.getLocale().getLanguage();
+	@Autowired
+	private BusinessObjectFieldValidator bofValidator;
 	
 	@Override
 	public List<BusinessObjectField> createBusinessObjecFields(String businessObjectId, 
            List<BusinessObjectFieldDTO> businessObjectFieldDTOList, UserBean user){
 		
-		//Find BusinessObject Id
 		BusinessObject businessObject = boRepo.findOne(businessObjectId);
-		if(Objects.isNull(businessObject)){
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNotExisted);
-		}
-		
 		BusinessObjectFieldDTO businessObjectFieldDTO;
 		List<BusinessObjectField> businessObjectFieldList = new ArrayList<>();
 		
@@ -60,16 +55,19 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 			businessObjectFieldDTO = bofDTOit.next();
 			
 			//Validation
-			//this.createBusinessObjectFieldValidation(businessObjectFieldDTO);		
+			bofValidator.createBusinessObjectFieldValidation(businessObjectId, businessObjectFieldDTO);		
 			
 			//Copy to business object field model
 			BeanUtils.copyProperties(businessObjectFieldDTO, businessObjectField);
 			businessObjectField.setCreatorBy(user.getUid());
 			businessObjectField.setBusinessObject(businessObject);
 
-			//Copy to business object field text model			
-			BeanUtils.copyProperties(businessObjectFieldDTO.getBusinessObjectFieldText(), businessObjectFieldText);
-			businessObjectFieldText.setLanguageId(languageId);
+			//Copy to business object field text model
+			String languageId = LocaleContextHolder.getLocale().getLanguage();
+			businessObjectFieldText.setLanguageId(languageId);	
+			if(Objects.nonNull(businessObjectFieldDTO.getBusinessObjectFieldText())){
+				BeanUtils.copyProperties(businessObjectFieldDTO.getBusinessObjectFieldText(), businessObjectFieldText);		  
+			}
 			
 			//Association:set field to text
 			businessObjectFieldText.setBusinessObjectField(businessObjectField);
@@ -90,7 +88,6 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 		
 		BusinessObjectField businessObjectField = 
 				this.preBusinessObjectField(businessObjectId, fieldId, businessObjectFieldDTO);
-		
 		return bofRepo.save(businessObjectField);
 		
 	}
@@ -125,22 +122,25 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 		BusinessObjectFieldText businessObjectFieldText = new BusinessObjectFieldText();
 		
 		//Validation
-		//this.updateBusinessObjectFieldValidation(businessObjectId, fieldId, businessObjectFieldDTO);
+		bofValidator.updateBusinessObjectFieldValidation(businessObjectId, fieldId, businessObjectFieldDTO);
 		
 		//Fetch field by fieldId(uuid)
 		BusinessObjectField businessObjectField = bofRepo.findOne(fieldId);
-		
 		BeanUtils.copyProperties(businessObjectFieldDTO, businessObjectField);
 		
+		String languageId = LocaleContextHolder.getLocale().getLanguage();
 		BusinessObjectFieldText existedBusinessObjectFieldText = 
 				   boftextRepo.findByBusinessObjectField_UuidAndLanguageId(fieldId, languageId);
-        if(!Objects.isNull(existedBusinessObjectFieldText)) {
-        	businessObjectFieldText = existedBusinessObjectFieldText;
+        if(Objects.isNull(existedBusinessObjectFieldText)) {	
+        	businessObjectFieldText.setLanguageId(languageId);	
+        }else {
+            businessObjectFieldText = existedBusinessObjectFieldText;        	
         }
         //Copy to Existed Text Model
-		BeanUtils.copyProperties(businessObjectFieldDTO.getBusinessObjectFieldText(), businessObjectFieldText);			
-		//businessObjectFieldText.setLanguageId(languageId);
-		
+        if(Objects.nonNull(businessObjectFieldDTO.getBusinessObjectFieldText())) {
+        	BeanUtils.copyProperties(businessObjectFieldDTO.getBusinessObjectFieldText(), businessObjectFieldText);
+        }
+						
 		//Set field to text
 		businessObjectFieldText.setBusinessObjectField(businessObjectField);
 		
@@ -150,82 +150,55 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 		//Set text list to field
 		businessObjectField.setBusinessObjectFieldTextList(businessObjectFieldTextList);
 		
+		businessObjectField.getBusinessObjectFieldOptionList().clear();
 		return businessObjectField;
 		
 	}
 	
 	@Override
-	public BusinessObjectFieldDTO findOneBusinessObjectField(String businessObjectId, String fieldId){
+	public BusinessObjectField findOneBusinessObjectField(String businessObjectId, String fieldId){
 		
-		BusinessObjectFieldDTO businessObjectFieldDTO = new BusinessObjectFieldDTO();
-		BusinessObjectFieldTextDTO businessObjectFieldTextDTO = new BusinessObjectFieldTextDTO();
+		BusinessObjectField businessObjectField = new BusinessObjectField();
+		List<BusinessObjectFieldText> businessObjectFieldTextList = new ArrayList<>();
 		BusinessObjectFieldText preBusinessObjectFieldText = new BusinessObjectFieldText();
 		
-		BusinessObjectField preBusinessObjectField = bofRepo.findOne(fieldId);
+		BusinessObjectField preBusinessObjectField = bofRepo.findByBusinessObject_UuidAndUuid(businessObjectId,fieldId);
 		if(Objects.isNull(preBusinessObjectField)) {
-			return businessObjectFieldDTO;
+			return businessObjectField;
 		}
 		
-		BeanUtils.copyProperties(preBusinessObjectField, businessObjectFieldDTO);
-		businessObjectFieldDTO.setBusinessObjectId(businessObjectId);
+		BeanUtils.copyProperties(preBusinessObjectField, businessObjectField);
+		businessObjectField.getBusinessObjectFieldOptionList().clear();
+		businessObjectField.getBusinessObjectFieldTextList().clear();
 		
+		String languageId = LocaleContextHolder.getLocale().getLanguage();
 		preBusinessObjectFieldText = 
 				   boftextRepo.findByBusinessObjectField_UuidAndLanguageId(fieldId, languageId);
 		if(!Objects.isNull(preBusinessObjectFieldText)) {
-		  BeanUtils.copyProperties(preBusinessObjectFieldText, businessObjectFieldTextDTO);	
-		  businessObjectFieldDTO.setBusinessObjectFieldText(businessObjectFieldTextDTO);
+          businessObjectFieldTextList.add(preBusinessObjectFieldText);
+          businessObjectField.setBusinessObjectFieldTextList(businessObjectFieldTextList);  
 		}
 
-		return businessObjectFieldDTO;
+		return businessObjectField;
 	}
 	
-	public List<BusinessObjectFieldDTO> findAllBusinessObjectField(String businessObjectId){
+	public List<BusinessObjectField> findAllBusinessObjectField(String businessObjectId){
 		
-		List<BusinessObjectField> businessObjectFieldList = bofRepo.findByBusinessObject_Uuid(businessObjectId);
-		List<BusinessObjectFieldDTO> businessObjectFieldDTOList = new ArrayList<>();
-		Iterator<BusinessObjectField> bofIt = businessObjectFieldList.iterator();
+		List<BusinessObjectField> prebusinessObjectFieldList = bofRepo.findByBusinessObject_Uuid(businessObjectId);
+		List<BusinessObjectField> businessObjectFieldList = new ArrayList<>();
+		
+		Iterator<BusinessObjectField> bofIt = prebusinessObjectFieldList.iterator();
 		while(bofIt.hasNext()) {
-
-			BusinessObjectField businessObjectField;
-	
-			businessObjectField = bofIt.next();	
-			String fieldId = businessObjectField.getUuid();
-			BusinessObjectFieldDTO businessObjectFieldDTO = this.findOneBusinessObjectField(businessObjectId, fieldId);
-			if(!Objects.isNull(businessObjectFieldDTO)) {
-				businessObjectFieldDTOList.add(businessObjectFieldDTO);			
+			BusinessObjectField prebusinessObjectField;
+            prebusinessObjectField = bofIt.next();	
+			String fieldId = prebusinessObjectField.getUuid();
+			BusinessObjectField businessObjectField = this.findOneBusinessObjectField(businessObjectId, fieldId);
+			if(!Objects.isNull(businessObjectField)) {
+				businessObjectFieldList.add(businessObjectField);			
 			}			
 		}	
 		
-		return businessObjectFieldDTOList;
+		return businessObjectFieldList;
 	}
 	
-	
-	//TODO enhancement
-	private void createBusinessObjectFieldValidation(BusinessObjectFieldDTO businessObjectFieldDTO){
-		
-		//Business Object related validation
-		if(Objects.isNull(businessObjectFieldDTO.getBusinessObjectId())){
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_errInput);
-		}
-		
-		BusinessObject businessObject = boRepo.findByUuid(businessObjectFieldDTO.getBusinessObjectId());
-		if(Objects.isNull(businessObject)) {
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNotExisted);			
-		}
-		
-		//Field related validation
-		if(businessObjectFieldDTO.getName().isEmpty()){
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_isEmpty);
-		}	
-		
-	}
-	
-	//TODO enhancement
-	private void updateBusinessObjectFieldValidation(String businessObjectId, String fieldId, BusinessObjectFieldDTO businessObjectFieldDTO){
-		BusinessObjectField businessObjectField = bofRepo.findOne(fieldId);
-		if(Objects.isNull(businessObjectField)){
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_isNotExisted);
-		}
-
-	}
 }

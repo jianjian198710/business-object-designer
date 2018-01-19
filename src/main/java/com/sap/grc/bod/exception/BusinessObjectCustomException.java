@@ -59,10 +59,15 @@ public class BusinessObjectCustomException extends RuntimeException
 		BusinessObject_isExisted(1001, "Business Object has been created"),
 		BusinessObject_isNotExisted(1002, "Business Object is not existed"),
 		BusinessObject_isNull(1003, "Business Object is null"),
+
 		BusinessObjectField_isExisted(2001,"Business Object Field has been created"),
 		BusinessObjectField_isNotExisted(2002,"Business Object Field is not existed"),
 		BusinessObjectField_errInput(2003,"Business Object Field id is null"),
-		BusinessObjectField_isEmpty(2004,"Business Object Field name is empty"),
+		BusinessObjectField_Name_isEmpty(2004,"Business Object Field mame is empty"),
+		BusinessObjectField_Type_isNotExisted(2005,"Business Object Field type is not existed"),
+		BusinessObjectField_BOUuid_isNotSame(2006, "Business Object Id is inconsistent"),
+		BusinessObjectField_Text_isNull(2007, "Business Object Filed text is null"),
+		BusinessObjectField_Text_Language_isNull(2008, "Business Object Filed language Id is null"),
 		
 		BusinessObjectFieldOption_IdAssigned(3001,"Option Id should not be assigned"),
 		BusinessObjectFieldOption_DuplicatedId(3002,"Duplicated id exists in parameter"),

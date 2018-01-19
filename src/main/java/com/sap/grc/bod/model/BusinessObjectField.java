@@ -22,6 +22,7 @@ import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 import org.eclipse.persistence.annotations.UuidGenerator;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -47,6 +48,7 @@ public @Data class BusinessObjectField implements Serializable
 	@Column( name = "field_id")
 	private String uuid;
 		
+	@NotBlank
 	@Column( name ="field_name",nullable=false)
 	private String name;
 
@@ -85,6 +87,6 @@ public @Data class BusinessObjectField implements Serializable
 	@JoinColumn( name = "bo_id", referencedColumnName = "bo_id", insertable = true, updatable = false )
 	private BusinessObject businessObject;
 	
-	@OneToMany( cascade = CascadeType.ALL, mappedBy="bussinessObjectField" )
+	@OneToMany( cascade = CascadeType.REMOVE, mappedBy="bussinessObjectField" )
 	private List<BusinessObjectFieldOption> businessObjectFieldOptionList;
 }

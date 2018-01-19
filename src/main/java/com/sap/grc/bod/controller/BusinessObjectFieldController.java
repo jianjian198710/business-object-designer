@@ -3,6 +3,7 @@ package com.sap.grc.bod.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,13 +30,14 @@ public class BusinessObjectFieldController {
 	@Autowired
 	private AuthEngine authEngine;
 
+	
 	/*
 	 * scenario description:
 	 * create business object fields, including only session language field text
 	 */
 	@PostMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD )
 	public ResponseEntity<List<BusinessObjectField>> addBusinessObjecFields(@PathVariable String businessObjectId, 
-		@RequestBody @Valid List<BusinessObjectFieldDTO> businessObjectFieldDTOList){
+		@RequestBody List<BusinessObjectFieldDTO> businessObjectFieldDTOList){
 		List<BusinessObjectField> businessObjectFieldList = bofService.createBusinessObjecFields(businessObjectId, businessObjectFieldDTOList, authEngine.getCurrentUserBean());
 		return new ResponseEntity<>(businessObjectFieldList, HttpStatus.CREATED);
 	}
@@ -47,7 +49,7 @@ public class BusinessObjectFieldController {
 	 */
 	@PutMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}")
 	public ResponseEntity<BusinessObjectField> updateOneBusinessObjectField(@PathVariable String businessObjectId, @PathVariable String fieldId, 
-		@RequestBody @Valid BusinessObjectFieldDTO businessObjectFieldDTO){
+		@RequestBody BusinessObjectFieldDTO businessObjectFieldDTO){
 		BusinessObjectField businessObjectField = bofService.updateOneBusinessObjectField(businessObjectId, fieldId, businessObjectFieldDTO);
 		return new ResponseEntity<>(businessObjectField, HttpStatus.OK);
 	}
@@ -70,9 +72,9 @@ public class BusinessObjectFieldController {
 	 * get one business object field 
 	 */
 	@GetMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}")
-	public ResponseEntity<BusinessObjectFieldDTO> findOneBusinessObjectField(@PathVariable String businessObjectId, @PathVariable String fieldId){
-		BusinessObjectFieldDTO businessObjectFieldDTO = bofService.findOneBusinessObjectField(businessObjectId, fieldId);
-		return new ResponseEntity<>(businessObjectFieldDTO, HttpStatus.OK);
+	public ResponseEntity<BusinessObjectField> findOneBusinessObjectField(@PathVariable String businessObjectId, @PathVariable String fieldId){
+		BusinessObjectField businessObjectField= bofService.findOneBusinessObjectField(businessObjectId, fieldId);
+		return new ResponseEntity<>(businessObjectField, HttpStatus.OK);
 	}
 	
 	/*
@@ -80,9 +82,9 @@ public class BusinessObjectFieldController {
 	 * get all business object fields of a specific business object
 	 */
 	@GetMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD)
-	public ResponseEntity<List<BusinessObjectFieldDTO>> findAllBusinessObjectField(@PathVariable String businessObjectId){
-		List<BusinessObjectFieldDTO> businessObjectFieldDTOList = bofService.findAllBusinessObjectField(businessObjectId);
-		return new ResponseEntity<>(businessObjectFieldDTOList, HttpStatus.OK);
+	public ResponseEntity<List<BusinessObjectField>> findAllBusinessObjectField(@PathVariable String businessObjectId){
+		List<BusinessObjectField> businessObjectFieldList = bofService.findAllBusinessObjectField(businessObjectId);
+		return new ResponseEntity<>(businessObjectFieldList, HttpStatus.OK);
 	}
 	
 }
