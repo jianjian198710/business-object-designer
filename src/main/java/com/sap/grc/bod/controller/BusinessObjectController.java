@@ -13,6 +13,10 @@ import com.sap.grc.bod.constant.ControllerPathConstant;
 import com.sap.grc.bod.model.BusinessObject;
 import com.sap.grc.bod.service.BusinessObjectService;
 
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
+
 @RestController
 @RequestMapping( value = ControllerPathConstant.BUSINESS_OBJECT_DEFAULT )
 public class BusinessObjectController
@@ -36,7 +40,7 @@ public class BusinessObjectController
 //		BusinessObject businessObject = boService.updateBusinessObject(businessObjectId, businessObjectDTO);
 //		return new ResponseEntity<>(businessObject,HttpStatus.OK);
 //	}
-
+	@ApiOperation( value = "get all business objects")
 	@GetMapping
 	public  ResponseEntity<List<BusinessObject>> findAllbusinessObject(){
 		List<BusinessObject> businessObjectList = boService.getAllBusinessObject();

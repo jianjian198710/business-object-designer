@@ -24,7 +24,7 @@ public class DefaultSessionCustomizer implements SessionCustomizer
 
 		private String getTenantId()
 		{
-			return "gdpr_tenant_gea";
+			return "gdpr_tenant";
 		}
 
 	}

@@ -31,10 +31,10 @@ public class BusinessObjectFieldOptionController
 	@Autowired
 	private BusinessObjectFieldOptionService bofoService;
 	
-	@ApiOperation( value = "create business object option(s)")
+	@ApiOperation( value = "create business object options")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "String"),
-		@ApiImplicitParam(name = "fieldId", value = "Business Object Field Id", required = true, paramType="path", dataType = "String"),
+		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "fieldId", value = "Business Object Field Id", required = true, paramType="path", dataType = "uuid"),
 		@ApiImplicitParam(name = "businessObjectFieldOptionDTOList", value = "Business Object Field Option DTO List", required = true, dataType = "List<BusinessObjectFieldOptionDTO>")
 	})
 	@PostMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
@@ -47,6 +47,12 @@ public class BusinessObjectFieldOptionController
 		return new ResponseEntity<>(businessObjectFieldOptionList, HttpStatus.CREATED);
 	}
 	
+	@ApiOperation( value = "update business object options")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "fieldId", value = "Business Object Field Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "businessObjectFieldOptionDTOList", value = "Business Object Field Option DTO List", required = true, dataType = "List<BusinessObjectFieldOptionDTO>")
+	})
 	@PutMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
 		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION )
 	public ResponseEntity<List<BusinessObjectFieldOption>> updateMultiBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId,
@@ -56,6 +62,11 @@ public class BusinessObjectFieldOptionController
 		return new ResponseEntity<>(businessObjectFieldOptionList, HttpStatus.OK);
 	}
 	
+	@ApiOperation( value = "update business object options")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "fieldId", value = "Business Object Field Id", required = true, paramType="path", dataType = "uuid"),
+	})
 	@GetMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
 		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION )
 	public ResponseEntity<List<BusinessObjectFieldOption>> findAllBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId){
@@ -65,6 +76,12 @@ public class BusinessObjectFieldOptionController
 		return new ResponseEntity<>(businessObjectFieldOptionList, HttpStatus.OK);
 	}
 	
+	@ApiOperation( value = "delete one business object option")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "fieldId", value = "Business Object Field Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "fieldOptionId", value = "Business Object Field Option Id", required = true, paramType="path", dataType = "uuid"),
+	})
 	@DeleteMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
 		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION + "/{fieldOptionId}")
 	public ResponseEntity<Void> deleteOneBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId, @PathVariable String fieldOptionId){
@@ -72,6 +89,11 @@ public class BusinessObjectFieldOptionController
 		return ResponseEntity.noContent().build();
 	}
 	
+	@ApiOperation( value = "delete all business object options")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "fieldId", value = "Business Object Field Id", required = true, paramType="path", dataType = "uuid"),
+	})
 	@DeleteMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
 		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION )
 	public ResponseEntity<Void> deleteAllBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId){
