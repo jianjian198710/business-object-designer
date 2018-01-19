@@ -68,7 +68,7 @@ public class BusinessObjectFieldOptionValidator
 	
 	private void dtoListValidation(List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList, boolean isUpdate){
 		for(BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO: businessObjectFieldOptionDTOList){
-			if(this.isNullOrEmpty(businessObjectFieldOptionDTO.getFieldId())||this.isNullOrEmpty(businessObjectFieldOptionDTO.getValue())){
+			if(this.isNullOrEmpty(businessObjectFieldOptionDTO.getValue())){
 				throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldOption_errInput);
 			}
 			//check field option id not null when update

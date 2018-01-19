@@ -31,8 +31,6 @@ public class BusinessObjectFieldOptionController
 	@Autowired
 	private BusinessObjectFieldOptionService bofoService;
 	
-	String languageId = LocaleContextHolder.getLocale().getLanguage();
-	
 	@ApiOperation( value = "create business object option(s)")
 	@ApiImplicitParams({
 		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "String"),
@@ -43,6 +41,7 @@ public class BusinessObjectFieldOptionController
 		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION )
 	public ResponseEntity<List<BusinessObjectFieldOption>> createMultiBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId, 
 		@RequestBody List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
+		String languageId = LocaleContextHolder.getLocale().getLanguage();
 		List<BusinessObjectFieldOption> businessObjectFieldOptionList = 
 			bofoService.createMultiBusinessObjectFieldOption(fieldId, languageId, businessObjectFieldOptionDTOList); 
 		return new ResponseEntity<>(businessObjectFieldOptionList, HttpStatus.CREATED);
@@ -60,6 +59,7 @@ public class BusinessObjectFieldOptionController
 	@GetMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
 		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION )
 	public ResponseEntity<List<BusinessObjectFieldOption>> findAllBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId){
+		String languageId = LocaleContextHolder.getLocale().getLanguage();
 		List<BusinessObjectFieldOption> businessObjectFieldOptionList = 
 			bofoService.findAllBusinessObjectFieldOption(fieldId, languageId);
 		return new ResponseEntity<>(businessObjectFieldOptionList, HttpStatus.OK);
@@ -75,6 +75,7 @@ public class BusinessObjectFieldOptionController
 	@DeleteMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
 		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION )
 	public ResponseEntity<Void> deleteAllBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId){
+		String languageId = LocaleContextHolder.getLocale().getLanguage();
 		bofoService.deleteAllBusinessObjectFieldOption(fieldId, languageId);
 		return ResponseEntity.noContent().build();
 	}

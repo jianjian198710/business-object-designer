@@ -45,6 +45,7 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 		for(BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO: businessObjectFieldOptionDTOList){
 			BusinessObjectFieldOption businessObjectFieldOption = businessObjectFieldOptionDTO.converToModel();
 			businessObjectFieldOption.setLanguageId(languageId);
+			businessObjectFieldOption.setFieldId(fieldId);
 			businessObjectFieldOption.setBussinessObjectField(businessObjectField);
 			businessObjectFieldOptionList.add(businessObjectFieldOption);
 		}

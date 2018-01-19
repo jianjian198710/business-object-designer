@@ -64,7 +64,6 @@ public class BusinessObjectFieldOptionService_UT extends BaseServiceUT
 		String languageId = "en";
 		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
 		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
-		businessObjectFieldOptionDTO.setFieldId(fieldId);
 		businessObjectFieldOptionDTO.setDescription("value description 1");
 		businessObjectFieldOptionDTO.setValue("value_1");
 		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
@@ -118,7 +117,6 @@ public class BusinessObjectFieldOptionService_UT extends BaseServiceUT
 		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
 		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
 		businessObjectFieldOptionDTO.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
-		businessObjectFieldOptionDTO.setFieldId(fieldId);
 		businessObjectFieldOptionDTO.setDescription("value description 1 updated");
 		businessObjectFieldOptionDTO.setValue("value_1 updated");
 		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
