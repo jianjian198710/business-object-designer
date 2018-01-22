@@ -41,9 +41,9 @@ public class BusinessObjectFieldOptionController_IT
 	/* TODO jwt token set up after security enable */
 	private String url =
 		ControllerPathConstant.BUSINESS_OBJECT_DEFAULT
-			+ "/4A54DBDA-6BC1-45EF-A92C-EBD9EADF4B33"
+			+ "/ROPA"
 			+ ControllerPathConstant.BUSINESS_OBJECT_FIELD
-			+ "/A7F21EBC-3F4E-4767-85B6-F6C1AE15F152"
+			+ "/CDF1"
 			+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION;
 
 	@Autowired
@@ -126,7 +126,7 @@ public class BusinessObjectFieldOptionController_IT
 		throws Exception
 	{
 		mockMvc
-			.perform(delete(url + "/08E365EE-ADD4-476B-ACC1-5A2LDS92LF21"))
+			.perform(delete(url + "/value_1"))
 			.andExpect(status().is2xxSuccessful())
 			.andReturn();
 	}

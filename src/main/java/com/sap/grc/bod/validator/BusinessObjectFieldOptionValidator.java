@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.sap.grc.bod.controller.dto.BusinessObjectFieldOptionDTO;
 import com.sap.grc.bod.exception.BusinessObjectCustomException;
 import com.sap.grc.bod.exception.BusinessObjectCustomException.ExceptionEnum;
+import com.sap.grc.bod.model.BusinessObjectField;
 import com.sap.grc.bod.model.BusinessObjectFieldOption;
 import com.sap.grc.bod.repository.BusinessObjectFieldOptionRepository;
 
@@ -34,7 +35,7 @@ public class BusinessObjectFieldOptionValidator
 		}
 	}
 	
-	public List<BusinessObjectFieldOption> updateMultiBusinessObjectFieldOptionValidation(List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
+	public List<BusinessObjectFieldOption> updateMultiBusinessObjectFieldOptionValidation(BusinessObjectField businessObjectField, List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
 		this.dtoListValidation(businessObjectFieldOptionDTOList,true);
 		
 		Set<String> optionDTOIdSet = businessObjectFieldOptionDTOList.stream().map(t->t.getFieldOpitonId()).collect(Collectors.toSet());
@@ -48,6 +49,11 @@ public class BusinessObjectFieldOptionValidator
 		List<BusinessObjectFieldOption> businessObjectFieldOptionList = bofoRepo.findByUuidIn(optionDTOIdList);
 		if(businessObjectFieldOptionList.size() != businessObjectFieldOptionDTOList.size()){
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldOption_IdNotExisted);
+		}
+		
+		//each option belongs to given custom field
+		if(!businessObjectFieldOptionList.stream().allMatch(t->t.getFieldId().equals(businessObjectField.getUuid()))){
+			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldOption_errInput);
 		}
 		return businessObjectFieldOptionList;
 	}

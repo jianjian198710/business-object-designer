@@ -11,5 +11,6 @@ public interface BusinessObjectFieldRepository extends JpaRepository<BusinessObj
 	
 	public List<BusinessObjectField> findByBusinessObject_Uuid(String businessObjectId);
 	public BusinessObjectField findByBusinessObject_UuidAndUuid(String businessObjectId, String FieldId);
+	public BusinessObjectField findByBusinessObject_NameAndName(String businessObjectName, String fieldName);
 	
 }

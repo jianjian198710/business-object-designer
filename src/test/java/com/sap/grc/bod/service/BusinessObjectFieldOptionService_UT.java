@@ -23,6 +23,7 @@ import com.sap.grc.bod.repository.BusinessObjectFieldOptionRepository;
 import com.sap.grc.bod.repository.BusinessObjectFieldRepository;
 import com.sap.grc.bod.service.impl.BusinessObjectFieldOptionServiceImpl;
 import com.sap.grc.bod.validator.BusinessObjectFieldOptionValidator;
+import com.sap.grc.bod.validator.BusinessObjectFieldValidator;
 
 @RunWith( SpringRunner.class )
 public class BusinessObjectFieldOptionService_UT extends BaseServiceUT
@@ -35,6 +36,9 @@ public class BusinessObjectFieldOptionService_UT extends BaseServiceUT
 
 	@Mock
 	private BusinessObjectFieldOptionValidator bofoValidator;
+	
+	@Mock
+	private BusinessObjectFieldValidator bofValidator;
 
 	@InjectMocks
 	private BusinessObjectFieldOptionServiceImpl businessObjectFieldOptionService;
@@ -49,19 +53,22 @@ public class BusinessObjectFieldOptionService_UT extends BaseServiceUT
 	@Test
 	public void createMultiBusinessObjectFieldOption_UT()
 	{
+		String boName = "ROPA";
+		String fieldName = "CDF1";
+		String fieldId = "A7F21EBC-3F4E-4767-85B6-F6C1AE15F152";
+		String languageId = "en";
+		
 		BusinessObject businessObject = new BusinessObject();
 		businessObject.setUuid("4A54DBDA-6BC1-45EF-A92C-EBD9EADF4B33");
-		businessObject.setName("ROPA");
+		businessObject.setName(boName);
 		businessObject.setDescription("ropa descritpion");
 
 		BusinessObjectField businessObjectField = new BusinessObjectField();
 		businessObjectField.setUuid("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152");
-		businessObjectField.setName("CDF1");
+		businessObjectField.setName(fieldName);
 		businessObjectField.setType(BusinessObjectFieldType.STRING);
 		businessObjectField.setBusinessObject(businessObject);
 
-		String fieldId = "A7F21EBC-3F4E-4767-85B6-F6C1AE15F152";
-		String languageId = "en";
 		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
 		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
 		businessObjectFieldOptionDTO.setDescription("value description 1");
@@ -77,11 +84,11 @@ public class BusinessObjectFieldOptionService_UT extends BaseServiceUT
 		createdBusinessObjectFieldOption.setLanguageId(languageId);
 		createdList.add(createdBusinessObjectFieldOption);
 
-		when(bofRepo.findOne("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152")).thenReturn(businessObjectField);
+		when(bofValidator.validateBusinessObjectField(boName, fieldName)).thenReturn(businessObjectField);
 		when(bofoRepo.save(Mockito.anyList())).thenReturn(createdList);
 		List<BusinessObjectFieldOption> resultList =
 			businessObjectFieldOptionService
-				.createMultiBusinessObjectFieldOption(fieldId, languageId, businessObjectFieldOptionDTOList);
+				.createMultiBusinessObjectFieldOption(boName, fieldName, languageId, businessObjectFieldOptionDTOList);
 		assertEquals(resultList.size(),1);
 	}
 
@@ -89,17 +96,19 @@ public class BusinessObjectFieldOptionService_UT extends BaseServiceUT
 	@Test
 	public void updateMultiBusinessObjectFieldOption_UT()
 	{
+		String boName = "ROPA";
+		String fieldName = "CDF1";
 		String fieldId = "A7F21EBC-3F4E-4767-85B6-F6C1AE15F152";
 		String languageId = "en";
 
 		BusinessObject businessObject = new BusinessObject();
 		businessObject.setUuid("4A54DBDA-6BC1-45EF-A92C-EBD9EADF4B33");
-		businessObject.setName("ROPA");
+		businessObject.setName(boName);
 		businessObject.setDescription("ropa descritpion");
 
 		BusinessObjectField businessObjectField = new BusinessObjectField();
 		businessObjectField.setUuid("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152");
-		businessObjectField.setName("CDF1");
+		businessObjectField.setName(fieldName);
 		businessObjectField.setType(BusinessObjectFieldType.STRING);
 		businessObjectField.setBusinessObject(businessObject);
 
@@ -131,28 +140,31 @@ public class BusinessObjectFieldOptionService_UT extends BaseServiceUT
 		updatedBusinessObjectFieldOption.setLanguageId(languageId);
 		updatedList.add(updatedBusinessObjectFieldOption);
 		
-		when(bofoValidator.updateMultiBusinessObjectFieldOptionValidation(businessObjectFieldOptionDTOList)).thenReturn(businessObjectFieldOptionList);
+		when(bofValidator.validateBusinessObjectField(boName, fieldName)).thenReturn(businessObjectField);
+		when(bofoValidator.updateMultiBusinessObjectFieldOptionValidation(businessObjectField,businessObjectFieldOptionDTOList)).thenReturn(businessObjectFieldOptionList);
 		when(bofoRepo.save(Mockito.anyList())).thenReturn(updatedList);
 		List<BusinessObjectFieldOption> resultList =
 			businessObjectFieldOptionService
-				.updateMultiBusinessObjectFieldOption(businessObjectFieldOptionDTOList);
+				.updateMultiBusinessObjectFieldOption(boName, fieldName, businessObjectFieldOptionDTOList);
 		assertEquals(resultList.size(),1);
 	}
 
 	@Test
 	public void findAllBusinessObjectFieldOption_UT()
 	{
+		String boName = "ROPA";
+		String fieldName = "CDF1";
 		String fieldId = "A7F21EBC-3F4E-4767-85B6-F6C1AE15F152";
 		String languageId = "en";
 
 		BusinessObject businessObject = new BusinessObject();
 		businessObject.setUuid("4A54DBDA-6BC1-45EF-A92C-EBD9EADF4B33");
-		businessObject.setName("ROPA");
+		businessObject.setName(boName);
 		businessObject.setDescription("ropa descritpion");
 
 		BusinessObjectField businessObjectField = new BusinessObjectField();
 		businessObjectField.setUuid("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152");
-		businessObjectField.setName("CDF1");
+		businessObjectField.setName(fieldName);
 		businessObjectField.setType(BusinessObjectFieldType.STRING);
 		businessObjectField.setBusinessObject(businessObject);
 
@@ -167,27 +179,31 @@ public class BusinessObjectFieldOptionService_UT extends BaseServiceUT
 		
 		businessObjectField.setBusinessObjectFieldOptionList(businessObjectFieldOptionList);
 		
+		when(bofValidator.validateBusinessObjectField(boName, fieldName)).thenReturn(businessObjectField);
 		when(bofoRepo.findByFieldIdAndLanguageId(fieldId, languageId)).thenReturn(businessObjectFieldOptionList);
 		
 		List<BusinessObjectFieldOption> resultList =
-			businessObjectFieldOptionService.findAllBusinessObjectFieldOption(fieldId, languageId);
+			businessObjectFieldOptionService.findAllBusinessObjectFieldOption(boName, fieldName, languageId);
 		assertEquals(resultList.size(), 1);
 	}
 	
 	@Test
 	public void deleteBusinessObjectFieldOption_UT(){
+		String boName = "ROPA";
+		String fieldName = "CDF1";
 		String fieldId = "A7F21EBC-3F4E-4767-85B6-F6C1AE15F152";
 		String fieldOptionId = "08E365EE-ADD4-476B-ACC1-5A2LDS92LF20";
+		String fieldOptionValue = "value_1";
 		String languageId = "en";
 
 		BusinessObject businessObject = new BusinessObject();
 		businessObject.setUuid("4A54DBDA-6BC1-45EF-A92C-EBD9EADF4B33");
-		businessObject.setName("ROPA");
+		businessObject.setName(boName);
 		businessObject.setDescription("ropa descritpion");
 
 		BusinessObjectField businessObjectField = new BusinessObjectField();
 		businessObjectField.setUuid("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152");
-		businessObjectField.setName("CDF1");
+		businessObjectField.setName(fieldName);
 		businessObjectField.setType(BusinessObjectFieldType.STRING);
 		businessObjectField.setBusinessObject(businessObject);
 
@@ -196,28 +212,32 @@ public class BusinessObjectFieldOptionService_UT extends BaseServiceUT
 		businessObjectFieldOption.setUuid(fieldOptionId);
 		businessObjectFieldOption.setFieldId(fieldId);
 		businessObjectFieldOption.setDescription("value description 1");
-		businessObjectFieldOption.setValue("value_1");
+		businessObjectFieldOption.setValue(fieldOptionValue);
 		businessObjectFieldOption.setLanguageId(languageId);
-		businessObjectFieldOptionList.add(businessObjectFieldOption);
 		
-		when(bofoRepo.findOne(fieldOptionId)).thenReturn(businessObjectFieldOption);
-		businessObjectFieldOptionService.deleteBusinessObjectFieldOption(fieldOptionId);
+		businessObjectFieldOptionList.add(businessObjectFieldOption);
+		businessObjectField.setBusinessObjectFieldOptionList(businessObjectFieldOptionList);
+		
+		when(bofValidator.validateBusinessObjectField(boName, fieldName)).thenReturn(businessObjectField);
+		businessObjectFieldOptionService.deleteBusinessObjectFieldOption(boName, fieldName, fieldOptionValue, languageId);
 	}
 	
 	@Test
 	public void deleteAllBusinessObjectFieldOption_UT(){
+		String boName = "ROPA";
+		String fieldName = "CDF1";
 		String fieldId = "A7F21EBC-3F4E-4767-85B6-F6C1AE15F152";
 		String fieldOptionId = "08E365EE-ADD4-476B-ACC1-5A2LDS92LF20";
 		String languageId = "en";
 
 		BusinessObject businessObject = new BusinessObject();
 		businessObject.setUuid("4A54DBDA-6BC1-45EF-A92C-EBD9EADF4B33");
-		businessObject.setName("ROPA");
+		businessObject.setName(boName);
 		businessObject.setDescription("ropa descritpion");
 
 		BusinessObjectField businessObjectField = new BusinessObjectField();
 		businessObjectField.setUuid("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152");
-		businessObjectField.setName("CDF1");
+		businessObjectField.setName(fieldName);
 		businessObjectField.setType(BusinessObjectFieldType.STRING);
 		businessObjectField.setBusinessObject(businessObject);
 
@@ -230,6 +250,7 @@ public class BusinessObjectFieldOptionService_UT extends BaseServiceUT
 		businessObjectFieldOption.setLanguageId(languageId);
 		businessObjectFieldOptionList.add(businessObjectFieldOption);
 		
-		businessObjectFieldOptionService.deleteAllBusinessObjectFieldOption(fieldId,languageId);
+		when(bofValidator.validateBusinessObjectField(boName, fieldName)).thenReturn(businessObjectField);
+		businessObjectFieldOptionService.deleteAllBusinessObjectFieldOption(boName, fieldName,languageId);
 	}
 }

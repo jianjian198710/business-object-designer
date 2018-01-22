@@ -13,8 +13,6 @@ import com.sap.grc.bod.constant.ControllerPathConstant;
 import com.sap.grc.bod.model.BusinessObject;
 import com.sap.grc.bod.service.BusinessObjectService;
 
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -25,38 +23,10 @@ public class BusinessObjectController
 	@Autowired
 	private BusinessObjectService boService;
 	
-//	@Autowired
-//	private AuthEngine authEngine;
-
-//	@PostMapping
-//	public ResponseEntity<BusinessObject> addBusinessObject (@RequestBody BusinessObjectDTO businessObjectDTO){
-//		BusinessObject businessObject = boService.createBusinessObject(businessObjectDTO, authEngine.getCurrentUserBean());
-//		return new ResponseEntity<>(businessObject,HttpStatus.CREATED);
-//	}
-//	
-//	@PutMapping( value = "/{id}")
-//	public ResponseEntity<BusinessObject> updateBusinessObject(@PathVariable("id") String businessObjectId, 
-//		@RequestBody BusinessObjectDTO businessObjectDTO){
-//		BusinessObject businessObject = boService.updateBusinessObject(businessObjectId, businessObjectDTO);
-//		return new ResponseEntity<>(businessObject,HttpStatus.OK);
-//	}
 	@ApiOperation( value = "get all business objects")
 	@GetMapping
 	public  ResponseEntity<List<BusinessObject>> findAllbusinessObject(){
 		List<BusinessObject> businessObjectList = boService.getAllBusinessObject();
 		return new ResponseEntity<>(businessObjectList,HttpStatus.OK);
 	}
-
-//	@GetMapping( value = "/{id}")
-//    public ResponseEntity<BusinessObject> findByBusinessObjectId(@PathVariable("id") String businessObjectId){	
-//		
-//		BusinessObject businessObject = boService.findBybusinessObjectId(businessObjectId);
-//    	return new ResponseEntity<>(businessObject, HttpStatus.OK);
-//    }
-
-//	@DeleteMapping( value = "{id}")
-//    public void deleteByBusinessObjectId(@PathVariable("id") String businessObjectId){	
-//    	boService.deleteBybusinessObjectId(businessObjectId);
-//    }
-	
 }

@@ -33,72 +33,73 @@ public class BusinessObjectFieldOptionController
 	
 	@ApiOperation( value = "create business object options")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "uuid"),
-		@ApiImplicitParam(name = "fieldId", value = "Business Object Field Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "bo_name", value = "Business Object Name", required = true, paramType="path", dataType = "String"),
+		@ApiImplicitParam(name = "field_name", value = "Business Object Field Name", required = true, paramType="path", dataType = "String"),
 		@ApiImplicitParam(name = "businessObjectFieldOptionDTOList", value = "Business Object Field Option DTO List", required = true, dataType = "List<BusinessObjectFieldOptionDTO>")
 	})
-	@PostMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
+	@PostMapping(value = "/{bo_name}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{field_name}" 
 		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION )
-	public ResponseEntity<List<BusinessObjectFieldOption>> createMultiBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId, 
+	public ResponseEntity<List<BusinessObjectFieldOption>> createMultiBusinessObjectFieldOption(@PathVariable String bo_name, @PathVariable String field_name, 
 		@RequestBody List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
 		String languageId = LocaleContextHolder.getLocale().getLanguage();
 		List<BusinessObjectFieldOption> businessObjectFieldOptionList = 
-			bofoService.createMultiBusinessObjectFieldOption(fieldId, languageId, businessObjectFieldOptionDTOList); 
+			bofoService.createMultiBusinessObjectFieldOption(bo_name, field_name, languageId, businessObjectFieldOptionDTOList); 
 		return new ResponseEntity<>(businessObjectFieldOptionList, HttpStatus.CREATED);
 	}
 	
 	@ApiOperation( value = "update business object options")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "uuid"),
-		@ApiImplicitParam(name = "fieldId", value = "Business Object Field Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "bo_name", value = "Business Object Name", required = true, paramType="path", dataType = "String"),
+		@ApiImplicitParam(name = "field_name", value = "Business Object Field Name", required = true, paramType="path", dataType = "String"),
 		@ApiImplicitParam(name = "businessObjectFieldOptionDTOList", value = "Business Object Field Option DTO List", required = true, dataType = "List<BusinessObjectFieldOptionDTO>")
 	})
-	@PutMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
+	@PutMapping(value = "/{bo_name}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{field_name}" 
 		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION )
-	public ResponseEntity<List<BusinessObjectFieldOption>> updateMultiBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId,
+	public ResponseEntity<List<BusinessObjectFieldOption>> updateMultiBusinessObjectFieldOption(@PathVariable String bo_name, @PathVariable String field_name,
 		@RequestBody List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
 		List<BusinessObjectFieldOption> businessObjectFieldOptionList = 
-			bofoService.updateMultiBusinessObjectFieldOption(businessObjectFieldOptionDTOList); 
+			bofoService.updateMultiBusinessObjectFieldOption(bo_name, field_name, businessObjectFieldOptionDTOList); 
 		return new ResponseEntity<>(businessObjectFieldOptionList, HttpStatus.OK);
 	}
 	
 	@ApiOperation( value = "update business object options")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "uuid"),
-		@ApiImplicitParam(name = "fieldId", value = "Business Object Field Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "bo_name", value = "Business Object Name", required = true, paramType="path", dataType = "String"),
+		@ApiImplicitParam(name = "field_name", value = "Business Object Field Name", required = true, paramType="path", dataType = "String")
 	})
-	@GetMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
+	@GetMapping(value = "/{bo_name}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{field_name}" 
 		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION )
-	public ResponseEntity<List<BusinessObjectFieldOption>> findAllBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId){
+	public ResponseEntity<List<BusinessObjectFieldOption>> findAllBusinessObjectFieldOption(@PathVariable String bo_name, @PathVariable String field_name){
 		String languageId = LocaleContextHolder.getLocale().getLanguage();
 		List<BusinessObjectFieldOption> businessObjectFieldOptionList = 
-			bofoService.findAllBusinessObjectFieldOption(fieldId, languageId);
+			bofoService.findAllBusinessObjectFieldOption(bo_name, field_name, languageId);
 		return new ResponseEntity<>(businessObjectFieldOptionList, HttpStatus.OK);
 	}
 	
 	@ApiOperation( value = "delete one business object option")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "uuid"),
-		@ApiImplicitParam(name = "fieldId", value = "Business Object Field Id", required = true, paramType="path", dataType = "uuid"),
-		@ApiImplicitParam(name = "fieldOptionId", value = "Business Object Field Option Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "bo_name", value = "Business Object Name", required = true, paramType="path", dataType = "String"),
+		@ApiImplicitParam(name = "field_name", value = "Business Object Field Name", required = true, paramType="path", dataType = "String"),
+		@ApiImplicitParam(name = "fieldOptionId", value = "Business Object Field Option Id", required = true, paramType="path", dataType = "uuid")
 	})
-	@DeleteMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
-		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION + "/{fieldOptionId}")
-	public ResponseEntity<Void> deleteOneBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId, @PathVariable String fieldOptionId){
-		bofoService.deleteBusinessObjectFieldOption(fieldOptionId);
+	@DeleteMapping(value = "/{bo_name}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{field_name}" 
+		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION + "/{field_option_value}")
+	public ResponseEntity<Void> deleteOneBusinessObjectFieldOption(@PathVariable String bo_name, @PathVariable String field_name, @PathVariable String field_option_value){
+		String languageId = LocaleContextHolder.getLocale().getLanguage();
+		bofoService.deleteBusinessObjectFieldOption(bo_name, field_name, field_option_value, languageId);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@ApiOperation( value = "delete all business object options")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "uuid"),
-		@ApiImplicitParam(name = "fieldId", value = "Business Object Field Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "bo_name", value = "Business Object Name", required = true, paramType="path", dataType = "String"),
+		@ApiImplicitParam(name = "field_name", value = "Business Object Field Name", required = true, paramType="path", dataType = "String")
 	})
-	@DeleteMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
+	@DeleteMapping(value = "/{bo_name}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{field_name}" 
 		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION )
-	public ResponseEntity<Void> deleteAllBusinessObjectFieldOption(@PathVariable String businessObjectId, @PathVariable String fieldId){
+	public ResponseEntity<Void> deleteAllBusinessObjectFieldOption(@PathVariable String bo_name, @PathVariable String field_name){
 		String languageId = LocaleContextHolder.getLocale().getLanguage();
-		bofoService.deleteAllBusinessObjectFieldOption(fieldId, languageId);
+		bofoService.deleteAllBusinessObjectFieldOption(bo_name, field_name, languageId);
 		return ResponseEntity.noContent().build();
 	}
 }

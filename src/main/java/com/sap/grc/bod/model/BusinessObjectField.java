@@ -55,6 +55,12 @@ public @Data class BusinessObjectField implements Serializable
 	@Column( name = "field_type" )
 	@Enumerated(EnumType.STRING)
 	private BusinessObjectFieldType type;
+	
+	@Column( name = "is_mandatory" )
+	private Boolean isMandatory;
+	
+	@Column( name = "is_visible" )
+	private Boolean isVisible;
 
 	@Column( name = "is_cust_field" )
 	private Boolean isCustField;

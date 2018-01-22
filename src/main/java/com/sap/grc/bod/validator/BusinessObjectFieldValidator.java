@@ -10,10 +10,7 @@ import com.sap.grc.bod.exception.BusinessObjectCustomException;
 import com.sap.grc.bod.exception.BusinessObjectCustomException.ExceptionEnum;
 import com.sap.grc.bod.model.BusinessObject;
 import com.sap.grc.bod.model.BusinessObjectField;
-import com.sap.grc.bod.model.enumtype.BusinessObjectFieldType;
-import com.sap.grc.bod.repository.BusinessObjectFieldOptionRepository;
 import com.sap.grc.bod.repository.BusinessObjectFieldRepository;
-import com.sap.grc.bod.repository.BusinessObjectFieldTextRepository;
 import com.sap.grc.bod.repository.BusinessObjectRepository;
 
 @Component
@@ -51,13 +48,21 @@ public class BusinessObjectFieldValidator
 
 	}
 	
+	public BusinessObjectField validateBusinessObjectField(String boName, String fieldName){
+		BusinessObjectField businessObjectField = bofRepo.findByBusinessObject_NameAndName(boName, fieldName);
+		if(Objects.isNull(businessObjectField)){
+			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_isNotExisted);
+		}
+		return businessObjectField;
+	}
+	
 	private void validateBusinessObjectConsistent(String businessObjectId, BusinessObjectFieldDTO businessObjectFieldDTO) {
 				
 		if(Objects.isNull(businessObjectId)){
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNull);
 		}
 		
-		BusinessObject businessObject = boRepo.findByUuid(businessObjectId);
+		BusinessObject businessObject = boRepo.findOne(businessObjectId);
 		if(Objects.isNull(businessObject)) {
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNotExisted);			
 		}

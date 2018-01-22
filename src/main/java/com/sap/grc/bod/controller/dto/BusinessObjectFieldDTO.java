@@ -11,9 +11,10 @@ public @Data class BusinessObjectFieldDTO
 	@NotBlank
 	private String name;
 	private BusinessObjectFieldType type;
+	private Boolean isMandatory;
+	private Boolean isVisible;
 	private Boolean isCustField;
 	private Boolean isMultiInput;
 	private Boolean isValueSet;
 	private BusinessObjectFieldTextDTO businessObjectFieldText;
-
 }
