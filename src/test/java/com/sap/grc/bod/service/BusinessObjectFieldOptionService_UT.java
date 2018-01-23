@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.sap.grc.bod.aop.BusinessObjectFieldAspect;
 import com.sap.grc.bod.controller.dto.BusinessObjectFieldOptionDTO;
 import com.sap.grc.bod.model.BusinessObject;
 import com.sap.grc.bod.model.BusinessObjectField;
@@ -39,6 +40,9 @@ public class BusinessObjectFieldOptionService_UT extends BaseServiceUT
 	
 	@Mock
 	private BusinessObjectFieldValidator bofValidator;
+	
+	@Mock
+	private BusinessObjectFieldAspect businessObjectFieldAspect; 
 
 	@InjectMocks
 	private BusinessObjectFieldOptionServiceImpl businessObjectFieldOptionService;

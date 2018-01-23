@@ -182,23 +182,26 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 		return businessObjectField;
 	}
 	
-	public List<BusinessObjectField> findAllBusinessObjectField(String businessObjectId){
-		
-		List<BusinessObjectField> prebusinessObjectFieldList = bofRepo.findByBusinessObject_Uuid(businessObjectId);
-		List<BusinessObjectField> businessObjectFieldList = new ArrayList<>();
-		
-		Iterator<BusinessObjectField> bofIt = prebusinessObjectFieldList.iterator();
-		while(bofIt.hasNext()) {
-			BusinessObjectField prebusinessObjectField;
-            prebusinessObjectField = bofIt.next();	
-			String fieldId = prebusinessObjectField.getUuid();
-			BusinessObjectField businessObjectField = this.findOneBusinessObjectField(businessObjectId, fieldId);
-			if(!Objects.isNull(businessObjectField)) {
-				businessObjectFieldList.add(businessObjectField);			
-			}			
-		}	
-		
-		return businessObjectFieldList;
-	}
+//	public List<BusinessObjectField> findAllBusinessObjectField(String businessObjectId){
+//		
+//		List<BusinessObjectField> prebusinessObjectFieldList = bofRepo.findByBusinessObject_Uuid(businessObjectId);
+//		List<BusinessObjectField> businessObjectFieldList = new ArrayList<>();
+//		
+//		Iterator<BusinessObjectField> bofIt = prebusinessObjectFieldList.iterator();
+//		while(bofIt.hasNext()) {
+//			BusinessObjectField prebusinessObjectField;
+//            prebusinessObjectField = bofIt.next();	
+//			String fieldId = prebusinessObjectField.getUuid();
+//			BusinessObjectField businessObjectField = this.findOneBusinessObjectField(businessObjectId, fieldId);
+//			if(!Objects.isNull(businessObjectField)) {
+//				businessObjectFieldList.add(businessObjectField);			
+//			}			
+//		}	
+//		
+//		return businessObjectFieldList;
+//	}
 	
+	public List<BusinessObjectField> findAllBusinessObjectField(String businessObjectName){
+		return bofRepo.findByBusinessObject_Name(businessObjectName);
+	}
 }

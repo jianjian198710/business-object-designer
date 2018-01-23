@@ -14,5 +14,5 @@ public interface BusinessObjectFieldService
 	public List<BusinessObjectField> updateMultiBusinessObjectField(String businessObjectId,List<BusinessObjectFieldDTO> businessObjectFieldDTOList);
 	
 	public BusinessObjectField findOneBusinessObjectField(String businessObjectId, String fieldId);
-	public List<BusinessObjectField> findAllBusinessObjectField(String businessObjectId);
+	public List<BusinessObjectField> findAllBusinessObjectField(String businessObjectName);
 }
