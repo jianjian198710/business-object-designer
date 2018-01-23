@@ -23,6 +23,8 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<eclipselink.version>2.7.0</eclipselink.version>
+		<spring-cloud.version>Edgware.RELEASE</spring-cloud.version>
+		<spring-cloud-contract.version>1.2.1.RELEASE</spring-cloud-contract.version>
 	</properties>
 
 	<dependencies>
@@ -86,7 +88,24 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-contract-verifier</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<build>
 		<plugins>
@@ -199,6 +218,17 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			
+			<!-- Contract Test -->
+			<plugin>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-contract-maven-plugin</artifactId>
+				<version>${spring-cloud-contract.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<packageWithBaseClasses>com.sap.grc.bod.contract.ropa</packageWithBaseClasses>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
