@@ -18,7 +18,7 @@ Contract.make {
                                     {
                                         "uuid": "c479d16b-0b0f-4c4f-8af8-ed403b89afc3",
                                         "name": "Custom1", 
-                                        "type": "String",
+                                        "type": "STRING",
                                         "isMandatory": false,
                                         "isVisible": true,
                                         "isCustField": true,
@@ -38,11 +38,12 @@ Contract.make {
                                     {
                                         "uuid": "56e61124-ac3e-42b9-81d1-1775c6704867",
                                         "name": "Custom2", 
-                                        "type": "Date",
+                                        "type": "STRING",
                                         "isCustField": true,
                                         "isValueSet": false,
                                         "isMandatory": false,
                                         "isVisible": false,
+                                        "isMultiInput": false,
                                         "createdAt": 1516089558466,
                                         "creatorBy": "Jane Huang",
                                         "changedAt": 1516089558466,

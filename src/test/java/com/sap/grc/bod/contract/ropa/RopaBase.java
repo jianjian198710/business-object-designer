@@ -9,38 +9,38 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
-import com.sap.grc.bod.controller.BusinessObjectFieldController;
-import com.sap.grc.bod.controller.BusinessObjectFieldOptionController;
+import com.sap.grc.bod.Application;
 import com.sap.grc.bod.model.BusinessObjectField;
 import com.sap.grc.bod.model.BusinessObjectFieldOption;
 import com.sap.grc.bod.model.BusinessObjectFieldText;
 import com.sap.grc.bod.model.enumtype.BusinessObjectFieldType;
-import com.sap.grc.bod.service.BusinessObjectFieldOptionService;
-import com.sap.grc.bod.service.BusinessObjectFieldService;
+import com.sap.grc.bod.service.impl.BusinessObjectFieldOptionServiceImpl;
+import com.sap.grc.bod.service.impl.BusinessObjectFieldServiceImpl;
 
-@RunWith( MockitoJUnitRunner.class )
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = Application.class)
 public abstract class RopaBase
 {
-
+    
     @Autowired
-    BusinessObjectFieldController bodFieldRestController;
-    @Autowired
-    BusinessObjectFieldOptionController bodFieldOptionController;
+    private WebApplicationContext context;
 
     @MockBean
-    BusinessObjectFieldService bodFieldService;
+    BusinessObjectFieldServiceImpl bodFieldService;
     @MockBean
-    BusinessObjectFieldOptionService bodFieldOptionService;
+    BusinessObjectFieldOptionServiceImpl bodFieldOptionService;
 
     @Before
     public void setup()
     {
-        RestAssuredMockMvc.standaloneSetup(bodFieldRestController);
-        RestAssuredMockMvc.standaloneSetup(bodFieldOptionController);
+        RestAssuredMockMvc.webAppContextSetup(context);
 
         List<BusinessObjectField> customFields = new ArrayList<>();
         BusinessObjectField customField = new BusinessObjectField();
@@ -75,10 +75,10 @@ public abstract class RopaBase
         customField.setName("Custom2");
         customField.setType(BusinessObjectFieldType.STRING);
         customField.setIsCustField(true);
-        customField.setIsValueSet(true);
+        customField.setIsValueSet(false);
         customField.setIsMandatory(false);
         customField.setIsMultiInput(false);
-        customField.setIsVisible(true);
+        customField.setIsVisible(false);
         customFieldText = new ArrayList<>();
         text = new BusinessObjectFieldText();
         text.setLanguageId("en");
