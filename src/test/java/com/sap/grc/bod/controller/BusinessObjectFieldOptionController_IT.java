@@ -51,9 +51,6 @@ public class BusinessObjectFieldOptionController_IT
 	@Autowired
 	private MockMvc mockMvc;
 	
-	@Mock
-	private AmqpTemplate rabbitTemplate;
-
 	private ObjectMapper mapper = new ObjectMapper();
 
 	@Test

@@ -14,3 +14,4 @@ applications:
 
   services:
   - postgresql-i317067
+  - rabbitmq-i317067

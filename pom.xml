@@ -124,6 +124,7 @@
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<configuration>
 					<excludes>
+						<exclude>**/com/sap/grc/bod/*</exclude>
 						<exclude>**/com/sap/grc/bod/constant/**</exclude>
 						<exclude>**/com/sap/grc/bod/config/**</exclude>
 						<exclude>**/com/sap/grc/bod/model/**</exclude>
@@ -131,6 +132,8 @@
 						<exclude>**/com/sap/grc/bod/controller/dto/**</exclude>
 						<exclude>**/com/sap/grc/bod/repository/**</exclude>
 						<exclude>**/com/sap/grc/bod/security/**</exclude>
+						<exclude>**/com/sap/grc/bod/aop/**</exclude>
+						<exclude>**/com/sap/grc/bod/mq/**</exclude>
 					</excludes>
 				</configuration>
 				<executions>
