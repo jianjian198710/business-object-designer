@@ -12,12 +12,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
-import org.mockito.Mock;
-import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,6 +31,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.grc.bod.constant.ControllerPathConstant;
 import com.sap.grc.bod.controller.dto.BusinessObjectFieldOptionDTO;
 import com.sap.grc.bod.model.BusinessObjectFieldOption;
+import com.sap.grc.bod.util.EmbeddedAMQPBroker;
 import com.sap.grc.bod.util.TestUtil;
 
 @ActiveProfiles( "integration_test" )
@@ -52,7 +53,19 @@ public class BusinessObjectFieldOptionController_IT
 	private MockMvc mockMvc;
 	
 	private ObjectMapper mapper = new ObjectMapper();
+	
+	private EmbeddedAMQPBroker amqpBroker = new EmbeddedAMQPBroker();
 
+	@Before
+	public void startup() throws Exception{
+		amqpBroker.startBroker();
+	}
+	
+	@After
+	public void tearDonw(){
+		amqpBroker.stopBroker();
+	}
+	
 	@Test
 	public void test1_findAllBusinessObjectFieldOption_IT()
 		throws Exception

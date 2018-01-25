@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.List;
 
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sap.grc.bod.constant.ControllerPathConstant;
 import com.sap.grc.bod.model.BusinessObject;
+import com.sap.grc.bod.util.EmbeddedAMQPBroker;
 
 @ActiveProfiles({ "integration_test" })
 @RunWith(SpringRunner.class)
@@ -31,6 +34,18 @@ public class BusinessObjectFieldController_IT
 	private MockMvc mockMvc;
 	
 	private ObjectMapper mapper = new ObjectMapper();
+	
+	private EmbeddedAMQPBroker amqpBroker = new EmbeddedAMQPBroker();
+
+	@Before
+	public void startup() throws Exception{
+		amqpBroker.startBroker();
+	}
+	
+	@After
+	public void tearDonw(){
+		amqpBroker.stopBroker();
+	}
 	
 	@Test
 	public void findAllbusinessObject_IT() throws Exception{

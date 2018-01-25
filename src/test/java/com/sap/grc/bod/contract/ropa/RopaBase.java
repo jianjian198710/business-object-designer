@@ -1,7 +1,5 @@
 package com.sap.grc.bod.contract.ropa;
 
-import io.restassured.module.mockmvc.RestAssuredMockMvc;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.sap.grc.bod.Application;
@@ -23,6 +20,8 @@ import com.sap.grc.bod.model.BusinessObjectFieldText;
 import com.sap.grc.bod.model.enumtype.BusinessObjectFieldType;
 import com.sap.grc.bod.service.impl.BusinessObjectFieldOptionServiceImpl;
 import com.sap.grc.bod.service.impl.BusinessObjectFieldServiceImpl;
+
+import io.restassured.module.mockmvc.RestAssuredMockMvc;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
