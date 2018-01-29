@@ -53,8 +53,7 @@ public @Data class BusinessObjectFieldText implements Serializable{
 	
 	@Override
 	public String toString() {
-		//TODO
-	    return "Test";
+	    return this.getClass().getSimpleName() + "-" + this.getFieldShortDescription();
 	}
 
 }

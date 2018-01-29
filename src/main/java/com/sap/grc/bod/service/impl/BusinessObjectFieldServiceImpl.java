@@ -16,6 +16,7 @@ import com.sap.grc.bod.model.BusinessObjectField;
 import com.sap.grc.bod.model.BusinessObjectFieldOption;
 import com.sap.grc.bod.model.BusinessObjectFieldText;
 import com.sap.grc.bod.model.UserBean;
+import com.sap.grc.bod.repository.BusinessObjectFieldOptionRepository;
 import com.sap.grc.bod.repository.BusinessObjectFieldRepository;
 import com.sap.grc.bod.repository.BusinessObjectFieldTextRepository;
 import com.sap.grc.bod.repository.BusinessObjectRepository;
@@ -35,13 +36,19 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 	private BusinessObjectFieldTextRepository boftextRepo;
 	
 	@Autowired
+	private BusinessObjectFieldOptionRepository bofopRepo;
+	
+	@Autowired
 	private BusinessObjectFieldValidator bofValidator;
 	
 	@Override
-	public List<BusinessObjectField> createBusinessObjecFields(String businessObjectId, 
+	public List<BusinessObjectField> createBusinessObjecFields(String businessObjectName, 
            List<BusinessObjectFieldDTO> businessObjectFieldDTOList, UserBean user){
 		
-		BusinessObject businessObject = boRepo.findOne(businessObjectId);
+		//Validation
+        bofValidator.validateBusinessObjectConsistent(businessObjectName);       
+		BusinessObject businessObject = boRepo.findByName(businessObjectName);
+		
 		BusinessObjectFieldDTO businessObjectFieldDTO;
 		List<BusinessObjectField> businessObjectFieldList = new ArrayList<>();
 		
@@ -55,7 +62,7 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 			businessObjectFieldDTO = bofDTOit.next();
 			
 			//Validation
-			bofValidator.createBusinessObjectFieldValidation(businessObjectId, businessObjectFieldDTO);		
+			bofValidator.createBusinessObjectFieldValidation(businessObjectFieldDTO);	
 			
 			//Copy to business object field model
 			BeanUtils.copyProperties(businessObjectFieldDTO, businessObjectField);
@@ -84,18 +91,23 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 	}
 	
 	@Override
-	public BusinessObjectField updateOneBusinessObjectField(String businessObjectId, String fieldId, BusinessObjectFieldDTO businessObjectFieldDTO){
+	public BusinessObjectField updateOneBusinessObjectField(String businessObjectName, String fieldName, BusinessObjectFieldDTO businessObjectFieldDTO){
+		
+		bofValidator.validateBusinessObjectConsistent(businessObjectName);
 		
 		BusinessObjectField businessObjectField = 
-				this.preBusinessObjectField(businessObjectId, fieldId, businessObjectFieldDTO);
+				this.preBusinessObjectField(fieldName, businessObjectFieldDTO);
+		
 		return bofRepo.save(businessObjectField);
 		
 	}
 	
 	@Override
-	public List<BusinessObjectField> updateMultiBusinessObjectField(String businessObjectId, 
+	public List<BusinessObjectField> updateMultiBusinessObjectField(String businessObjectName, 
 		   List<BusinessObjectFieldDTO> businessObjectFieldDTOList){
-
+        
+		bofValidator.validateBusinessObjectConsistent(businessObjectName);
+		
 		List<BusinessObjectField> businessObjectFieldList = new ArrayList<>();
 		
 		Iterator<BusinessObjectFieldDTO> bofDTOit = businessObjectFieldDTOList.iterator();
@@ -104,10 +116,10 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 			BusinessObjectFieldDTO businessObjectFieldDTO;
 	
 			businessObjectFieldDTO = bofDTOit.next();	
-			String fieldId = businessObjectFieldDTO.getUuid();
+			String fieldName = businessObjectFieldDTO.getName();
 	        
 			BusinessObjectField businessObjectField = 
-					this.preBusinessObjectField(businessObjectId, fieldId, businessObjectFieldDTO);
+					this.preBusinessObjectField(fieldName, businessObjectFieldDTO);
 			
 			businessObjectFieldList.add(businessObjectField);
 			
@@ -116,21 +128,72 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 		return bofRepo.save(businessObjectFieldList);
 	}
 
-	private BusinessObjectField preBusinessObjectField(String businessObjectId, String fieldId, BusinessObjectFieldDTO businessObjectFieldDTO) {
+	@Override
+	public BusinessObjectField findOneBusinessObjectField(String businessObjectName, String fieldName){
+		
+		BusinessObjectField businessObjectField = new BusinessObjectField();
+		List<BusinessObjectFieldText> businessObjectFieldTextList = new ArrayList<>();
+		BusinessObjectFieldText preBusinessObjectFieldText = new BusinessObjectFieldText();
+		List<BusinessObjectFieldOption> prebofOptionList = new ArrayList<>();
+		
+		BusinessObjectField preBusinessObjectField = bofRepo.findByBusinessObject_NameAndName(businessObjectName,fieldName);
+		if(Objects.isNull(preBusinessObjectField)) {
+			return businessObjectField;
+		}
+		
+		BeanUtils.copyProperties(preBusinessObjectField, businessObjectField);
+		businessObjectField.getBusinessObjectFieldOptionList().clear();
+		businessObjectField.getBusinessObjectFieldTextList().clear();
+		
+		String languageId = LocaleContextHolder.getLocale().getLanguage();
+		preBusinessObjectFieldText = 
+				   boftextRepo.findByBusinessObjectField_NameAndLanguageId(fieldName, languageId);
+		if(!Objects.isNull(preBusinessObjectFieldText)) {
+          businessObjectFieldTextList.add(preBusinessObjectFieldText);
+          businessObjectField.setBusinessObjectFieldTextList(businessObjectFieldTextList);  
+		}
+        
+		prebofOptionList = bofopRepo.findByBussinessObjectField_NameAndLanguageId(fieldName, languageId);
+		if(!prebofOptionList.isEmpty()) {
+			businessObjectField.setBusinessObjectFieldOptionList(prebofOptionList);
+		}
+		return businessObjectField;
+	}
+
+	public List<BusinessObjectField> findAllBusinessObjectField(String businessObjectName){
+		
+		List<BusinessObjectField> prebusinessObjectFieldList = bofRepo.findByBusinessObject_Name(businessObjectName);
+		List<BusinessObjectField> businessObjectFieldList = new ArrayList<>();
+		
+		Iterator<BusinessObjectField> bofIt = prebusinessObjectFieldList.iterator();
+		while(bofIt.hasNext()) {
+			BusinessObjectField prebusinessObjectField;
+	        prebusinessObjectField = bofIt.next();	
+			String fieldName = prebusinessObjectField.getName();
+			BusinessObjectField businessObjectField = this.findOneBusinessObjectField(businessObjectName, fieldName);
+			if(!Objects.isNull(businessObjectField)) {
+				businessObjectFieldList.add(businessObjectField);			
+			}			
+		}	
+		
+		return businessObjectFieldList;
+	}
+
+	private BusinessObjectField preBusinessObjectField(String fieldName, BusinessObjectFieldDTO businessObjectFieldDTO) {
 
 		List<BusinessObjectFieldText> businessObjectFieldTextList = new ArrayList<>();
 		BusinessObjectFieldText businessObjectFieldText = new BusinessObjectFieldText();
 		
 		//Validation
-		bofValidator.updateBusinessObjectFieldValidation(businessObjectId, fieldId, businessObjectFieldDTO);
+		bofValidator.updateBusinessObjectFieldValidation(fieldName, businessObjectFieldDTO);
 		
-		//Fetch field by fieldId(uuid)
-		BusinessObjectField businessObjectField = bofRepo.findOne(fieldId);
+		//Fetch field by field name
+		BusinessObjectField businessObjectField = bofRepo.findByName(fieldName);
 		BeanUtils.copyProperties(businessObjectFieldDTO, businessObjectField);
 		
 		String languageId = LocaleContextHolder.getLocale().getLanguage();
 		BusinessObjectFieldText existedBusinessObjectFieldText = 
-				   boftextRepo.findByBusinessObjectField_UuidAndLanguageId(fieldId, languageId);
+				   boftextRepo.findByBusinessObjectField_NameAndLanguageId(fieldName, languageId);
         if(Objects.isNull(existedBusinessObjectFieldText)) {	
         	businessObjectFieldText.setLanguageId(languageId);	
         }else {
@@ -150,58 +213,27 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 		//Set text list to field
 		businessObjectField.setBusinessObjectFieldTextList(businessObjectFieldTextList);
 		
-		businessObjectField.getBusinessObjectFieldOptionList().clear();
+		//Set Option List
+		List<BusinessObjectFieldOption> bofOptionList = bofopRepo.findByBussinessObjectField_NameAndLanguageId(fieldName, languageId);
+		if(bofOptionList.isEmpty()) {
+			if(Objects.nonNull(businessObjectField.getBusinessObjectFieldOptionList())) {
+				businessObjectField.getBusinessObjectFieldOptionList().clear();					
+			}
+		}else {
+			businessObjectField.setBusinessObjectFieldOptionList(bofOptionList);	
+		}
+		        		
 		return businessObjectField;
 		
 	}
-	
-	@Override
-	public BusinessObjectField findOneBusinessObjectField(String businessObjectId, String fieldId){
-		
-		BusinessObjectField businessObjectField = new BusinessObjectField();
-		List<BusinessObjectFieldText> businessObjectFieldTextList = new ArrayList<>();
-		BusinessObjectFieldText preBusinessObjectFieldText = new BusinessObjectFieldText();
-		
-		BusinessObjectField preBusinessObjectField = bofRepo.findByBusinessObject_UuidAndUuid(businessObjectId,fieldId);
-		if(Objects.isNull(preBusinessObjectField)) {
-			return businessObjectField;
-		}
-		
-		BeanUtils.copyProperties(preBusinessObjectField, businessObjectField);
-		businessObjectField.getBusinessObjectFieldOptionList().clear();
-		businessObjectField.getBusinessObjectFieldTextList().clear();
-		
-		String languageId = LocaleContextHolder.getLocale().getLanguage();
-		preBusinessObjectFieldText = 
-				   boftextRepo.findByBusinessObjectField_UuidAndLanguageId(fieldId, languageId);
-		if(!Objects.isNull(preBusinessObjectFieldText)) {
-          businessObjectFieldTextList.add(preBusinessObjectFieldText);
-          businessObjectField.setBusinessObjectFieldTextList(businessObjectFieldTextList);  
-		}
 
-		return businessObjectField;
+	@Override
+	public void deleteOneBusinessObjectField(String businessObjectName, String fieldName) {
+		
+		bofValidator.validateBusinessObjectConsistent(businessObjectName);
+		BusinessObjectField businessObjectField = bofValidator.validateBusinessObjectField(businessObjectName, fieldName);
+		bofRepo.delete(businessObjectField);
+		
 	}
 	
-//	public List<BusinessObjectField> findAllBusinessObjectField(String businessObjectId){
-//		
-//		List<BusinessObjectField> prebusinessObjectFieldList = bofRepo.findByBusinessObject_Uuid(businessObjectId);
-//		List<BusinessObjectField> businessObjectFieldList = new ArrayList<>();
-//		
-//		Iterator<BusinessObjectField> bofIt = prebusinessObjectFieldList.iterator();
-//		while(bofIt.hasNext()) {
-//			BusinessObjectField prebusinessObjectField;
-//            prebusinessObjectField = bofIt.next();	
-//			String fieldId = prebusinessObjectField.getUuid();
-//			BusinessObjectField businessObjectField = this.findOneBusinessObjectField(businessObjectId, fieldId);
-//			if(!Objects.isNull(businessObjectField)) {
-//				businessObjectFieldList.add(businessObjectField);			
-//			}			
-//		}	
-//		
-//		return businessObjectFieldList;
-//	}
-	
-	public List<BusinessObjectField> findAllBusinessObjectField(String businessObjectName){
-		return bofRepo.findByBusinessObject_Name(businessObjectName);
-	}
 }

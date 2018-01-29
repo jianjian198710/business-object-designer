@@ -57,7 +57,6 @@ public @Data class BusinessObjectFieldOption implements Serializable
 	
 	@Override
 	public String toString() {
-		//TODO
-	    return "Test";
+	    return this.getClass().getSimpleName() + "-" + this.getValue() + this.getDescription();
 	}
 }

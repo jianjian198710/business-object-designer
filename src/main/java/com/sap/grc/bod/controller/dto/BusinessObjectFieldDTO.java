@@ -7,7 +7,6 @@ import lombok.Data;
 
 public @Data class BusinessObjectFieldDTO
 {
-	private String uuid;
 	@NotBlank
 	private String name;
 	private BusinessObjectFieldType type;

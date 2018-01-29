@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,16 +41,15 @@ public class BusinessObjectFieldController {
 	 */
 	@ApiOperation( value = "create business object fields")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "businessObjectName", value = "Business Object Name", required = true, paramType="path", dataType = "String"),
 		@ApiImplicitParam(name = "businessObjectFieldDTOList", value = "Business Object Field DTO List", required = true, dataType = "List<businessObjectFieldDTOList>")
 	})
-	@PostMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD )
-	public ResponseEntity<List<BusinessObjectField>> addBusinessObjecFields(@PathVariable String businessObjectId, 
+	@PostMapping(value = "/{businessObjectName}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD )
+	public ResponseEntity<List<BusinessObjectField>> createBusinessObjecFields(@PathVariable String businessObjectName, 
 		@RequestBody List<BusinessObjectFieldDTO> businessObjectFieldDTOList){
-		List<BusinessObjectField> businessObjectFieldList = bofService.createBusinessObjecFields(businessObjectId, businessObjectFieldDTOList, authEngine.getCurrentUserBean());
+		List<BusinessObjectField> businessObjectFieldList = bofService.createBusinessObjecFields(businessObjectName, businessObjectFieldDTOList, authEngine.getCurrentUserBean());
 		return new ResponseEntity<>(businessObjectFieldList, HttpStatus.CREATED);
 	}
-	
 	
 	
 	/* scenario description:
@@ -57,13 +57,14 @@ public class BusinessObjectFieldController {
 	 */
 	@ApiOperation( value = "update one business object field")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "businessObjectName", value = "Business Object Name", required = true, paramType="path", dataType = "String"),
+		@ApiImplicitParam(name = "fieldName", value = "Field Name", required = true, paramType="path", dataType = "String"),
 		@ApiImplicitParam(name = "businessObjectFieldDTO", value = "Business Object Field DTO", required = true, dataType = "BusinessObjectFieldDTO")
 	})
-	@PutMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}")
-	public ResponseEntity<BusinessObjectField> updateOneBusinessObjectField(@PathVariable String businessObjectId, @PathVariable String fieldId, 
+	@PutMapping(value = "/{businessObjectName}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldName}")
+	public ResponseEntity<BusinessObjectField> updateOneBusinessObjectField(@PathVariable String businessObjectName, @PathVariable String fieldName, 
 		@RequestBody BusinessObjectFieldDTO businessObjectFieldDTO){
-		BusinessObjectField businessObjectField = bofService.updateOneBusinessObjectField(businessObjectId, fieldId, businessObjectFieldDTO);
+		BusinessObjectField businessObjectField = bofService.updateOneBusinessObjectField(businessObjectName, fieldName, businessObjectFieldDTO);
 		return new ResponseEntity<>(businessObjectField, HttpStatus.OK);
 	}
 	
@@ -73,14 +74,14 @@ public class BusinessObjectFieldController {
 	 */
 	@ApiOperation( value = "update business object fields")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "businessObjectName", value = "Business Object Name", required = true, paramType="path", dataType = "String"),
 		@ApiImplicitParam(name = "businessObjectFieldDTOList", value = "Business Object Field DTO List", required = true, dataType = "List<businessObjectFieldDTOList>")
 	})
-	@PutMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD)
-	public ResponseEntity<List<BusinessObjectField>> updateMultiBusinessObjectField(@PathVariable String businessObjectId, 
+	@PutMapping(value = "/{businessObjectName}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD)
+	public ResponseEntity<List<BusinessObjectField>> updateMultiBusinessObjectField(@PathVariable String businessObjectName, 
 		@RequestBody List<BusinessObjectFieldDTO> businessObjectFieldDTOList){
 		List<BusinessObjectField> businessObjectFieldList 
-		        = bofService.updateMultiBusinessObjectField(businessObjectId,businessObjectFieldDTOList);
+		        = bofService.updateMultiBusinessObjectField(businessObjectName,businessObjectFieldDTOList);
 		return new ResponseEntity<>(businessObjectFieldList, HttpStatus.OK);
 	}
 
@@ -90,12 +91,12 @@ public class BusinessObjectFieldController {
 	 */
 	@ApiOperation( value = "get one business object field")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "uuid"),
-		@ApiImplicitParam(name = "fieldId", value = "Business Object Field Id", required = true, paramType="path", dataType = "uuid")
+		@ApiImplicitParam(name = "businessObjectName", value = "Business Object Name", required = true, paramType="path", dataType = "String"),
+		@ApiImplicitParam(name = "fieldName", value = "Business Object Field Name", required = true, paramType="path", dataType = "String")
 	})
-	@GetMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}")
-	public ResponseEntity<BusinessObjectField> findOneBusinessObjectField(@PathVariable String businessObjectId, @PathVariable String fieldId){
-		BusinessObjectField businessObjectField= bofService.findOneBusinessObjectField(businessObjectId, fieldId);
+	@GetMapping(value = "/{businessObjectName}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldName}")
+	public ResponseEntity<BusinessObjectField> findOneBusinessObjectField(@PathVariable String businessObjectName, @PathVariable String fieldName){
+		BusinessObjectField businessObjectField= bofService.findOneBusinessObjectField(businessObjectName, fieldName);
 		return new ResponseEntity<>(businessObjectField, HttpStatus.OK);
 	}
 	
@@ -105,12 +106,20 @@ public class BusinessObjectFieldController {
 	 */
 	@ApiOperation( value = "get all business object fields")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "businessObjectId", value = "Business Object Id", required = true, paramType="path", dataType = "uuid"),
+		@ApiImplicitParam(name = "businessObjectName", value = "Business Object Name", required = true, paramType="path", dataType = "String"),
 	})
-	@GetMapping(value = "/{businessObjectId}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD)
-	public ResponseEntity<List<BusinessObjectField>> findAllBusinessObjectField(@PathVariable String businessObjectId){
-		List<BusinessObjectField> businessObjectFieldList = bofService.findAllBusinessObjectField(businessObjectId);
+	@GetMapping(value = "/{businessObjectName}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD)
+	public ResponseEntity<List<BusinessObjectField>> findAllBusinessObjectField(@PathVariable String businessObjectName){
+		List<BusinessObjectField> businessObjectFieldList = bofService.findAllBusinessObjectField(businessObjectName);
 		return new ResponseEntity<>(businessObjectFieldList, HttpStatus.OK);
 	}
 	
+	/*
+	 * scenario description
+	 * delete one business object fields of a specific business object
+	 */	
+	@DeleteMapping(value = "/{businessObjectName}"+ ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldName}")
+	public void deleteOneBusinessObjectField(@PathVariable String businessObjectName, @PathVariable String fieldName) {
+		bofService.deleteOneBusinessObjectField(businessObjectName, fieldName);
+	}
 }

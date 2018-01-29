@@ -21,27 +21,43 @@ public class BusinessObjectFieldValidator
 	
 	@Autowired
 	private BusinessObjectRepository boRepo;
-	
-	public void createBusinessObjectFieldValidation(String businessObjectId, BusinessObjectFieldDTO businessObjectFieldDTO){
+
+	public void validateBusinessObjectConsistent(String businessObjectName) {
 		
-		//Input Check - Business Object
-		this.validateBusinessObjectConsistent(businessObjectId, businessObjectFieldDTO);
+		if(Objects.isNull(businessObjectName)){
+			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNull);
+		}
 		
-		//Input Check - Field related validation
-        this.inputCheckBusinessObjectField(businessObjectFieldDTO);
+		BusinessObject businessObject = boRepo.findByName(businessObjectName);
+		if(Objects.isNull(businessObject)) {
+			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNotExisted);			
+		}
 		
 	}
 	
-	public void updateBusinessObjectFieldValidation(String businessObjectId, String fieldId, BusinessObjectFieldDTO businessObjectFieldDTO){
-		
-		//Input Check - Business Object
-		this.validateBusinessObjectConsistent(businessObjectId, businessObjectFieldDTO);
+	public void createBusinessObjectFieldValidation(BusinessObjectFieldDTO businessObjectFieldDTO){
 		
 		//Input Check - Field related validation
         this.inputCheckBusinessObjectField(businessObjectFieldDTO);	
         
+        BusinessObjectField boField = bofRepo.findByName(businessObjectFieldDTO.getName());
+        if(Objects.nonNull(boField)) {
+        	throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_isExisted);
+        }        
+        
+	}
+	
+	public void updateBusinessObjectFieldValidation(String fieldName, BusinessObjectFieldDTO businessObjectFieldDTO){
+				
+		//Input Check - Field related validation
+        this.inputCheckBusinessObjectField(businessObjectFieldDTO);	
+        
         //Business Field consistent check
-        BusinessObjectField boField = bofRepo.findOne(fieldId);
+        if(!businessObjectFieldDTO.getName().equals(fieldName)) {
+        	throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_FieldName_isNotSame);        	
+        }
+        
+        BusinessObjectField boField = bofRepo.findByName(fieldName);
         if(Objects.isNull(boField)) {
         	throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_isNotExisted);
         }
@@ -56,25 +72,31 @@ public class BusinessObjectFieldValidator
 		return businessObjectField;
 	}
 	
-	private void validateBusinessObjectConsistent(String businessObjectId, BusinessObjectFieldDTO businessObjectFieldDTO) {
-				
-		if(Objects.isNull(businessObjectId)){
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNull);
-		}
-		
-		BusinessObject businessObject = boRepo.findOne(businessObjectId);
-		if(Objects.isNull(businessObject)) {
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNotExisted);			
-		}
-		
-	}
-	
 	private void inputCheckBusinessObjectField(BusinessObjectFieldDTO businessObjectFieldDTO) {
 		
-		if(businessObjectFieldDTO.getName().trim().length()==0){
+		String fieldName = businessObjectFieldDTO.getName();
+		
+		if(Objects.isNull(fieldName)) {
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_Name_isEmpty);
 		}
+			
+		
+		if(fieldName.trim().length()==0){
+			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_Name_isEmpty);
+		}
+		
+		if(this.isContainEmpty(fieldName)){
+			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_errInput);
+		}
 				
+	}
+	
+	private boolean isContainEmpty(String str){
+		if(str.indexOf(" ") == -1){
+			return false;
+		}else{
+			return true;
+		}
 	}
 	
 }

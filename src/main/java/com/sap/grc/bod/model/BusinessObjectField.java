@@ -86,13 +86,13 @@ public @Data class BusinessObjectField implements Serializable
 	@LastModifiedBy
 	private String changedBy;
 
-	@OneToMany( cascade = CascadeType.ALL , mappedBy="businessObjectField")
+	@OneToMany( cascade = CascadeType.ALL , mappedBy="businessObjectField",orphanRemoval=true)
 	private List<BusinessObjectFieldText> businessObjectFieldTextList;
 
 	@ManyToOne( optional = false )
 	@JoinColumn( name = "bo_id", referencedColumnName = "bo_id", insertable = true, updatable = false )
 	private BusinessObject businessObject;
 	
-	@OneToMany( cascade = CascadeType.ALL, mappedBy="bussinessObjectField" )
+	@OneToMany(cascade = CascadeType.REMOVE, mappedBy="bussinessObjectField",orphanRemoval=true )
 	private List<BusinessObjectFieldOption> businessObjectFieldOptionList;
 }
