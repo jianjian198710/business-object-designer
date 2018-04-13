@@ -4,8 +4,6 @@ import java.io.Serializable;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.sap.grc.bod.model.BusinessObjectFieldText;
-
 import lombok.Data;
 
 public @Data class BusinessObjectFieldTextDTO implements Serializable
@@ -13,6 +11,7 @@ public @Data class BusinessObjectFieldTextDTO implements Serializable
 
 	private static final long serialVersionUID = 6768271770288156432L;
 
+	@NotBlank
 	private String fieldShortDescription;
 	private String description;
 	

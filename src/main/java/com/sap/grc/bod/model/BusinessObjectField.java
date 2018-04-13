@@ -28,12 +28,13 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.sap.grc.bod.constant.JpaConstant;
 import com.sap.grc.bod.model.enumtype.BusinessObjectFieldType;
 
 import lombok.Data;
 
 @Entity
-@Table( name = "business_object_field",uniqueConstraints = @UniqueConstraint(columnNames = {"tenant_id", "field_name", "bo_id"}))
+@Table( name = JpaConstant.BO_FIELD_TABLE_NAME,uniqueConstraints = @UniqueConstraint(columnNames = {"tenant_id", "field_name", "bo_id"}))
 @EntityListeners( AuditingEntityListener.class )
 @UuidGenerator( name = "uuid2" )
 @Multitenant
@@ -86,7 +87,7 @@ public @Data class BusinessObjectField implements Serializable
 	@LastModifiedBy
 	private String changedBy;
 
-	@OneToMany( cascade = CascadeType.ALL , mappedBy="businessObjectField",orphanRemoval=true)
+	@OneToMany( cascade = CascadeType.ALL , mappedBy="businessObjectField", orphanRemoval=true)
 	private List<BusinessObjectFieldText> businessObjectFieldTextList;
 
 	@ManyToOne( optional = false )

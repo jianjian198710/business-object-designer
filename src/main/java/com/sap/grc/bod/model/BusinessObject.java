@@ -17,25 +17,27 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import com.sap.grc.bod.constant.JpaConstant;
+
 import lombok.Data;
 
 @Entity
-@Table(name = "business_object")
-@EntityListeners(AuditingEntityListener.class)
+@Table( name = JpaConstant.BO_TABLE_NAME )
+@EntityListeners( AuditingEntityListener.class )
 @UuidGenerator( name = "uuid2" )
-
-public @Data class BusinessObject implements Serializable{
+public @Data class BusinessObject implements Serializable
+{
 	private static final long serialVersionUID = -3844686443222163797L;
 
 	@Id
-	@GeneratedValue(generator = "uuid2")
-	@GenericGenerator(name = "uuid2", strategy = "uuid2")
-	@Column( name="bo_id")
+	@GeneratedValue( generator = "uuid2" )
+	@GenericGenerator( name = "uuid2", strategy = "uuid2" )
+	@Column( name = "bo_id" )
 	private String uuid;
 
-	@Column( name = "bo_name", nullable = false, unique=true)
+	@Column( name = "bo_name", nullable = false, unique = true )
 	private String name;
-	
+
 	@Column( name = "description" )
 	private String description;
 

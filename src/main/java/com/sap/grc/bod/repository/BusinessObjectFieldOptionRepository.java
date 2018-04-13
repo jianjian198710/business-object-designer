@@ -9,15 +9,16 @@ import org.springframework.data.jpa.repository.Query;
 import com.sap.grc.bod.model.BusinessObjectFieldOption;
 
 public interface BusinessObjectFieldOptionRepository extends JpaRepository<BusinessObjectFieldOption, String>{
-	public List<BusinessObjectFieldOption> findByFieldIdAndLanguageId(String fieldId, String languageId);
+//	public List<BusinessObjectFieldOption> findByFieldIdAndLanguageId(String fieldId, String languageId);
+	public List<BusinessObjectFieldOption> findByFieldId(String fieldId);
 	
-	public List<BusinessObjectFieldOption> findByBussinessObjectField_NameAndLanguageId(String fieldName, String languageId);	
+//	public List<BusinessObjectFieldOption> findByBussinessObjectField_NameAndLanguageId(String fieldName, String languageId);	
 	
 	@Query("select bofo from BusinessObjectFieldOption as bofo where bofo.uuid in ?1")
 	public List<BusinessObjectFieldOption> findByUuidIn(List<String> fieldOptionIdList);
 	
 	@Modifying
-	@Query("delete from BusinessObjectFieldOption as bofo where bofo.fieldId = ?1 AND bofo.languageId = ?2")
-	public void deleteByFieldIdAndLanguageId(String fieldId, String languageId);
+	@Query("delete from BusinessObjectFieldOption as bofo where bofo.fieldId = ?1")
+	public void deleteByFieldId(String fieldId);
 	
 }

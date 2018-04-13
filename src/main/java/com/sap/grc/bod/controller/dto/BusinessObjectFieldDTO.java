@@ -1,8 +1,11 @@
 package com.sap.grc.bod.controller.dto;
 
+import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotBlank;
 
 import com.sap.grc.bod.model.enumtype.BusinessObjectFieldType;
+
 import lombok.Data;
 
 public @Data class BusinessObjectFieldDTO
@@ -15,5 +18,6 @@ public @Data class BusinessObjectFieldDTO
 	private Boolean isCustField;
 	private Boolean isMultiInput;
 	private Boolean isValueSet;
+	@NotNull
 	private BusinessObjectFieldTextDTO businessObjectFieldText;
 }

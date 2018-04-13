@@ -1,14 +1,18 @@
 package com.sap.grc.bod.model;
 
 import java.io.Serializable;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -19,11 +23,12 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sap.grc.bod.constant.JpaConstant;
 
 import lombok.Data;
 
 @Entity
-@Table( name = "business_object_field_option",uniqueConstraints = @UniqueConstraint(columnNames = {"field_id","value","lang_id"}))
+@Table( name = JpaConstant.BO_FIELD_OPTION_TABLE_NAME, uniqueConstraints = @UniqueConstraint(columnNames = {"field_id","value"}))
 @EntityListeners( AuditingEntityListener.class )
 @UuidGenerator( name = "uuid2" )
 @Multitenant
@@ -41,22 +46,19 @@ public @Data class BusinessObjectFieldOption implements Serializable
 	@Column( name = "field_id", nullable = false )
 	private String fieldId;
 
-	@Column( name = "lang_id", nullable = false )
-	private String languageId;
-	
 	@Column( name = "value", nullable = false )
 	private String value;
 	
-	@Column( name = "description" )
-	private String description;
+	@OneToMany( cascade = CascadeType.ALL, mappedBy="businessObjectFieldOption", fetch = FetchType.LAZY, orphanRemoval=true )
+	private List<BusinessObjectFieldOptionText> businessObjectFieldOptionTextList;
 	
 	@ManyToOne
-    @JoinColumn( name = "field_id", referencedColumnName = "field_id", insertable = false, updatable = false )
+	@JoinColumn( name = "field_id", referencedColumnName = "field_id", insertable = false, updatable = false )
 	@JsonBackReference
 	private BusinessObjectField bussinessObjectField;
 	
 	@Override
 	public String toString() {
-	    return this.getClass().getSimpleName() + "-" + this.getValue() + this.getDescription();
+		return this.getClass().getSimpleName() + "-" + this.getUuid();
 	}
 }

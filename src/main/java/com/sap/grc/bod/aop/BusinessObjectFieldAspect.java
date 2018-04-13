@@ -38,6 +38,6 @@ public class BusinessObjectFieldAspect
 	}
 	
 	private void messagePublish(String boName){
-		messageProducer.send(boName);
+//		messageProducer.send(boName);
 	}
 }

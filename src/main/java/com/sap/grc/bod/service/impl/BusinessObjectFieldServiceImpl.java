@@ -41,53 +41,12 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 	@Autowired
 	private BusinessObjectFieldValidator bofValidator;
 	
-	@Override
-	public List<BusinessObjectField> createBusinessObjecFields(String businessObjectName, 
-           List<BusinessObjectFieldDTO> businessObjectFieldDTOList, UserBean user){
-		
-		//Validation
-        bofValidator.validateBusinessObjectConsistent(businessObjectName);       
-		BusinessObject businessObject = boRepo.findByName(businessObjectName);
-		
-		BusinessObjectFieldDTO businessObjectFieldDTO;
-		List<BusinessObjectField> businessObjectFieldList = new ArrayList<>();
-		
-		Iterator<BusinessObjectFieldDTO> bofDTOit = businessObjectFieldDTOList.iterator();
-		while(bofDTOit.hasNext()) {
-			
-			BusinessObjectField businessObjectField = new BusinessObjectField();
-			List<BusinessObjectFieldText> businessObjectFieldTextList = new ArrayList<>();
-			BusinessObjectFieldText businessObjectFieldText = new BusinessObjectFieldText();
-			
-			businessObjectFieldDTO = bofDTOit.next();
-			
-			//Validation
-			bofValidator.createBusinessObjectFieldValidation(businessObjectFieldDTO);	
-			
-			//Copy to business object field model
-			BeanUtils.copyProperties(businessObjectFieldDTO, businessObjectField);
-			businessObjectField.setCreatorBy(user.getUid());
-			businessObjectField.setBusinessObject(businessObject);
-
-			//Copy to business object field text model
-			String languageId = LocaleContextHolder.getLocale().getLanguage();
-			businessObjectFieldText.setLanguageId(languageId);	
-			if(Objects.nonNull(businessObjectFieldDTO.getBusinessObjectFieldText())){
-				BeanUtils.copyProperties(businessObjectFieldDTO.getBusinessObjectFieldText(), businessObjectFieldText);		  
-			}
-			
-			//Association:set field to text
-			businessObjectFieldText.setBusinessObjectField(businessObjectField);
-			businessObjectFieldTextList.add(businessObjectFieldText);
-			
-			//Association:set text list to field
-			businessObjectField.setBusinessObjectFieldTextList(businessObjectFieldTextList);
-			
-			businessObjectFieldList.add(businessObjectField);
-
-		}
-				
-		return bofRepo.save(businessObjectFieldList);
+//	@Override
+	public List<BusinessObjectField> createBusinessObjecFields(String businessObjectName, BusinessObjectFieldDTO businessObjectFieldDTO, UserBean user){
+//		BusinessObject bo = boRepo.findByName(businessObjectName);
+//		if(Objects.isNull(bo)){
+//			
+//		}
 	}
 	
 	@Override
