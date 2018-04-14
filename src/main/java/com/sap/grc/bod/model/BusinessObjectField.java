@@ -50,8 +50,8 @@ public @Data class BusinessObjectField implements Serializable
 	private String uuid;
 		
 	@NotBlank
-	@Column( name ="field_name",nullable=false)
-	private String name;
+	@Column( name ="field_display_id",nullable=false)
+	private String id;
 
 	@Column( name = "field_type" )
 	@Enumerated(EnumType.STRING)

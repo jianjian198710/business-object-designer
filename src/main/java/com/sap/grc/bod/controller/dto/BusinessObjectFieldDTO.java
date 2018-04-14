@@ -11,7 +11,7 @@ import lombok.Data;
 public @Data class BusinessObjectFieldDTO
 {
 	@NotBlank
-	private String name;
+	private String id;
 	private BusinessObjectFieldType type;
 	private Boolean isMandatory;
 	private Boolean isVisible;

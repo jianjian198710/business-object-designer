@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.sap.grc.bod.controller.dto.BusinessObjectFieldDTO;
+import com.sap.grc.bod.controller.dto.BusinessObjectFieldTextDTO;
 import com.sap.grc.bod.exception.BusinessObjectCustomException;
 import com.sap.grc.bod.exception.BusinessObjectCustomException.ExceptionEnum;
 import com.sap.grc.bod.model.BusinessObject;
@@ -21,82 +22,68 @@ public class BusinessObjectFieldValidator
 	
 	@Autowired
 	private BusinessObjectRepository boRepo;
-
-	public void validateBusinessObjectConsistent(String businessObjectName) {
-		
-		if(Objects.isNull(businessObjectName)){
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNull);
-		}
-		
+	
+	public BusinessObject validateBusinessObject(String businessObjectName){
 		BusinessObject businessObject = boRepo.findByName(businessObjectName);
-		if(Objects.isNull(businessObject)) {
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNotExisted);			
+		if(Objects.isNull(businessObject)){
+			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObject_isNotExisted);
 		}
-		
+		return businessObject;
 	}
 	
-	public void createBusinessObjectFieldValidation(BusinessObjectFieldDTO businessObjectFieldDTO){
-		
-		//Input Check - Field related validation
-        this.inputCheckBusinessObjectField(businessObjectFieldDTO);	
-        
-        BusinessObjectField boField = bofRepo.findByName(businessObjectFieldDTO.getName());
-        if(Objects.nonNull(boField)) {
-        	throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_isExisted);
-        }        
-        
+	/*
+	 * check BusinessObjectFieldDTO
+	 */
+	public void validateBusinessObjectFieldDTO(BusinessObjectFieldDTO bofDTO){
+		if(this.isNullOrEmpty(bofDTO.getId())||this.isContainEmpty(bofDTO.getId())){
+			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_ID_ErrorInput);
+		}
+		BusinessObjectFieldTextDTO boftDTO = bofDTO.getBusinessObjectFieldText();
+		if(Objects.isNull(boftDTO)){
+			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldText_isNull);
+		}
+		if(this.isNullOrEmpty(boftDTO.getName())||this.isContainEmpty(boftDTO.getName())){
+			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldText_Name_ErrorInput);
+		}
 	}
 	
-	public void updateBusinessObjectFieldValidation(String fieldName, BusinessObjectFieldDTO businessObjectFieldDTO){
-				
-		//Input Check - Field related validation
-        this.inputCheckBusinessObjectField(businessObjectFieldDTO);	
-        
-        //Business Field consistent check
-        if(!businessObjectFieldDTO.getName().equals(fieldName)) {
-        	throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_FieldName_isNotSame);        	
-        }
-        
-        BusinessObjectField boField = bofRepo.findByName(fieldName);
-        if(Objects.isNull(boField)) {
-        	throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_isNotExisted);
-        }
-
+	/*
+	 * check whether fieldId is existed when create
+	 */
+	public void validateBusinessObjectFieldCreate(String boName, String fieldId){
+		BusinessObjectField bof = bofRepo.findByBusinessObject_NameAndId(boName, fieldId);
+		if(Objects.nonNull(bof)){
+			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_isExisted);
+		}
 	}
 	
-	public BusinessObjectField validateBusinessObjectField(String boName, String fieldName){
-		BusinessObjectField businessObjectField = bofRepo.findByBusinessObject_NameAndName(boName, fieldName);
-		if(Objects.isNull(businessObjectField)){
+	public BusinessObjectField validateBusinessObjectField(String boName, String fieldId){
+		BusinessObjectField bof = bofRepo.findByBusinessObject_NameAndId(boName, fieldId);
+		if(Objects.isNull(bof)){
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_isNotExisted);
 		}
-		return businessObjectField;
+		return bof;
 	}
 	
-	private void inputCheckBusinessObjectField(BusinessObjectFieldDTO businessObjectFieldDTO) {
-		
-		String fieldName = businessObjectFieldDTO.getName();
-		
-		if(Objects.isNull(fieldName)) {
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_Name_isEmpty);
+	public void validateBusinessObjectUpdate(String fieldId, BusinessObjectFieldDTO bofDTO){
+		if(!fieldId.equals(bofDTO.getId())){
+			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_ID_isNotSame);
 		}
-			
-		
-		if(fieldName.trim().length()==0){
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_Name_isEmpty);
+	}
+	
+	private boolean isNullOrEmpty(String str){
+		if(Objects.isNull(str) || str.trim().length()==0 ){
+			return true;
+		}else{
+			return false;
 		}
-		
-		if(this.isContainEmpty(fieldName)){
-			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectField_errInput);
-		}
-				
 	}
 	
 	private boolean isContainEmpty(String str){
-		if(str.indexOf(" ") == -1){
-			return false;
-		}else{
+		if(str.replaceAll("\\s+","").length()!=str.length()){
 			return true;
+		}else{
+			return false;
 		}
 	}
-	
 }

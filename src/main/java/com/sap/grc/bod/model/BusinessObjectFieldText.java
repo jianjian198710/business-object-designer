@@ -41,8 +41,8 @@ public @Data class BusinessObjectFieldText implements Serializable{
 	@Column( name = "lang_id")	
 	private String languageId;
 	
-	@Column( name = "field_short_description")
-	private String fieldShortDescription;
+	@Column( name = "field_name")
+	private String name;
 
 	@Column( name = "field_description" )
 	private String description;
@@ -54,7 +54,7 @@ public @Data class BusinessObjectFieldText implements Serializable{
 	
 	@Override
 	public String toString() {
-	    return this.getClass().getSimpleName() + "-" + this.getFieldShortDescription();
+	    return this.getClass().getSimpleName() + "-" + this.getName();
 	}
 
 }
