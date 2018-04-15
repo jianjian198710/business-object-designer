@@ -51,7 +51,7 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 				businessObjectFieldOptionText.setBusinessObjectFieldOption(businessObjectFieldOption);
 				businessObjectFieldOptionTextList.add(businessObjectFieldOptionText);
 			}
-			businessObjectFieldOption.setFieldId(businessObjectField.getUuid());
+//			businessObjectFieldOption.setFieldId(businessObjectField.getUuid());
 			businessObjectFieldOption.setBussinessObjectField(businessObjectField);
 			businessObjectFieldOptionList.add(businessObjectFieldOption);
 		}

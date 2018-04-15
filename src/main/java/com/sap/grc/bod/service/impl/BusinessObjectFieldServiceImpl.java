@@ -31,7 +31,7 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 	private BusinessObjectFieldValidator bofValidator;
 	
 	@Override
-	public BusinessObjectField createBusinessObjecFields(String boName, BusinessObjectFieldDTO bofDTO, UserBean user, String languageId){
+	public BusinessObjectField createBusinessObjecField(String boName, BusinessObjectFieldDTO bofDTO, UserBean user, String languageId){
 		BusinessObject bo = bofValidator.validateBusinessObject(boName);
 		bofValidator.validateBusinessObjectFieldDTO(bofDTO);
 		bofValidator.validateBusinessObjectFieldCreate(boName, bofDTO.getId());

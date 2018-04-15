@@ -48,7 +48,7 @@ public @Data class BusinessObjectFieldText implements Serializable{
 	private String description;
 
 	@ManyToOne
-	@JoinColumn( name = "field_id", referencedColumnName = "field_id",updatable = false, insertable = true )
+	@JoinColumn( name = "field_id", referencedColumnName = "field_id",updatable = false, insertable = false )
 	@JsonBackReference
 	private BusinessObjectField businessObjectField;
 	

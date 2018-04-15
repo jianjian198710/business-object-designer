@@ -8,7 +8,7 @@ import com.sap.grc.bod.model.UserBean;
 
 public interface BusinessObjectFieldService
 {
-	public BusinessObjectField createBusinessObjecFields(String boName, BusinessObjectFieldDTO bofDTO, UserBean user, String languageId);
+	public BusinessObjectField createBusinessObjecField(String boName, BusinessObjectFieldDTO bofDTO, UserBean user, String languageId);
 	public BusinessObjectField updateBusinessObjectField(String boName, String fieldId, BusinessObjectFieldDTO bofDTO, UserBean user, String languageId);
 	public BusinessObjectField findOneBusinessObjectField(String boName, String fieldId, String languageId);
 	public List<BusinessObjectField> findAllBusinessObjectField(String boName, String languageId);
