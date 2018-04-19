@@ -52,7 +52,7 @@ public class BusinessObjectFieldOptionValidator
 		}
 		
 		//each option belongs to given custom field
-		if(!businessObjectFieldOptionList.stream().allMatch(t->t.getFieldId().equals(businessObjectField.getUuid()))){
+		if(!businessObjectFieldOptionList.stream().allMatch(t->t.getBusinessObjectField().getUuid().equals(businessObjectField.getUuid()))){
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldOption_errInput);
 		}
 		return businessObjectFieldOptionList;

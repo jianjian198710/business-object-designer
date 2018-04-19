@@ -35,11 +35,11 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 	@Override
 	@Transactional
 	public List<BusinessObjectFieldOption> createMultiBusinessObjectFieldOption(
-			String boName, String fieldName, String languageId, List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
+			String boName, String fieldId, String languageId, List<BusinessObjectFieldOptionDTO> bofoDTOList){
 		List<BusinessObjectFieldOption> businessObjectFieldOptionList = new ArrayList<>();
-		BusinessObjectField businessObjectField = bofValidator.validateBusinessObjectField(boName, fieldName);
-		bofoValidator.createMultiBusinessObjectFieldOptionValidation(businessObjectField.getUuid(), businessObjectFieldOptionDTOList);
-		for(BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO: businessObjectFieldOptionDTOList){
+		BusinessObjectField businessObjectField = bofValidator.validateBusinessObjectField(boName, fieldId);
+		bofoValidator.createMultiBusinessObjectFieldOptionValidation(businessObjectField.getUuid(), bofoDTOList);
+		for(BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO: bofoDTOList){
 			BusinessObjectFieldOption businessObjectFieldOption = businessObjectFieldOptionDTO.converToModel();
 //			businessObjectFieldOption.setLanguageId(languageId);
 			List<BusinessObjectFieldOptionText> businessObjectFieldOptionTextList = new ArrayList<>();
@@ -52,7 +52,7 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 				businessObjectFieldOptionTextList.add(businessObjectFieldOptionText);
 			}
 //			businessObjectFieldOption.setFieldId(businessObjectField.getUuid());
-			businessObjectFieldOption.setBussinessObjectField(businessObjectField);
+			businessObjectFieldOption.setBusinessObjectField(businessObjectField);
 			businessObjectFieldOptionList.add(businessObjectFieldOption);
 		}
 		return bofoRepo.save(businessObjectFieldOptionList);
@@ -60,11 +60,11 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 	
 	@Override
 	@Transactional
-	public List<BusinessObjectFieldOption> updateMultiBusinessObjectFieldOption(String boName, String fieldName, String languageId, List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList){
-		BusinessObjectField businessObjectField = bofValidator.validateBusinessObjectField(boName, fieldName);
-		List<BusinessObjectFieldOption> businessObjectFieldOptionList = bofoValidator.updateMultiBusinessObjectFieldOptionValidation(businessObjectField, businessObjectFieldOptionDTOList);
+	public List<BusinessObjectFieldOption> updateMultiBusinessObjectFieldOption(String boName, String fieldId, String languageId, List<BusinessObjectFieldOptionDTO> bofoDTOList){
+		BusinessObjectField businessObjectField = bofValidator.validateBusinessObjectField(boName, fieldId);
+		List<BusinessObjectFieldOption> businessObjectFieldOptionList = bofoValidator.updateMultiBusinessObjectFieldOptionValidation(businessObjectField, bofoDTOList);
 		for(BusinessObjectFieldOption businessObjectFieldOption: businessObjectFieldOptionList){
-			for(BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO: businessObjectFieldOptionDTOList){
+			for(BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO: bofoDTOList){
 				if(businessObjectFieldOptionDTO.getFieldOpitonId().equals(businessObjectFieldOption.getUuid())){
 //					BeanUtils.copyProperties(businessObjectFieldOptionDTO, businessObjectFieldOption);
 					List<BusinessObjectFieldOptionText> bofotList = businessObjectFieldOption.getBusinessObjectFieldOptionTextList();
@@ -85,16 +85,15 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 		return bofoRepo.save(businessObjectFieldOptionList);
 	}
 	
-	@Override
-	public List<BusinessObjectFieldOption> findAllBusinessObjectFieldOption(String boName, String fieldName, String languageId){
-		BusinessObjectField businessObjectField = bofValidator.validateBusinessObjectField(boName, fieldName);
-		return bofoRepo.findByFieldId(businessObjectField.getUuid());
-	}
+//	@Override
+//	public List<BusinessObjectFieldOption> findAllBusinessObjectFieldOption(String boName, String fieldId, String languageId){
+//		BusinessObjectField businessObjectField = bofValidator.validateBusinessObjectField(boName, fieldId);
+//		return bofoRepo.findByBusinessObjectField(businessObjectField);
+//	}
 	
 	@Override
-	@Transactional
-	public void deleteBusinessObjectFieldOption(String boName, String fieldName, String fieldOptionValue){
-		BusinessObjectField businessObjectField = bofValidator.validateBusinessObjectField(boName, fieldName);
+	public void deleteBusinessObjectFieldOption(String boName, String fieldId, String fieldOptionValue){
+		BusinessObjectField businessObjectField = bofValidator.validateBusinessObjectField(boName, fieldId);
 		List<BusinessObjectFieldOption> businessObjectFieldOptionList = businessObjectField.getBusinessObjectFieldOptionList().stream().filter(t->t.getValue().equals(fieldOptionValue)).collect(Collectors.toList());
 		//TODO validate businessObjectFieldOptionList
 		if(businessObjectFieldOptionList.size()==1){
@@ -103,9 +102,8 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 	}
 	
 	@Override
-	@Transactional
-	public void deleteAllBusinessObjectFieldOption(String boName, String fieldName){
-		BusinessObjectField businessObjectField = bofValidator.validateBusinessObjectField(boName,fieldName);
-		bofoRepo.deleteByFieldId(businessObjectField.getUuid());
+	public void deleteAllBusinessObjectFieldOption(String boName, String fieldId){
+		BusinessObjectField businessObjectField = bofValidator.validateBusinessObjectField(boName,fieldId);
+		bofoRepo.deleteByFieldId(businessObjectField);
 	}
 }

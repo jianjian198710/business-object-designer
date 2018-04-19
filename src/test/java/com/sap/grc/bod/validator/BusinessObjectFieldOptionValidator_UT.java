@@ -24,211 +24,211 @@ import com.sap.grc.bod.service.BaseServiceUT;
 public class BusinessObjectFieldOptionValidator_UT extends BaseServiceUT
 {
 
-	@Mock
-	private BusinessObjectFieldOptionRepository bofoRepo;
-	
-	@InjectMocks
-	private BusinessObjectFieldOptionValidator businessObjectFieldOptionValidator;
-	
-	/*
-	 * check option has non-null id when create
-	 */
-	@Test(expected = BusinessObjectCustomException.class)
-	public void createMultiBusinessObjectFieldOptionValidation_case1_UT(){
-		String fieldId = "A7F21EBC-3F4E-4767-85B6-F6C1AE15F152";
-		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
-		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
-		businessObjectFieldOptionDTO.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
-		businessObjectFieldOptionDTO.setDescription("value description 1");
-		businessObjectFieldOptionDTO.setValue("value_1");
-		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
-		businessObjectFieldOptionValidator.createMultiBusinessObjectFieldOptionValidation(fieldId, businessObjectFieldOptionDTOList);
-	}
-	
-	/*
-	 * check duplicate option value
-	 */
-	@Test(expected = BusinessObjectCustomException.class)
-	public void createMultiBusinessObjectFieldOptionValidation_case2_UT(){
-		String fieldId = "A7F21EBC-3F4E-4767-85B6-F6C1AE15F152";
-		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
-		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
-		businessObjectFieldOptionDTO.setDescription("value description 1");
-		businessObjectFieldOptionDTO.setValue("value_1");
-
-		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO_two = new BusinessObjectFieldOptionDTO();
-		businessObjectFieldOptionDTO_two.setDescription("value description 1");
-		businessObjectFieldOptionDTO_two.setValue("value_1");
-		
-		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
-		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO_two);
-		businessObjectFieldOptionValidator.createMultiBusinessObjectFieldOptionValidation(fieldId, businessObjectFieldOptionDTOList);
-	}
-	
-	/*
-	 * check empty option value
-	 */
-	@Test(expected = BusinessObjectCustomException.class)
-	public void createMultiBusinessObjectFieldOptionValidation_case3_UT(){
-		String fieldId = "A7F21EBC-3F4E-4767-85B6-F6C1AE15F152";
-		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
-		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
-		businessObjectFieldOptionDTO.setDescription("value description 1");
-		businessObjectFieldOptionDTO.setValue("");
-
-		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO_two = new BusinessObjectFieldOptionDTO();
-		businessObjectFieldOptionDTO_two.setDescription("value description 2");
-		businessObjectFieldOptionDTO_two.setValue("value_2");
-		
-		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
-		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO_two);
-		businessObjectFieldOptionValidator.createMultiBusinessObjectFieldOptionValidation(fieldId, businessObjectFieldOptionDTOList);
-	}
-	
-	/*
-	 * option option value contains space
-	 */
-	@Test(expected = BusinessObjectCustomException.class)
-	public void createMultiBusinessObjectFieldOptionValidation_case4_UT(){
-		String fieldId = "A7F21EBC-3F4E-4767-85B6-F6C1AE15F152";
-		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
-		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
-		businessObjectFieldOptionDTO.setDescription("value description 1");
-		businessObjectFieldOptionDTO.setValue("value 1");
-		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
-		businessObjectFieldOptionValidator.createMultiBusinessObjectFieldOptionValidation(fieldId, businessObjectFieldOptionDTOList);
-	}
-	
-	/*
-	 * check duplicate id
-	 */
-	@Test(expected = BusinessObjectCustomException.class)
-	public void updateMultiBusinessObjectFieldOptionValidation_case1_UT(){
-		BusinessObjectField businessObjectField = new BusinessObjectField();
-		businessObjectField.setUuid("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152");
-		businessObjectField.setName("CDF1");
-		businessObjectField.setType(BusinessObjectFieldType.STRING);
-		
-		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
-		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
-		businessObjectFieldOptionDTO.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
-		businessObjectFieldOptionDTO.setDescription("value description 1");
-		businessObjectFieldOptionDTO.setValue("value_1");
-
-		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO_two = new BusinessObjectFieldOptionDTO();
-		businessObjectFieldOptionDTO_two.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
-		businessObjectFieldOptionDTO_two.setDescription("value description 2");
-		businessObjectFieldOptionDTO_two.setValue("value_2");
-		
-		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
-		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO_two);
-		businessObjectFieldOptionValidator.updateMultiBusinessObjectFieldOptionValidation(businessObjectField, businessObjectFieldOptionDTOList);
-	}
-	
-	/*
-	 * check each optionId is existed in db
-	 */
-	@SuppressWarnings( "unchecked" )
-	@Test(expected = BusinessObjectCustomException.class)
-	public void updateMultiBusinessObjectFieldOptionValidation_case2_UT(){
-		BusinessObjectField businessObjectField = new BusinessObjectField();
-		businessObjectField.setUuid("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152");
-		businessObjectField.setName("CDF1");
-		businessObjectField.setType(BusinessObjectFieldType.STRING);
-		
-		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
-		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
-		businessObjectFieldOptionDTO.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
-		businessObjectFieldOptionDTO.setDescription("value description 1");
-		businessObjectFieldOptionDTO.setValue("value_1");
-
-		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO_two = new BusinessObjectFieldOptionDTO();
-		businessObjectFieldOptionDTO_two.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF21");
-		businessObjectFieldOptionDTO_two.setDescription("value description 2");
-		businessObjectFieldOptionDTO_two.setValue("value_2");
-		
-		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
-		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO_two);
-		
-		List<BusinessObjectFieldOption> businessObjectFieldOptionList = new ArrayList<>();
-		when(bofoRepo.findByUuidIn(Mockito.anyList())).thenReturn(businessObjectFieldOptionList);
-		businessObjectFieldOptionValidator.updateMultiBusinessObjectFieldOptionValidation(businessObjectField, businessObjectFieldOptionDTOList);
-	}
-	
-	/*
-	 * check null option id when update
-	 */
-	@Test(expected = BusinessObjectCustomException.class)
-	public void updateMultiBusinessObjectFieldOptionValidation_case3_UT(){
-		BusinessObjectField businessObjectField = new BusinessObjectField();
-		businessObjectField.setUuid("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152");
-		businessObjectField.setName("CDF1");
-		businessObjectField.setType(BusinessObjectFieldType.STRING);
-		
-		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
-		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
-		businessObjectFieldOptionDTO.setDescription("value description 1");
-		businessObjectFieldOptionDTO.setValue("value_1");
-
-		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO_two = new BusinessObjectFieldOptionDTO();
-		businessObjectFieldOptionDTO_two.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
-		businessObjectFieldOptionDTO_two.setDescription("value description 2");
-		businessObjectFieldOptionDTO_two.setValue("value_2");
-		
-		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
-		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO_two);
-		
-		businessObjectFieldOptionValidator.updateMultiBusinessObjectFieldOptionValidation(businessObjectField, businessObjectFieldOptionDTOList);
-	}
-	
-	/*
-	 * check each option belongs to given custom field
-	 */
-	@SuppressWarnings( "unchecked" )
-	@Test(expected = BusinessObjectCustomException.class)
-	public void updateMultiBusinessObjectFieldOptionValidation_case4_UT(){
-		BusinessObjectField businessObjectField = new BusinessObjectField();
-		businessObjectField.setUuid("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152");
-		businessObjectField.setName("CDF1");
-		businessObjectField.setType(BusinessObjectFieldType.STRING);
-		
-		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
-		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
-		businessObjectFieldOptionDTO.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
-		businessObjectFieldOptionDTO.setDescription("value description 1");
-		businessObjectFieldOptionDTO.setValue("value_1");
-
-		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO_two = new BusinessObjectFieldOptionDTO();
-		businessObjectFieldOptionDTO_two.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF21");
-		businessObjectFieldOptionDTO_two.setDescription("value description 2");
-		businessObjectFieldOptionDTO_two.setValue("value_2");
-		
-		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
-		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO_two);
-		
-		List<BusinessObjectFieldOption> businessObjectFieldOptionList = new ArrayList<>();
-		BusinessObjectFieldOption businessObjectFieldOption = new BusinessObjectFieldOption();
-		businessObjectFieldOption.setUuid("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
-		businessObjectFieldOption.setDescription("value description 1");
-		businessObjectFieldOption.setValue("value_1");
-		businessObjectFieldOption.setFieldId("AAA");
-
-		BusinessObjectFieldOption businessObjectFieldOption_two = new BusinessObjectFieldOption();
-		businessObjectFieldOption_two.setUuid("08E365EE-ADD4-476B-ACC1-5A2LDS92LF21");
-		businessObjectFieldOption_two.setDescription("value description 2");
-		businessObjectFieldOption_two.setValue("value_2");
-		
-		businessObjectFieldOptionList.add(businessObjectFieldOption);
-		businessObjectFieldOptionList.add(businessObjectFieldOption_two);
-		
-		when( bofoRepo.findByUuidIn(Mockito.anyList())).thenReturn(businessObjectFieldOptionList);
-		businessObjectFieldOptionValidator.updateMultiBusinessObjectFieldOptionValidation(businessObjectField, businessObjectFieldOptionDTOList);
-	}
-	
-	@Test(expected = BusinessObjectCustomException.class)	
-	public void deleteBusinessObjectFieldOptionValidation_UT(){
-		String fieldOptionId = "08E365EE-ADD4-476B-ACC1-5A2LDS92LF20";
-		when(bofoRepo.findOne(fieldOptionId)).thenReturn(null);
-		businessObjectFieldOptionValidator.deleteBusinessObjectFieldOptionValidation(fieldOptionId);
-	}
+//	@Mock
+//	private BusinessObjectFieldOptionRepository bofoRepo;
+//	
+//	@InjectMocks
+//	private BusinessObjectFieldOptionValidator businessObjectFieldOptionValidator;
+//	
+//	/*
+//	 * check option has non-null id when create
+//	 */
+//	@Test(expected = BusinessObjectCustomException.class)
+//	public void createMultiBusinessObjectFieldOptionValidation_case1_UT(){
+//		String fieldId = "A7F21EBC-3F4E-4767-85B6-F6C1AE15F152";
+//		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
+//		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
+//		businessObjectFieldOptionDTO.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
+//		businessObjectFieldOptionDTO.setDescription("value description 1");
+//		businessObjectFieldOptionDTO.setValue("value_1");
+//		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
+//		businessObjectFieldOptionValidator.createMultiBusinessObjectFieldOptionValidation(fieldId, businessObjectFieldOptionDTOList);
+//	}
+//	
+//	/*
+//	 * check duplicate option value
+//	 */
+//	@Test(expected = BusinessObjectCustomException.class)
+//	public void createMultiBusinessObjectFieldOptionValidation_case2_UT(){
+//		String fieldId = "A7F21EBC-3F4E-4767-85B6-F6C1AE15F152";
+//		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
+//		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
+//		businessObjectFieldOptionDTO.setDescription("value description 1");
+//		businessObjectFieldOptionDTO.setValue("value_1");
+//
+//		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO_two = new BusinessObjectFieldOptionDTO();
+//		businessObjectFieldOptionDTO_two.setDescription("value description 1");
+//		businessObjectFieldOptionDTO_two.setValue("value_1");
+//		
+//		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
+//		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO_two);
+//		businessObjectFieldOptionValidator.createMultiBusinessObjectFieldOptionValidation(fieldId, businessObjectFieldOptionDTOList);
+//	}
+//	
+//	/*
+//	 * check empty option value
+//	 */
+//	@Test(expected = BusinessObjectCustomException.class)
+//	public void createMultiBusinessObjectFieldOptionValidation_case3_UT(){
+//		String fieldId = "A7F21EBC-3F4E-4767-85B6-F6C1AE15F152";
+//		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
+//		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
+//		businessObjectFieldOptionDTO.setDescription("value description 1");
+//		businessObjectFieldOptionDTO.setValue("");
+//
+//		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO_two = new BusinessObjectFieldOptionDTO();
+//		businessObjectFieldOptionDTO_two.setDescription("value description 2");
+//		businessObjectFieldOptionDTO_two.setValue("value_2");
+//		
+//		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
+//		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO_two);
+//		businessObjectFieldOptionValidator.createMultiBusinessObjectFieldOptionValidation(fieldId, businessObjectFieldOptionDTOList);
+//	}
+//	
+//	/*
+//	 * option option value contains space
+//	 */
+//	@Test(expected = BusinessObjectCustomException.class)
+//	public void createMultiBusinessObjectFieldOptionValidation_case4_UT(){
+//		String fieldId = "A7F21EBC-3F4E-4767-85B6-F6C1AE15F152";
+//		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
+//		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
+//		businessObjectFieldOptionDTO.setDescription("value description 1");
+//		businessObjectFieldOptionDTO.setValue("value 1");
+//		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
+//		businessObjectFieldOptionValidator.createMultiBusinessObjectFieldOptionValidation(fieldId, businessObjectFieldOptionDTOList);
+//	}
+//	
+//	/*
+//	 * check duplicate id
+//	 */
+//	@Test(expected = BusinessObjectCustomException.class)
+//	public void updateMultiBusinessObjectFieldOptionValidation_case1_UT(){
+//		BusinessObjectField businessObjectField = new BusinessObjectField();
+//		businessObjectField.setUuid("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152");
+//		businessObjectField.setName("CDF1");
+//		businessObjectField.setType(BusinessObjectFieldType.STRING);
+//		
+//		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
+//		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
+//		businessObjectFieldOptionDTO.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
+//		businessObjectFieldOptionDTO.setDescription("value description 1");
+//		businessObjectFieldOptionDTO.setValue("value_1");
+//
+//		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO_two = new BusinessObjectFieldOptionDTO();
+//		businessObjectFieldOptionDTO_two.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
+//		businessObjectFieldOptionDTO_two.setDescription("value description 2");
+//		businessObjectFieldOptionDTO_two.setValue("value_2");
+//		
+//		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
+//		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO_two);
+//		businessObjectFieldOptionValidator.updateMultiBusinessObjectFieldOptionValidation(businessObjectField, businessObjectFieldOptionDTOList);
+//	}
+//	
+//	/*
+//	 * check each optionId is existed in db
+//	 */
+//	@SuppressWarnings( "unchecked" )
+//	@Test(expected = BusinessObjectCustomException.class)
+//	public void updateMultiBusinessObjectFieldOptionValidation_case2_UT(){
+//		BusinessObjectField businessObjectField = new BusinessObjectField();
+//		businessObjectField.setUuid("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152");
+//		businessObjectField.setName("CDF1");
+//		businessObjectField.setType(BusinessObjectFieldType.STRING);
+//		
+//		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
+//		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
+//		businessObjectFieldOptionDTO.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
+//		businessObjectFieldOptionDTO.setDescription("value description 1");
+//		businessObjectFieldOptionDTO.setValue("value_1");
+//
+//		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO_two = new BusinessObjectFieldOptionDTO();
+//		businessObjectFieldOptionDTO_two.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF21");
+//		businessObjectFieldOptionDTO_two.setDescription("value description 2");
+//		businessObjectFieldOptionDTO_two.setValue("value_2");
+//		
+//		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
+//		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO_two);
+//		
+//		List<BusinessObjectFieldOption> businessObjectFieldOptionList = new ArrayList<>();
+//		when(bofoRepo.findByUuidIn(Mockito.anyList())).thenReturn(businessObjectFieldOptionList);
+//		businessObjectFieldOptionValidator.updateMultiBusinessObjectFieldOptionValidation(businessObjectField, businessObjectFieldOptionDTOList);
+//	}
+//	
+//	/*
+//	 * check null option id when update
+//	 */
+//	@Test(expected = BusinessObjectCustomException.class)
+//	public void updateMultiBusinessObjectFieldOptionValidation_case3_UT(){
+//		BusinessObjectField businessObjectField = new BusinessObjectField();
+//		businessObjectField.setUuid("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152");
+//		businessObjectField.setName("CDF1");
+//		businessObjectField.setType(BusinessObjectFieldType.STRING);
+//		
+//		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
+//		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
+//		businessObjectFieldOptionDTO.setDescription("value description 1");
+//		businessObjectFieldOptionDTO.setValue("value_1");
+//
+//		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO_two = new BusinessObjectFieldOptionDTO();
+//		businessObjectFieldOptionDTO_two.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
+//		businessObjectFieldOptionDTO_two.setDescription("value description 2");
+//		businessObjectFieldOptionDTO_two.setValue("value_2");
+//		
+//		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
+//		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO_two);
+//		
+//		businessObjectFieldOptionValidator.updateMultiBusinessObjectFieldOptionValidation(businessObjectField, businessObjectFieldOptionDTOList);
+//	}
+//	
+//	/*
+//	 * check each option belongs to given custom field
+//	 */
+//	@SuppressWarnings( "unchecked" )
+//	@Test(expected = BusinessObjectCustomException.class)
+//	public void updateMultiBusinessObjectFieldOptionValidation_case4_UT(){
+//		BusinessObjectField businessObjectField = new BusinessObjectField();
+//		businessObjectField.setUuid("A7F21EBC-3F4E-4767-85B6-F6C1AE15F152");
+//		businessObjectField.setName("CDF1");
+//		businessObjectField.setType(BusinessObjectFieldType.STRING);
+//		
+//		List<BusinessObjectFieldOptionDTO> businessObjectFieldOptionDTOList = new ArrayList<>();
+//		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO = new BusinessObjectFieldOptionDTO();
+//		businessObjectFieldOptionDTO.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
+//		businessObjectFieldOptionDTO.setDescription("value description 1");
+//		businessObjectFieldOptionDTO.setValue("value_1");
+//
+//		BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO_two = new BusinessObjectFieldOptionDTO();
+//		businessObjectFieldOptionDTO_two.setFieldOpitonId("08E365EE-ADD4-476B-ACC1-5A2LDS92LF21");
+//		businessObjectFieldOptionDTO_two.setDescription("value description 2");
+//		businessObjectFieldOptionDTO_two.setValue("value_2");
+//		
+//		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO);
+//		businessObjectFieldOptionDTOList.add(businessObjectFieldOptionDTO_two);
+//		
+//		List<BusinessObjectFieldOption> businessObjectFieldOptionList = new ArrayList<>();
+//		BusinessObjectFieldOption businessObjectFieldOption = new BusinessObjectFieldOption();
+//		businessObjectFieldOption.setUuid("08E365EE-ADD4-476B-ACC1-5A2LDS92LF20");
+//		businessObjectFieldOption.setDescription("value description 1");
+//		businessObjectFieldOption.setValue("value_1");
+//		businessObjectFieldOption.setFieldId("AAA");
+//
+//		BusinessObjectFieldOption businessObjectFieldOption_two = new BusinessObjectFieldOption();
+//		businessObjectFieldOption_two.setUuid("08E365EE-ADD4-476B-ACC1-5A2LDS92LF21");
+//		businessObjectFieldOption_two.setDescription("value description 2");
+//		businessObjectFieldOption_two.setValue("value_2");
+//		
+//		businessObjectFieldOptionList.add(businessObjectFieldOption);
+//		businessObjectFieldOptionList.add(businessObjectFieldOption_two);
+//		
+//		when( bofoRepo.findByUuidIn(Mockito.anyList())).thenReturn(businessObjectFieldOptionList);
+//		businessObjectFieldOptionValidator.updateMultiBusinessObjectFieldOptionValidation(businessObjectField, businessObjectFieldOptionDTOList);
+//	}
+//	
+//	@Test(expected = BusinessObjectCustomException.class)	
+//	public void deleteBusinessObjectFieldOptionValidation_UT(){
+//		String fieldOptionId = "08E365EE-ADD4-476B-ACC1-5A2LDS92LF20";
+//		when(bofoRepo.findOne(fieldOptionId)).thenReturn(null);
+//		businessObjectFieldOptionValidator.deleteBusinessObjectFieldOptionValidation(fieldOptionId);
+//	}
 }

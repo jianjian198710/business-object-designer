@@ -6,19 +6,20 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
+import com.sap.grc.bod.model.BusinessObjectField;
 import com.sap.grc.bod.model.BusinessObjectFieldOption;
 
 public interface BusinessObjectFieldOptionRepository extends JpaRepository<BusinessObjectFieldOption, String>{
 //	public List<BusinessObjectFieldOption> findByFieldIdAndLanguageId(String fieldId, String languageId);
-	public List<BusinessObjectFieldOption> findByFieldId(String fieldId);
+	public List<BusinessObjectFieldOption> findByBusinessObjectField(BusinessObjectField bof);
 	
-//	public List<BusinessObjectFieldOption> findByBussinessObjectField_NameAndLanguageId(String fieldName, String languageId);	
+//	public List<BusinessObjectFieldOption> findByBusinessObjectField_NameAndLanguageId(String fieldName, String languageId);	
 	
 	@Query("select bofo from BusinessObjectFieldOption as bofo where bofo.uuid in ?1")
 	public List<BusinessObjectFieldOption> findByUuidIn(List<String> fieldOptionIdList);
 	
 	@Modifying
-	@Query("delete from BusinessObjectFieldOption as bofo where bofo.fieldId = ?1")
-	public void deleteByFieldId(String fieldId);
+	@Query("delete from BusinessObjectFieldOption as bofo where bofo.businessObjectField = ?1")
+	public void deleteByFieldId(BusinessObjectField bof);
 	
 }

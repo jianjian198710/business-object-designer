@@ -55,7 +55,7 @@ public @Data class BusinessObjectFieldOption implements Serializable
 	@ManyToOne
 	@JoinColumn( name = "field_id", referencedColumnName = "field_id", insertable = false, updatable = false )
 	@JsonBackReference
-	private BusinessObjectField bussinessObjectField;
+	private BusinessObjectField businessObjectField;
 	
 	@Override
 	public String toString() {

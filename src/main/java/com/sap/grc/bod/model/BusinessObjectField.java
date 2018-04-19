@@ -94,6 +94,6 @@ public @Data class BusinessObjectField implements Serializable
 	@JoinColumn( name = "bo_id", referencedColumnName = "bo_id", insertable = true, updatable = false )
 	private BusinessObject businessObject;
 	
-	@OneToMany(cascade = CascadeType.REMOVE, mappedBy="bussinessObjectField",orphanRemoval=true )
+	@OneToMany(cascade = CascadeType.REMOVE, mappedBy="businessObjectField",orphanRemoval=true )
 	private List<BusinessObjectFieldOption> businessObjectFieldOptionList;
 }

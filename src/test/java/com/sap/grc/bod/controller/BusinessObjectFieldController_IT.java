@@ -87,7 +87,7 @@ public class BusinessObjectFieldController_IT
 				mockMvc.perform(get(url)).andExpect(status().is(200)).andReturn();
 			String content = content_result.getResponse().getContentAsString();
 			BusinessObjectField result = mapper.readValue(content, new TypeReference<BusinessObjectField>() {});
-			assertEquals(result.getName(),"CDF1");		
+			assertEquals(result.getId(),"CDF1");		
 	}
 	
 	@Test
@@ -100,7 +100,7 @@ public class BusinessObjectFieldController_IT
 	    BusinessObjectFieldDTO bofDTO = new BusinessObjectFieldDTO();
 	    List<BusinessObjectFieldDTO> bofDTOList = new ArrayList<>();
 	    
-	    bofDTO.setName("CDF3");
+	    bofDTO.setId("CDF3");
 	    bofDTO.setType(BusinessObjectFieldType.STRING);
 	    bofDTO.setIsCustField(true);
 	    bofDTO.setIsMandatory(false);
@@ -133,7 +133,7 @@ public class BusinessObjectFieldController_IT
 		
 	    BusinessObjectFieldDTO bofDTO = new BusinessObjectFieldDTO();
 	    
-	    bofDTO.setName("CDF3");
+	    bofDTO.setId("CDF3");
 	    bofDTO.setType(BusinessObjectFieldType.STRING);
 	    bofDTO.setIsCustField(true);
 	    bofDTO.setIsMandatory(true);
@@ -164,7 +164,7 @@ public class BusinessObjectFieldController_IT
 	    BusinessObjectFieldDTO bofDTO = new BusinessObjectFieldDTO();
 	    List<BusinessObjectFieldDTO> bofDTOList = new ArrayList<>();
 	    
-	    bofDTO.setName("CDF1");
+	    bofDTO.setId("CDF1");
 	    bofDTO.setType(BusinessObjectFieldType.STRING);
 	    bofDTO.setIsCustField(true);
 	    bofDTO.setIsMandatory(false);
