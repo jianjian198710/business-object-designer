@@ -63,19 +63,19 @@ public class BusinessObjectFieldOptionController
 		return new ResponseEntity<>(businessObjectFieldOptionList, HttpStatus.OK);
 	}
 	
-//	@ApiOperation( value = "update business object options")
-//	@ApiImplicitParams({
-//		@ApiImplicitParam(name = "bo_name", value = "Business Object Name", required = true, paramType="path", dataType = "String"),
-//		@ApiImplicitParam(name = "field_name", value = "Business Object Field Name", required = true, paramType="path", dataType = "String")
-//	})
-//	@GetMapping(value = "/{bo_name}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{field_name}" 
-//		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION )
-//	public ResponseEntity<List<BusinessObjectFieldOption>> findAllBusinessObjectFieldOption(@PathVariable String bo_name, @PathVariable String field_name){
-//		String languageId = LocaleContextHolder.getLocale().getLanguage();
-//		List<BusinessObjectFieldOption> businessObjectFieldOptionList = 
-//			bofoService.findAllBusinessObjectFieldOption(bo_name, field_name, languageId);
-//		return new ResponseEntity<>(businessObjectFieldOptionList, HttpStatus.OK);
-//	}
+	@ApiOperation( value = "get business object options")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "boName", value = "Business Object Name", required = true, paramType="path", dataType = "String"),
+		@ApiImplicitParam(name = "fieldId", value = "Business Object Field ID", required = true, paramType="path", dataType = "String")
+	})
+	@GetMapping(value = "/{boName}" + ControllerPathConstant.BUSINESS_OBJECT_FIELD + "/{fieldId}" 
+		+ ControllerPathConstant.BUSINESS_OBJECT_FIELD_OPTION )
+	public ResponseEntity<List<BusinessObjectFieldOption>> findAllBusinessObjectFieldOption(@PathVariable String boName, @PathVariable String fieldId){
+		String languageId = LocaleContextHolder.getLocale().getLanguage();
+		List<BusinessObjectFieldOption> businessObjectFieldOptionList = 
+			bofoService.findAllBusinessObjectFieldOption(boName, fieldId, languageId);
+		return new ResponseEntity<>(businessObjectFieldOptionList, HttpStatus.OK);
+	}
 	
 	@ApiOperation( value = "delete one business object option")
 	@ApiImplicitParams({

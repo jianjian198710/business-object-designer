@@ -1,28 +1,28 @@
 package com.sap.grc.bod.validator;
 
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import com.sap.grc.bod.controller.dto.BusinessObjectFieldOptionDTO;
-import com.sap.grc.bod.exception.BusinessObjectCustomException;
-import com.sap.grc.bod.model.BusinessObjectField;
-import com.sap.grc.bod.model.BusinessObjectFieldOption;
-import com.sap.grc.bod.model.enumtype.BusinessObjectFieldType;
-import com.sap.grc.bod.repository.BusinessObjectFieldOptionRepository;
-import com.sap.grc.bod.service.BaseServiceUT;
-
-@RunWith( SpringRunner.class )
-public class BusinessObjectFieldOptionValidator_UT extends BaseServiceUT
-{
+//import static org.mockito.Mockito.when;
+//
+//import java.util.ArrayList;
+//import java.util.List;
+//
+//import org.junit.Test;
+//import org.junit.runner.RunWith;
+//import org.mockito.InjectMocks;
+//import org.mockito.Mock;
+//import org.mockito.Mockito;
+//import org.springframework.test.context.junit4.SpringRunner;
+//
+//import com.sap.grc.bod.controller.dto.BusinessObjectFieldOptionDTO;
+//import com.sap.grc.bod.exception.BusinessObjectCustomException;
+//import com.sap.grc.bod.model.BusinessObjectField;
+//import com.sap.grc.bod.model.BusinessObjectFieldOption;
+//import com.sap.grc.bod.model.enumtype.BusinessObjectFieldType;
+//import com.sap.grc.bod.repository.BusinessObjectFieldOptionRepository;
+//import com.sap.grc.bod.service.BaseServiceUT;
+//
+//@RunWith( SpringRunner.class )
+//public class BusinessObjectFieldOptionValidator_UT extends BaseServiceUT
+//{
 
 //	@Mock
 //	private BusinessObjectFieldOptionRepository bofoRepo;
@@ -231,4 +231,4 @@ public class BusinessObjectFieldOptionValidator_UT extends BaseServiceUT
 //		when(bofoRepo.findOne(fieldOptionId)).thenReturn(null);
 //		businessObjectFieldOptionValidator.deleteBusinessObjectFieldOptionValidation(fieldOptionId);
 //	}
-}
+//}

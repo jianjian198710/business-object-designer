@@ -1,34 +1,34 @@
 package com.sap.grc.bod.validator;
 
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.beans.BeanUtils;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import com.sap.grc.bod.controller.dto.BusinessObjectFieldDTO;
-import com.sap.grc.bod.controller.dto.BusinessObjectFieldTextDTO;
-import com.sap.grc.bod.exception.BusinessObjectCustomException;
-import com.sap.grc.bod.exception.BusinessObjectCustomException.ExceptionEnum;
-import com.sap.grc.bod.model.BusinessObject;
-import com.sap.grc.bod.model.BusinessObjectField;
-import com.sap.grc.bod.model.BusinessObjectFieldOption;
-import com.sap.grc.bod.model.BusinessObjectFieldText;
-import com.sap.grc.bod.model.enumtype.BusinessObjectFieldType;
-import com.sap.grc.bod.repository.BusinessObjectFieldRepository;
-import com.sap.grc.bod.repository.BusinessObjectRepository;
-import com.sap.grc.bod.service.BaseServiceUT;
-
-@RunWith( SpringRunner.class )
-public class BusinessObjectFieldValidator_UT extends BaseServiceUT
-{
+//import static org.mockito.Mockito.when;
+//
+//import java.util.ArrayList;
+//import java.util.List;
+//
+//import org.junit.Before;
+//import org.junit.Test;
+//import org.junit.runner.RunWith;
+//import org.mockito.InjectMocks;
+//import org.mockito.Mock;
+//import org.springframework.beans.BeanUtils;
+//import org.springframework.test.context.junit4.SpringRunner;
+//
+//import com.sap.grc.bod.controller.dto.BusinessObjectFieldDTO;
+//import com.sap.grc.bod.controller.dto.BusinessObjectFieldTextDTO;
+//import com.sap.grc.bod.exception.BusinessObjectCustomException;
+//import com.sap.grc.bod.exception.BusinessObjectCustomException.ExceptionEnum;
+//import com.sap.grc.bod.model.BusinessObject;
+//import com.sap.grc.bod.model.BusinessObjectField;
+//import com.sap.grc.bod.model.BusinessObjectFieldOption;
+//import com.sap.grc.bod.model.BusinessObjectFieldText;
+//import com.sap.grc.bod.model.enumtype.BusinessObjectFieldType;
+//import com.sap.grc.bod.repository.BusinessObjectFieldRepository;
+//import com.sap.grc.bod.repository.BusinessObjectRepository;
+//import com.sap.grc.bod.service.BaseServiceUT;
+//
+//@RunWith( SpringRunner.class )
+//public class BusinessObjectFieldValidator_UT extends BaseServiceUT
+//{
 
 //	@Mock
 //	private BusinessObjectFieldRepository bofRepo;
@@ -149,4 +149,4 @@ public class BusinessObjectFieldValidator_UT extends BaseServiceUT
 //		String fieldName = "CDF1";
 //		bofValidator.validateBusinessObjectField(businessObjectName, fieldName);
 //	}
-}
+//}

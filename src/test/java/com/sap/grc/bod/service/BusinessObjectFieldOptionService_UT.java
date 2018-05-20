@@ -25,7 +25,7 @@ import com.sap.grc.bod.service.impl.BusinessObjectFieldOptionServiceImpl;
 import com.sap.grc.bod.validator.BusinessObjectFieldOptionValidator;
 import com.sap.grc.bod.validator.BusinessObjectFieldValidator;
 
-@RunWith( SpringRunner.class )
+//@RunWith( SpringRunner.class )
 public class BusinessObjectFieldOptionService_UT extends BaseServiceUT
 {
 //	@Mock

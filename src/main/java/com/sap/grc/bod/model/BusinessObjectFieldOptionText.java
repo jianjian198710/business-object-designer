@@ -16,12 +16,13 @@ import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 import org.eclipse.persistence.annotations.UuidGenerator;
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sap.grc.bod.constant.JpaConstant;
 
 import lombok.Data;
 
 @Entity
-@Table( name = JpaConstant.BO_FIELD_OPTION_TEXT_TABLE_NAME,uniqueConstraints = @UniqueConstraint(columnNames = {"field_id","value","lang_id"}))
+@Table( name = JpaConstant.BO_FIELD_OPTION_TEXT_TABLE_NAME,uniqueConstraints = @UniqueConstraint(columnNames = {"field_option_id","lang_id"}))
 @UuidGenerator( name = "uuid2" )
 @Multitenant
 @TenantDiscriminatorColumn( name = "tenant_id", contextProperty = "eclipselink.tenant-id", length = 36 )
@@ -43,5 +44,6 @@ public @Data class BusinessObjectFieldOptionText implements Serializable
 	
 	@ManyToOne
 	@JoinColumn( name = "field_option_id", referencedColumnName = "field_option_id", updatable = false, insertable = true )
+	@JsonBackReference
 	private BusinessObjectFieldOption businessObjectFieldOption; 
 }

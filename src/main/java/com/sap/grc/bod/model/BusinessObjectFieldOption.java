@@ -43,9 +43,6 @@ public @Data class BusinessObjectFieldOption implements Serializable
 	@Column( name = "field_option_id" )
 	private String uuid;
 	
-//	@Column( name = "field_id", nullable = false )
-//	private String fieldId;
-
 	@Column( name = "value", nullable = false )
 	private String value;
 	

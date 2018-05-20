@@ -29,7 +29,7 @@ import com.sap.grc.bod.repository.BusinessObjectRepository;
 import com.sap.grc.bod.service.impl.BusinessObjectFieldServiceImpl;
 import com.sap.grc.bod.validator.BusinessObjectFieldValidator;
 
-@RunWith( SpringRunner.class )
+//@RunWith( SpringRunner.class )
 public class BusinessObjectFieldService_UT extends BaseServiceUT
 {
 
