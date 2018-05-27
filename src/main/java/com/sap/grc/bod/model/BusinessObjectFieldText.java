@@ -1,6 +1,7 @@
 package com.sap.grc.bod.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -54,7 +55,30 @@ public @Data class BusinessObjectFieldText implements Serializable{
 	
 	@Override
 	public String toString() {
-	    return this.getClass().getSimpleName() + "-" + this.getName();
+		return this.getClass().getSimpleName() + "-" + this.getName();
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hash(this.getBusinessObjectField().getId(),this.getLanguageId());
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if( obj == null ){
+			return false;
+		}
+		if( !BusinessObjectFieldText.class.isAssignableFrom(obj.getClass())){
+			return false;
+		}
+		final BusinessObjectFieldText other = (BusinessObjectFieldText)obj;
+		if(( this.getLanguageId() == null )?(other.getLanguageId()!=null):!this.getLanguageId().equals(other.getLanguageId())){
+			return false;
+		}
+		if(!this.getBusinessObjectField().getId().equals(other.getBusinessObjectField().getId())){
+			return false;
+		}
+		return true;
 	}
 
 }

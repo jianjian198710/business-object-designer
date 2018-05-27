@@ -1,6 +1,7 @@
 package com.sap.grc.bod.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,5 +46,28 @@ public @Data class BusinessObjectFieldOptionText implements Serializable
 	@ManyToOne
 	@JoinColumn( name = "field_option_id", referencedColumnName = "field_option_id", updatable = false, insertable = true )
 	@JsonBackReference
-	private BusinessObjectFieldOption businessObjectFieldOption; 
+	private BusinessObjectFieldOption businessObjectFieldOption;
+	
+	@Override
+	public int hashCode(){
+		return Objects.hash(this.getBusinessObjectFieldOption().getValue(),this.getLanguageId());
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if( obj == null ){
+			return false;
+		}
+		if( !BusinessObjectFieldOptionText.class.isAssignableFrom(obj.getClass())){
+			return false;
+		}
+		final BusinessObjectFieldOptionText other = (BusinessObjectFieldOptionText)obj;
+		if(( this.getLanguageId() == null )?(other.getLanguageId()!=null):!this.getLanguageId().equals(other.getLanguageId())){
+			return false;
+		}
+		if(!this.getBusinessObjectFieldOption().getValue().equals(other.getBusinessObjectFieldOption().getValue())){
+			return false;
+		}
+		return true;
+	}
 }

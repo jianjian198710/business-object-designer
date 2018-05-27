@@ -1,7 +1,8 @@
 package com.sap.grc.bod.model;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +17,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.eclipse.persistence.annotations.JoinFetch;
+import org.eclipse.persistence.annotations.JoinFetchType;
 import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 import org.eclipse.persistence.annotations.UuidGenerator;
@@ -47,7 +50,7 @@ public @Data class BusinessObjectFieldOption implements Serializable
 	private String value;
 	
 	@OneToMany( cascade = CascadeType.ALL, mappedBy="businessObjectFieldOption", fetch = FetchType.LAZY, orphanRemoval=true )
-	private List<BusinessObjectFieldOptionText> businessObjectFieldOptionTextList;
+	private Set<BusinessObjectFieldOptionText> businessObjectFieldOptionTextList;
 	
 	@ManyToOne
 	@JoinColumn( name = "field_id", referencedColumnName = "field_id", insertable = false, updatable = false )
@@ -57,5 +60,28 @@ public @Data class BusinessObjectFieldOption implements Serializable
 	@Override
 	public String toString() {
 		return this.getClass().getSimpleName() + "-" + this.getUuid();
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hash(this.getValue(),this.getBusinessObjectField().getId());
+	}
+	
+	@Override
+	public boolean equals(Object obj){
+		if( obj == null ){
+			return false;
+		}
+		if( !BusinessObjectFieldOption.class.isAssignableFrom(obj.getClass())){
+			return false;
+		}
+		final BusinessObjectFieldOption other = (BusinessObjectFieldOption)obj;
+		if(( this.getValue() == null )?(other.getValue()!=null):!this.getValue().equals(other.getValue())){
+			return false;
+		}
+		if(!this.getBusinessObjectField().getId().equals(other.getBusinessObjectField().getId())){
+			return false;
+		}
+		return true;
 	}
 }

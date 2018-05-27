@@ -3,6 +3,7 @@ package com.sap.grc.bod.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -88,12 +89,13 @@ public @Data class BusinessObjectField implements Serializable
 	private String changedBy;
 
 	@OneToMany( cascade = CascadeType.ALL , mappedBy="businessObjectField", orphanRemoval=true)
-	private List<BusinessObjectFieldText> businessObjectFieldTextList;
+	private Set<BusinessObjectFieldText> businessObjectFieldTextList;
 
 	@ManyToOne( optional = false )
 	@JoinColumn( name = "bo_id", referencedColumnName = "bo_id", insertable = true, updatable = false )
 	private BusinessObject businessObject;
 	
 	@OneToMany(cascade = CascadeType.REMOVE, mappedBy="businessObjectField",orphanRemoval=true )
-	private List<BusinessObjectFieldOption> businessObjectFieldOptionList;
+	private Set<BusinessObjectFieldOption> businessObjectFieldOptionList;
+	
 }
