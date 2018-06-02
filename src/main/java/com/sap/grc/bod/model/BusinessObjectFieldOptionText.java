@@ -17,7 +17,7 @@ import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 import org.eclipse.persistence.annotations.UuidGenerator;
 import org.hibernate.annotations.GenericGenerator;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sap.grc.bod.constant.JpaConstant;
 
 import lombok.Data;
@@ -45,7 +45,7 @@ public @Data class BusinessObjectFieldOptionText implements Serializable
 	
 	@ManyToOne
 	@JoinColumn( name = "field_option_id", referencedColumnName = "field_option_id", updatable = false, insertable = true )
-	@JsonBackReference
+	@JsonIgnoreProperties(value={"businessObjectFieldOptionTextList","businessObjectField"})
 	private BusinessObjectFieldOption businessObjectFieldOption;
 	
 	@Override

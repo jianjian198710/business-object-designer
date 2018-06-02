@@ -18,7 +18,7 @@ import org.eclipse.persistence.annotations.UuidGenerator;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.NotBlank;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sap.grc.bod.constant.JpaConstant;
 
 import lombok.Data;
@@ -50,7 +50,7 @@ public @Data class BusinessObjectFieldText implements Serializable{
 
 	@ManyToOne
 	@JoinColumn( name = "field_id", referencedColumnName = "field_id",updatable = false, insertable = false )
-	@JsonBackReference
+	@JsonIgnoreProperties(value={"businessObjectFieldTextList","businessObjectFieldOptionList"})
 	private BusinessObjectField businessObjectField;
 	
 	@Override

@@ -17,15 +17,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import org.eclipse.persistence.annotations.JoinFetch;
-import org.eclipse.persistence.annotations.JoinFetchType;
 import org.eclipse.persistence.annotations.Multitenant;
 import org.eclipse.persistence.annotations.TenantDiscriminatorColumn;
 import org.eclipse.persistence.annotations.UuidGenerator;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sap.grc.bod.constant.JpaConstant;
 
 import lombok.Data;
@@ -53,8 +51,8 @@ public @Data class BusinessObjectFieldOption implements Serializable
 	private Set<BusinessObjectFieldOptionText> businessObjectFieldOptionTextList;
 	
 	@ManyToOne
-	@JoinColumn( name = "field_id", referencedColumnName = "field_id", insertable = false, updatable = false )
-	@JsonBackReference
+	@JoinColumn( name = "field_id", referencedColumnName = "field_id", insertable = true, updatable = false )
+	@JsonIgnoreProperties(value={"businessObjectFieldOptionList","businessObjectFieldTextList"})
 	private BusinessObjectField businessObjectField;
 	
 	@Override

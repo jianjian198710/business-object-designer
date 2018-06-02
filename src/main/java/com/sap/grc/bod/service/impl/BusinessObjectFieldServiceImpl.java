@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import com.sap.grc.bod.controller.dto.BusinessObjectFieldDTO;
 import com.sap.grc.bod.controller.dto.BusinessObjectFieldTextDTO;
 import com.sap.grc.bod.model.BusinessObject;
 import com.sap.grc.bod.model.BusinessObjectField;
-import com.sap.grc.bod.model.BusinessObjectFieldOption;
-import com.sap.grc.bod.model.BusinessObjectFieldOptionText;
 import com.sap.grc.bod.model.BusinessObjectFieldText;
 import com.sap.grc.bod.model.UserBean;
 import com.sap.grc.bod.repository.BusinessObjectFieldRepository;
@@ -84,23 +81,13 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 	@Override
 	public BusinessObjectField findOneBusinessObjectField(String boName, String fieldId, String languageId){
 		bofValidator.validateBusinessObject(boName);
-//		BusinessObjectField bof = bofValidator.validateBusinessObjectField(boName, fieldId);
-//		return this.getBusinessObjectFieldWithSpecificLanguage(bof, languageId);
 		return bofRepo.findOneWithFetch(languageId, fieldId);
-//		return null;
-		
 	}
 	
 	@Override
 	public List<BusinessObjectField> findAllBusinessObjectField(String boName, String languageId){
 		bofValidator.validateBusinessObject(boName);
-//		List<BusinessObjectField> bofList = bofRepo.findByBusinessObject_Name(boName);
-//		for(BusinessObjectField bof: bofList){
-//			bof = this.getBusinessObjectFieldWithSpecificLanguage(bof, languageId);
-//		}
-//		List<BusinessObjectField> bofList = 
 		return bofRepo.findAllWithFetch(languageId);
-//		return bofRepo.findAllWithFetch();
 	}
 	
 	@Override
@@ -116,18 +103,18 @@ public class BusinessObjectFieldServiceImpl implements BusinessObjectFieldServic
 		bofRepo.delete(bof);
 	}
 	
-	private BusinessObjectField getBusinessObjectFieldWithSpecificLanguage(BusinessObjectField bof, String languageId){
-		Set<BusinessObjectFieldText> boftSet = bof.getBusinessObjectFieldTextList();
-		Set<BusinessObjectFieldText> boftSpecificSet =
-			boftSet.stream().filter(t->t.getLanguageId().equals(languageId)).collect(Collectors.toSet());
-		
-		Set<BusinessObjectFieldOption> bofoSet = bof.getBusinessObjectFieldOptionList();
-		for(BusinessObjectFieldOption bofo: bofoSet){
-			Set<BusinessObjectFieldOptionText> bofotSpecificSet =
-				bofo.getBusinessObjectFieldOptionTextList().stream().filter(t->t.getLanguageId().equals(languageId)).collect(Collectors.toSet());
-			bofo.setBusinessObjectFieldOptionTextList(bofotSpecificSet);
-		}
-		bof.setBusinessObjectFieldTextList(boftSpecificSet);
-		return bof;
-	}
+//	private BusinessObjectField getBusinessObjectFieldWithSpecificLanguage(BusinessObjectField bof, String languageId){
+//		Set<BusinessObjectFieldText> boftSet = bof.getBusinessObjectFieldTextList();
+//		Set<BusinessObjectFieldText> boftSpecificSet =
+//			boftSet.stream().filter(t->t.getLanguageId().equals(languageId)).collect(Collectors.toSet());
+//		
+//		Set<BusinessObjectFieldOption> bofoSet = bof.getBusinessObjectFieldOptionList();
+//		for(BusinessObjectFieldOption bofo: bofoSet){
+//			Set<BusinessObjectFieldOptionText> bofotSpecificSet =
+//				bofo.getBusinessObjectFieldOptionTextList().stream().filter(t->t.getLanguageId().equals(languageId)).collect(Collectors.toSet());
+//			bofo.setBusinessObjectFieldOptionTextList(bofotSpecificSet);
+//		}
+//		bof.setBusinessObjectFieldTextList(boftSpecificSet);
+//		return bof;
+//	}
 }

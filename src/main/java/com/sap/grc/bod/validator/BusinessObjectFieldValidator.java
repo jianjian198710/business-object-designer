@@ -42,7 +42,7 @@ public class BusinessObjectFieldValidator
 		if(Objects.isNull(boftDTO)){
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldText_isNull);
 		}
-		if(this.isNullOrEmpty(boftDTO.getName())||this.isContainEmpty(boftDTO.getName())){
+		if(this.isNullOrEmpty(boftDTO.getName())){
 			throw new BusinessObjectCustomException(ExceptionEnum.BusinessObjectFieldText_Name_ErrorInput);
 		}
 	}

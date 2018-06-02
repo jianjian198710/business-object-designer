@@ -1,11 +1,13 @@
 package com.sap.grc.bod.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,8 +44,7 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 		bofoValidator.createMultiBusinessObjectFieldOptionValidation(businessObjectField.getUuid(), bofoDTOList);
 		for(BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO: bofoDTOList){
 			BusinessObjectFieldOption businessObjectFieldOption = businessObjectFieldOptionDTO.converToModel();
-//			businessObjectFieldOption.setLanguageId(languageId);
-			List<BusinessObjectFieldOptionText> businessObjectFieldOptionTextList = new ArrayList<>();
+			Set<BusinessObjectFieldOptionText> businessObjectFieldOptionTextList = new HashSet<>();
 			BusinessObjectFieldOptionTextDTO businessObjectFieldOptionTextDTO = businessObjectFieldOptionDTO.getBusinessObjectFieldOptionTextDTO();
 			if(Objects.nonNull(businessObjectFieldOptionTextDTO)){
 				BusinessObjectFieldOptionText businessObjectFieldOptionText = new BusinessObjectFieldOptionText();
@@ -52,8 +53,8 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 				businessObjectFieldOptionText.setBusinessObjectFieldOption(businessObjectFieldOption);
 				businessObjectFieldOptionTextList.add(businessObjectFieldOptionText);
 			}
-//			businessObjectFieldOption.setFieldId(businessObjectField.getUuid());
 			businessObjectFieldOption.setBusinessObjectField(businessObjectField);
+			businessObjectFieldOption.setBusinessObjectFieldOptionTextList(businessObjectFieldOptionTextList);
 			businessObjectFieldOptionList.add(businessObjectFieldOption);
 		}
 		return bofoRepo.save(businessObjectFieldOptionList);
@@ -67,7 +68,7 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 		for(BusinessObjectFieldOption businessObjectFieldOption: businessObjectFieldOptionList){
 			for(BusinessObjectFieldOptionDTO businessObjectFieldOptionDTO: bofoDTOList){
 				if(businessObjectFieldOptionDTO.getFieldOpitonId().equals(businessObjectFieldOption.getUuid())){
-//					BeanUtils.copyProperties(businessObjectFieldOptionDTO, businessObjectFieldOption);
+					BeanUtils.copyProperties(businessObjectFieldOptionDTO, businessObjectFieldOption);
 					Set<BusinessObjectFieldOptionText> bofotSet = businessObjectFieldOption.getBusinessObjectFieldOptionTextList();
 					Set<BusinessObjectFieldOptionText> bofotSpecSet = bofotSet.stream().filter(t->t.getLanguageId().equals(languageId)).collect(Collectors.toSet());
 					//no specific language, then create
@@ -89,8 +90,7 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 	@Override
 	public List<BusinessObjectFieldOption> findAllBusinessObjectFieldOption(String boName, String fieldId, String languageId){
 		BusinessObjectField bof = bofValidator.validateBusinessObjectField(boName, fieldId);
-//		return this.getBusinessObjectFieldOptionWithSpecificLanguage(bof, languageId);
-		return bofoRepo.findAllWithFetch("value_1", languageId);
+		return bofoRepo.findAllWithFetch(bof, languageId);
 	}
 	
 	@Override
@@ -103,19 +103,10 @@ public class BusinessObjectFieldOptionServiceImpl implements BusinessObjectField
 		}
 	}
 	
+	@Transactional
 	@Override
 	public void deleteAllBusinessObjectFieldOption(String boName, String fieldId){
 		BusinessObjectField businessObjectField = bofValidator.validateBusinessObjectField(boName,fieldId);
-		bofoRepo.deleteByFieldId(businessObjectField);
+		bofoRepo.deleteByBusinessObjectField(businessObjectField);
 	}
-	
-//	private List<BusinessObjectFieldOption> getBusinessObjectFieldOptionWithSpecificLanguage(BusinessObjectField bof, String languageId){
-//		Set<BusinessObjectFieldOption> bofoSet = bof.getBusinessObjectFieldOptionList();
-//		for(BusinessObjectFieldOption bofo: bofoSet){
-//			Set<BusinessObjectFieldOptionText> bofotSpecificSet =
-//				bofo.getBusinessObjectFieldOptionTextList().stream().filter(t->t.getLanguageId().equals(languageId)).collect(Collectors.toSet());
-//			bofo.setBusinessObjectFieldOptionTextList(bofotSpecificSet);
-//		}
-//		return Collections.set;
-//	}
 }

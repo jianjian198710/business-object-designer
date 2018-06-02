@@ -9,7 +9,7 @@ import com.sap.grc.bod.model.BusinessObjectField;
 
 public interface BusinessObjectFieldRepository extends JpaRepository<BusinessObjectField, String>{
 	
-	public static final String FIND_ALL_FETCH = "select bof from BusinessObjectField bof join fetch bof.businessObjectFieldTextList boft "+
+	public static final String FIND_ALL_FETCH = "select distinct bof from BusinessObjectField bof join fetch bof.businessObjectFieldTextList boft "+
 		"join fetch bof.businessObjectFieldOptionList bofo " +
 		"join fetch bofo.businessObjectFieldOptionTextList bofot " +
 		"where boft.languageId = ?1 " +
@@ -26,7 +26,4 @@ public interface BusinessObjectFieldRepository extends JpaRepository<BusinessObj
 	
 	@Query(value=FIND_ONE_FETCH)
 	public BusinessObjectField findOneWithFetch(String languageId, String fieldId);
-	
-//	@Query(value=FIND_ALL_FETCH)
-//	public List<BusinessObjectField> findAllWithFetch();
 }
